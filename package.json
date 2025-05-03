@@ -1,0 +1,22 @@
+{
+  "name": "brokenomore",
+  "version": "1.0.0",
+  "description": "5th Semester - SDA Project - Finance Tracker",
+  "main": "Backend/server.js",
+  "scripts": {
+  "dev": "nodemon Backend/server.js",
+  "start": "node Backend/server.js"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mssql": "^11.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
