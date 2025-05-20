@@ -1,124 +1,164 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
 body {
-    background-color: #f8f8f8;
-    text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #fef0cd;
+  color: #333;
 }
 
 /* Navbar */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ccc;
-    padding: 15px 20px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.center {
-    flex-grow: 1;
-    text-align: center;
+.logo img {
+  height: 40px;
 }
 
-.center a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: black;
+.nav-links a {
+  margin-left: 20px;
+  font-size: 20px;
+  color: #730027;
+  cursor: pointer;
 }
 
-/* Profile Section */
+.menu {
+  font-size: 28px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Profile Picture */
 .profile-container {
-    margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 }
 
-.profile-pic {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.circle {
-    width: 100px;
-    height: 100px;
-    background-color: #d3d3d3;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.profile-pic .circle {
+  width: 120px;
+  height: 120px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .square {
-    width: 30px;
-    height: 30px;
-    background-color: gray;
+  width: 60px;
+  height: 60px;
+  background-color: #ccc;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .edit-pic-btn {
-    position: absolute;
-    bottom: -20px;
-    font-size: 12px;
-    background: none;
-    border: none;
-    color: black;
-    cursor: pointer;
+  background-color: #730027;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 9999px;
+  cursor: pointer;
 }
 
-/* Form Section */
+/* Form Styling */
 .form-container {
-    width: 350px;
-    margin: 0 auto;
-    text-align: left;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 }
 
 .edit-form {
-    display: flex;
-    flex-direction: column;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
 }
 
 .edit-form label {
-    font-weight: bold;
-    margin-top: 15px;
-    display: block;
-    background-color: gray;
-    color: white;
-    padding: 3px 5px;
-    font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #730027;
 }
 
 .edit-form input {
-    background-color: gray;
-    border: none;
-    height: 30px;
-    margin-top: 5px;
-    padding: 5px;
-    width: 100%;
-    color: white;
-    text-align: left;
-    cursor: not-allowed;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #f9f9f9;
 }
 
-/* Buttons */
 .btn-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.back-btn, .save-btn {
-    background-color: gray;
-    padding: 8px 15px;
-    border: none;
-    cursor: pointer;
-    color: black;
+.back-btn,
+.save-btn {
+  background-color: #730027;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover,
+.save-btn:hover {
+  background-color: #a20e40;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.edit-pic-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #730027;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .menu {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+  }
 }
