@@ -4,9 +4,9 @@
   "description": "5th Semester - SDA Project - Finance Tracker",
   "main": "Backend/server.js",
   "scripts": {
-  "dev": "nodemon Backend/server.js",
-  "start": "node Backend/server.js"
-},
+    "dev": "nodemon Backend/server.js",
+    "start": "node Backend/server.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
