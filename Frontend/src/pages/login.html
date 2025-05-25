@@ -1,43 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Form</title>
-    <link rel="stylesheet" href="../pages/login.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+
+  <!-- Font and Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/login.css" />
 </head>
 <body>
 
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">logo</div>
-        <div class="nav-links">
-            <a href="#">profile</a>
-            <a href="#">contact us</a>
-        </div>
-        <div class="menu">=</div>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">
+      <img src="../assets/image.png" alt="Logo" />
     </div>
-
-    <!-- Sign Up Button -->
-    <div class="signup-container">
-        <button class="signup-btn">sign up</button>
+    <div class="nav-links">
+      <a href="#"><i class="fas fa-user"></i></a>
+      <a href="#"><i class="fas fa-envelope"></i></a>
     </div>
+    <div class="menu">=</div>
+  </div>
 
-    <!-- Form Box -->
-    <div class="form-container">
-        <form class="signup-form">
-            <label for="username">username</label>
-            <input type="text" id="username" name="username">
-            
-            <label for="password">password</label>
-            <input type="password" id="password" name="password">
-            
-            <label for="question">question</label>
-            <input type="text" id="question" name="question">
+  <!-- Sign Up Button -->
+  <div class="signup-container">
+    <button class="signup-btn" onclick="window.location.href='login.html'">Get Started</button>
+  </div>
 
-            <button type="submit" class="submit-btn">submit</button>
-        </form>
-    </div>
+  <!-- Form Box -->
+  <div class="form-container">
+    <form class="signup-form">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username">
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password">
+
+      <label for="question">Security Question</label>
+      <input type="text" id="question" name="question">
+
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
 
 </body>
 </html>
