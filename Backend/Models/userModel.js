@@ -8,4 +8,4 @@ const getUserByEmail = async (email) => {
   return result.recordset[0];
 };
 
-module.exports = { getUserByEmail };
+module.exports = { getUserByEmail }

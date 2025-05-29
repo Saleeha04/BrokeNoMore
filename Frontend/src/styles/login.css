@@ -33,43 +33,39 @@ body {
   display: none;
 }
 
-/* Sign Up Button */
-.signup-container {
+/* Login Heading */
+.login-heading {
   text-align: center;
+  font-size: 36px;
+  color: #730027;
   margin-top: 40px;
+  font-weight: bold;
+  text-shadow: 0 0 10px #f8c8dc;
 }
 
-.signup-btn {
-  background-color: #730027;
-  color: #fff;
-  padding: 15px 30px;
-  font-size: 16px;
-  border: none;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.signup-btn:hover {
-  background-color: #a20e40;
-}
-
-/* Form Styles */
+/* Form Container */
 .form-container {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
+/* Form Box */
 .signup-form {
   background-color: #ffffff;
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(115, 0, 39, 0.2), 0 0 40px rgba(255, 179, 198, 0.3);
   width: 100%;
   max-width: 400px;
+  transition: all 0.3s ease-in-out;
 }
 
+.signup-form:hover {
+  box-shadow: 0 0 25px rgba(115, 0, 39, 0.3), 0 0 60px rgba(255, 179, 198, 0.4);
+}
+
+/* Labels */
 .signup-form label {
   display: block;
   margin-bottom: 8px;
@@ -77,6 +73,7 @@ body {
   color: #730027;
 }
 
+/* Inputs */
 .signup-form input {
   width: 100%;
   padding: 10px;
@@ -84,8 +81,16 @@ body {
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 16px;
+  transition: box-shadow 0.3s ease;
 }
 
+.signup-form input:focus {
+  outline: none;
+  box-shadow: 0 0 8px #ffb3c6;
+  border-color: #ffb3c6;
+}
+
+/* Submit Button */
 .submit-btn {
   background-color: #730027;
   color: #fff;
@@ -95,12 +100,151 @@ body {
   border: none;
   border-radius: 9999px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
 .submit-btn:hover {
   background-color: #a20e40;
+  transform: scale(1.02);
 }
+
+/* Footer
+.footer {
+  margin-top: 60px;
+  padding: 40px 90px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer-left img {
+  height: 40px;
+}
+
+.footer-right {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-column h4 {
+  color: #730027;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+  color: #730027;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 20px;
+  }
+} */
+
+/* Footer with glassmorphism */
+.footer {
+  margin-top: 60px;
+  padding: 40px 90px;
+  background-color: rgba(255, 255, 255, 0.15); /* subtle white tint */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 0; /* optional, can round top corners if you want */
+  box-shadow: 0 -4px 20px rgba(160, 1, 54, 0.1);
+}
+
+.footer-left img {
+  height: 40px;
+}
+
+.footer-right {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-column h4 {
+  color: #730027;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+  color: #730027;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 20px;
+  }
+}
+
+
 
 @media (max-width: 768px) {
   .menu {
