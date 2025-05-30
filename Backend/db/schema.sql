@@ -1,4 +1,11 @@
--- CREATING TABLES 
+use expense_tracker;
+CREATE DATABASE expense_tracker;
+GO
+USE master;  -- Ensure you're in the master database
+CREATE LOGIN brokedev WITH PASSWORD = 'YourStrong!Pass123';
+USE expense_tracker;
+CREATE USER brokedev FOR LOGIN brokedev;
+ALTER ROLE db_owner ADD MEMBER brokedev;
 
 CREATE TABLE Users(
     UserID INT PRIMARY KEY IDENTITY(1,1),
@@ -93,3 +100,17 @@ SELECT * FROM Income;
 SELECT * FROM Expenses;
 SELECT * FROM BudgetGoals;
 SELECT * FROM Alerts;
+
+DELETE FROM Income WHERE UserID = 1;
+DELETE FROM Users WHERE UserID = 1;
+DELETE FROM Expenses WHERE UserID = 1;
+DELETE FROM RecurringExpenses WHERE ExpenseID = 2;
+
+DELETE FROM BudgetGoals WHERE UserID = 1;
+DELETE FROM  Alerts WHERE UserID = 1;
+
+
+
+
+-- i have deleted all the previous records cuz password hashing use kar ke tables match nai ho rage
+-- thay u guys can do it too then masla nai hoga while testing routes
