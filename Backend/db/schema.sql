@@ -95,6 +95,7 @@ VALUES (1, '2025-05-01', 50000);
 INSERT INTO Alerts (UserID, Message)
 VALUES (1, 'You have spent more than 80% of your budget!');
 
+DBCC CHECKIDENT ('Users', RESEED, 0);
 SELECT * FROM Users;
 SELECT * FROM Income;
 SELECT * FROM Expenses;
@@ -108,9 +109,6 @@ DELETE FROM RecurringExpenses WHERE ExpenseID = 2;
 
 DELETE FROM BudgetGoals WHERE UserID = 1;
 DELETE FROM  Alerts WHERE UserID = 1;
-
-
-
 
 -- i have deleted all the previous records cuz password hashing use kar ke tables match nai ho rage
 -- thay u guys can do it too then masla nai hoga while testing routes
