@@ -1,4 +1,5 @@
 
+const { NVarChar } = require('mssql');
 const { sql, poolPromise } = require('../Config/db');
 
 const createUser = async (username, email, hashedPassword) => {
@@ -7,7 +8,10 @@ const createUser = async (username, email, hashedPassword) => {
     .input('username', sql.VarChar, username)
     .input('email', sql.VarChar, email)
     .input('password', sql.VarChar, hashedPassword)
-    .query('INSERT INTO Users (Username, Email, PasswordHash) VALUES (@username, @email, @password)');
+    .input('question', sql.NVarChar, question)
+    .input('answer', sql.NVarChar, answer)
+    .query(`INSERT INTO Users (Username, Email, PasswordHash, SecurityQuestion, SecurityAnswer)
+      VALUES (@username, @email, @password, @question, @answer)`);
 };
 
 const getUserByEmail = async (email) => {
