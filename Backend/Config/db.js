@@ -1,6 +1,9 @@
-require('dotenv').config({});
+require('dotenv').config();
 console.log("DB_SERVER from env:", process.env.DB_SERVER); 
 const sql = require('mssql');
+
+
+
 
 const config = {
   user: process.env.DB_USER,          // e.g., brokedeveloper

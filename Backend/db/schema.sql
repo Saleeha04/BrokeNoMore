@@ -69,7 +69,8 @@ CREATE TABLE Alerts (
 -- Dummy Data to see if the tables are working or not
 -- 🚀 Insert test user
 INSERT INTO Users (Username, Email, PasswordHash)
-VALUES ('testuser', 'test@example.com', 'hashedpassword123');
+VALUES ('testuser', 'test@example.com', 'hashedpassword123'),
+('testuser2', 'test2@example.com', 'hashedpassword1234');
 
 -- 💸 Insert test income for current month
 INSERT INTO Income (UserID, Amount, MonthI)
@@ -101,14 +102,13 @@ SELECT * FROM Expenses;
 SELECT * FROM BudgetGoals;
 SELECT * FROM Alerts;
 
-DELETE FROM Income WHERE UserID = 1;
+/*DELETE FROM Income WHERE UserID = 1;
 DELETE FROM Users WHERE UserID = 1;
 DELETE FROM Expenses WHERE UserID = 1;
 DELETE FROM RecurringExpenses WHERE ExpenseID = 2;
 
 DELETE FROM BudgetGoals WHERE UserID = 1;
-DELETE FROM  Alerts WHERE UserID = 1;
-
+DELETE FROM  Alerts WHERE UserID = 1; */
 
 
 
