@@ -38,14 +38,15 @@ body {
   display: none;
 }
 
-/* Tip Section Styles */
+
 .tip-container {
   background-color: #fef0cd;
-  padding: 20px 10px;
-  border-bottom: 1px solid #ffd699;
+  padding: 20px;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
+  border-bottom: 1px solid #ffd699;
 }
 
 .thought-bubble {
@@ -54,8 +55,8 @@ body {
   padding: 15px 20px;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  max-width: calc(100% - 100px);
-  margin-right: 20px;
+  max-width: 60%;
+  margin-right: 100px; /* Space for character */
 }
 
 .thought-bubble::after {
@@ -83,9 +84,11 @@ body {
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #ffb3c6;
+  /* border: 3px solid #ffb3c6; */
   background-color: #ffb3c6;
   flex-shrink: 0;
+  position: absolute;
+  right: 20px;
 }
 
 .character-picture img {
@@ -97,7 +100,7 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .tip-container {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: flex-start;
     padding: 15px;
   }
@@ -113,11 +116,12 @@ body {
   }
 
   .character-picture {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
+    position: relative;
+    right: auto;
+    align-self: flex-end;
     width: 60px;
     height: 60px;
+    margin-bottom: 10px;
   }
 }
 
@@ -129,7 +133,7 @@ body {
   gap: 20px;
 }
 
-/* Profile Section */
+/* Profile Section with Edit Button Inside */
 .profile-section {
   display: flex;
   align-items: center;
@@ -143,28 +147,39 @@ body {
   height: 100px;
   border-radius: 50%;
   background-color: #ddd;
-  border: 3px solid #ffb3c6;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  /* border: 3px solid #ffb3c6; */
+  position: relative;
 }
 
 .edit-btn {
-  margin-top: 10px;
-  padding: 8px 16px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
   background-color: #730027;
   color: white;
   border: none;
-  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .edit-btn:hover {
   background-color: #a20e40;
+}
+
+.edit-btn i {
+  font-size: 12px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 /* Main Dashboard Layout */
@@ -175,7 +190,7 @@ body {
   width: 100%;
 }
 
-/* Tables - Income and Expenses (Left Side) */
+/* Tables - Income and Expenses */
 .tables {
   flex: 3;
   display: flex;
@@ -190,20 +205,17 @@ body {
   box-shadow: 0 0 15px rgba(115, 0, 39, 0.1);
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.table-box h2 {
+  display: inline-block;
+  margin-right: 15px;
+  font-size: 1.2rem;
+  color: #730027;
   margin-bottom: 10px;
 }
 
-.section-header h2 {
-  font-size: 1.2rem;
-  color: #730027;
-  margin: 0;
-}
-
 .plus-btn {
+  display: inline-block;
+  vertical-align: middle;
   background-color: #730027;
   color: white;
   font-size: 18px;
@@ -249,7 +261,7 @@ th {
   color: white;
 }
 
-/* Charts Section (Right Side) */
+/* Charts Section */
 .chart-area {
   flex: 1;
   background-color: white;
@@ -260,17 +272,11 @@ th {
   min-width: 280px;
 }
 
-/* Anime Image (if used) */
-.anime-img {
-  width: 120px;
-  height: auto;
-  margin-left: auto;
-}
-
+/* Footer */
 .footer {
   margin-top: 60px;
   padding: 40px 90px;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: #730027;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -278,8 +284,7 @@ th {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  border-radius: 0;
-  box-shadow: 0 -4px 20px rgba(160, 1, 54, 0.1);
+  color: white;
 }
 
 .footer-left img {
@@ -292,7 +297,7 @@ th {
 }
 
 .footer-column h4 {
-  color: #730027;
+  color: white;
   margin-bottom: 10px;
   font-size: 16px;
   font-weight: 700;
@@ -310,31 +315,46 @@ th {
 
 .footer-column ul li a {
   text-decoration: none;
-  color: #333;
+  color: #ffb3c6;
   transition: color 0.3s ease;
 }
 
 .footer-column ul li a:hover {
-  color: #730027;
+  color: white;
 }
 
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-right {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-
-  .footer-column {
-    margin-bottom: 20px;
-  }
+.hidden {
+  display: none !important;
 }
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.modal-form input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-btn {
+  background-color: #730027;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-btn:hover {
+  background-color: #d1688b;
+}
+
 
 /* Responsive Layout */
 @media (max-width: 992px) {
@@ -344,5 +364,25 @@ th {
 
   .tables, .chart-area {
     width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 20px;
   }
 }
