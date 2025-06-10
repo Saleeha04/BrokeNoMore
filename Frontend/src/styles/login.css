@@ -108,86 +108,68 @@ body {
   transform: scale(1.02);
 }
 
-/* Footer
-.footer {
-  margin-top: 60px;
-  padding: 40px 90px;
+/* Style the select dropdown */
+#security-question {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
   background-color: #fff;
-  border-top: 1px solid #eee;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.footer-left img {
-  height: 40px;
-}
-
-.footer-right {
-  display: flex;
-  gap: 40px;
-}
-
-.footer-column h4 {
-  color: #730027;
+  transition: border-color 0.3s;
   margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: 700;
 }
 
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+#security-question:focus {
+  border-color: #6a67ce; /* light purple focus */
+  outline: none;
 }
 
-.footer-column ul li {
-  margin-bottom: 8px;
+/* Style the answer container */
+#answer-container {
+  margin-top: 10px;
+  animation: fadeIn 0.5s ease-in-out; /* subtle fade when it appears */
 }
 
-.footer-column ul li a {
-  text-decoration: none;
-  color: #333;
-  transition: color 0.3s ease;
+/* Style the answer input */
+#security-answer {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  transition: border-color 0.3s;
+  margin-bottom: 10px;
 }
 
-.footer-column ul li a:hover {
-  color: #730027;
+#security-answer:focus {
+  border-color: #6a67ce;
+  outline: none;
 }
 
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+/* Optional: smooth fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  .footer-right {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
 
-  .footer-column {
-    margin-bottom: 20px;
-  }
-} */
-
-/* Footer with glassmorphism */
+/* Footer */
 .footer {
   margin-top: 60px;
   padding: 40px 90px;
-  background-color: rgba(255, 255, 255, 0.15); /* subtle white tint */
+  background-color: #730027;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  border-radius: 0; /* optional, can round top corners if you want */
-  box-shadow: 0 -4px 20px rgba(160, 1, 54, 0.1);
+  color: white;
 }
 
 .footer-left img {
@@ -200,7 +182,7 @@ body {
 }
 
 .footer-column h4 {
-  color: #730027;
+  color: white;
   margin-bottom: 10px;
   font-size: 16px;
   font-weight: 700;
@@ -218,12 +200,12 @@ body {
 
 .footer-column ul li a {
   text-decoration: none;
-  color: #333;
+  color: #ffb3c6;
   transition: color 0.3s ease;
 }
 
 .footer-column ul li a:hover {
-  color: #730027;
+  color: white;
 }
 
 @media (max-width: 768px) {
