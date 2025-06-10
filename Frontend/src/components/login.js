@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Password toggle (same as before)
   const passwordInput = document.getElementById('password');
   const togglePassword = document.createElement('span');
   togglePassword.innerHTML = '<i class="fas fa-eye"></i>';
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Handle showing the "Answer" field when question is selected
+
   const questionSelect = document.getElementById('security-question');
   const answerContainer = document.getElementById('answer-container');
   const answerInput = document.getElementById('security-answer');
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Form submission handling
+
   const form = document.querySelector('.signup-form');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Example payload to send to backend:
+
     const payload = {
       username,
       password,
