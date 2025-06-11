@@ -1,0 +1,56 @@
+body {
+  background: wheat;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  text-align: center;
+}
+
+
+.bubble-loader {
+  display: inline-block;
+  margin-top: 25px;
+}
+
+.bubble {
+  animation: bubble 1100ms forwards infinite;
+  background: #730027;
+  border-radius: 50%;
+  box-shadow: 0 0 8px pink;
+  display: inline-block;
+  height: 15px;
+  margin: 6px;
+  transform: scale(0, 0);
+  width: 15px;
+}
+
+.bubble--1 {
+  animation-delay: 250ms;
+}
+
+.bubble--2 {
+  animation-delay: 125ms;
+}
+
+.bubble--3 {
+  animation-delay: 0ms;
+}
+
+.bubble--4 {
+  animation-delay: 125ms;
+}
+
+.bubble--5 {
+  animation-delay: 250ms;
+}
+
+@keyframes bubble {
+  0%   { transform: scale(0, 0); }
+  12%  { transform: scale(1.5, 1.5); }
+  23%  { transform: scale(0.5, 0.5); }
+  34%  { transform: scale(1.2, 1.2); }
+  45%  { transform: scale(1, 1); }
+  85%  { transform: scale(0, 0); }
+}
