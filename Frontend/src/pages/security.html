@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Security Settings</title>
+  <link rel="stylesheet" href="../styles/security.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="form-container">
+      <form class="edit-form slide-in" id="securityForm">
+        <div class="username-section">
+          <h2 class="username">Security Settings</h2>
+        </div>
+
+        <label for="username">Username <span style="color:red">*</span></label>
+        <input type="text" id="username" required>
+
+        <label for="password">Password <span style="color:red">*</span></label>
+        <input type="password" id="password" required>
+
+        <label for="security-question">Security Question <span style="color:red">*</span></label>
+        <select id="security-question" required>
+          <option value="">Select a question</option>
+          <option>What is your pet's name?</option>
+          <option>What is your mother's maiden name?</option>
+          <option>What is your favorite book?</option>
+        </select>
+
+        <label for="security-answer">Answer <span style="color:red">*</span></label>
+        <input type="text" id="security-answer" required>
+
+        <div class="btn-container">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="save-btn delete">Delete Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../components/security.js"></script>
+</body>
+</html>
