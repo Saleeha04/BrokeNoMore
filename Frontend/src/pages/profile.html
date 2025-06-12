@@ -1,79 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Edit Page</title>
-    <link rel="stylesheet" href="../styles/profile.css">
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="../styles/profile.css" />
 </head>
 <body>
-
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">
-      <img src="../assets/image.png" alt="Logo" />
-    </div>
-    <div class="nav-links">
-      <a href="#"><i class="fas fa-user"></i></a>
-      <a href="#"><i class="fas fa-envelope"></i></a>
-    </div>
-    <div class="menu">=</div>
-  </div>
-
-<div class="profile-container">
-  <div class="profile-pic">
-    <div class="circle" id="profile-circle">
-      <img src="../assets/default-profile.png" id="profileImage" />
-    </div>
-    <button type="button" class="edit-pic-btn" id="editPicBtn">✏️</button>
-    <input type="file" id="fileInput" accept="image/*" style="display: none;">
-  </div>
-</div>
-
-    <!-- Form Section -->
-    <div class="form-container">
-        <form class="edit-form">
-            <label for="username">username</label>
-            <input type="text" id="username" name="username" readonly>
-
-            <label for="password">password</label>
-            <input type="password" id="password" name="password" readonly>
-
-            <label for="question">question</label>
-            <input type="text" id="question" name="question" readonly>
-
-            <div class="btn-container">
-                <a href="../pages/landingPage.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-                <button type="submit" class="save-btn">save</button>
-            </div>
-        </form>
-    </div>
-
-        <footer class="footer">
-  <div class="footer-left">
-    <img src="../assets/image.png" alt="Logo" />
-  </div>
-  <div class="footer-right">
-    <div class="footer-column">
-      <h4>Main Navigation</h4>
-      <ul>
-        <li><a href="login.html">Profile</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>More</h4>
-      <ul>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Support</a></li>
-      </ul>
+  <div class="profile-container">
+    <div class="profile-pic">
+      <div class="circle">
+        <img src="profile.jpg" alt="Profile" />
+      </div>
+      <button class="edit-pic-btn">✎</button>
     </div>
   </div>
-</footer>
 
-<script src="../components/profile.js"></script>
+  <div class="username-section">
+    <p class="security-question-text">Set up a security question to protect your account.</p>
+    <h2 class="username">Quratulan123</h2>
+  </div>
+
+  <div class="form-container">
+    <form class="edit-form" id="profileForm">
+      
+      <div class="form-group">
+        <label for="income">Income <span style="color: red;">*</span></label>
+        <div class="input-wrapper" onmouseenter="showTrigger(this)" onmouseleave="hideTrigger(this)">
+          <input type="number" id="income" required />
+          <span class="tooltip-trigger" onclick="toggleTooltip('income-tooltip')">?</span>
+          <span class="tooltip-text" id="income-tooltip">
+            Enter the amount you typically earn in a month. This amount will be added as your default monthly income. You can update it at any time.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="goal">Goal <span style="color: red;">*</span></label>
+        <div class="input-wrapper" onmouseenter="showTrigger(this)" onmouseleave="hideTrigger(this)">
+          <input type="number" id="goal" required />
+          <span class="tooltip-trigger" onclick="toggleTooltip('goal-tooltip')">?</span>
+          <span class="tooltip-text" id="goal-tooltip">
+            This is your financial target. Please note that you can only update this goal up to 3 times per month.
+          </span>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button type="submit" class="save-btn">Ready</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="../components/profile.js"></script>
 </body>
 </html>
