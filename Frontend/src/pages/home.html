@@ -59,21 +59,23 @@
   </div>
 
 
+
+  <!-- tables -->
   <div class="container">
     <div class="main-content">
-
       <div class="tables">
         <div class="table-box">
-          <h2>Expenses </h2>
-          <button class="plus-btn">+</button>
-          <table>
+          <h2>Upcoming Expenses </h2>
+          <table class="upcoming-table">
             <tr>
-              <th>Date</th>
-              <th>Expense</th>
+              <th>Due Date</th>
+              <th>Expense Title</th>
               <th>Category</th>
+              <th>Reoccurance</th>
               <th>Amount</th>
+              <th>Actions</th>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>2025-03-01</td>
               <td>Rent</td>
               <td>Housing</td>
@@ -84,19 +86,21 @@
               <td>Groceries</td>
               <td>Food</td>
               <td>$150</td>
-            </tr>
+            </tr> -->
           </table>
         </div>
         <div class="table-box">
-          <h2>Income</h2>
+          <h2>Expenses</h2>
           <button class="plus-btn">+</button>
-          <table>
+          <table class="expense-table">
             <tr>
               <th>Date</th>
-              <th>Income</th>
+              <th>Expense Title</th>
+              <th>Category</th>
               <th>Amount</th>
+              <th>Actions</th>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>2025-03-01</td>
               <td>Salary</td>
               <td>$3000</td>
@@ -105,13 +109,12 @@
               <td>2025-03-10</td>
               <td>Freelance</td>
               <td>$500</td>
-            </tr>
+            </tr> -->
           </table>
         </div>
       </div>
-
       <div class="chart-area">Charts</div>
-      <button id="view-chart-btn" class="view-btn">View</button>
+      <!-- <button id="view-chart-btn" class="view-btn">View</button> -->
     </div>
   </div>
 
@@ -121,104 +124,92 @@
     style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 9999;">
     <!-- Modal Content -->
     <div class="modal-content"
-      style="background: white; padding: 20px; border-radius: 10px; min-width: 300px; position: relative;">
+      style="background: white; padding: 30px; border-radius: 12px; min-width: 400px; position: relative; font-family: 'Segoe UI', sans-serif;">
       <span class="close-btn"
-        style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px;">&times;</span>
-      <h2 id="modal-title">Add Entry</h2>
+        style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">&times;</span>
+      <h2 id="modal-title" style="margin-bottom: 20px;">Add Expense</h2>
 
-      <!-- Expense Form -->
-      <form id="expense-form" class="modal-form hidden">
-        <input type="date" name="date" required />
-        <input type="text" name="expense" placeholder="Expense Description" required />
-        <input type="text" name="category" placeholder="Category" required />
-        <input type="number" name="amount" placeholder="Amount" required />
-        <button type="submit" class="save-btn">Save</button>
+      <!-- Updated Expense Form -->
+      <form id="expense-form" class="modal-form">
+        <input type="text" name="title" placeholder="Expense Title" required /><br>
+
+        <label for="date">Date</label>
+        <input type="date" name="date" required /><br>
+
+        <label for="category-select">Category</label>
+        <select id="category-select" name="category" required>
+          <!-- Options populated dynamically -->
+        </select>
+        <input type="text" id="new-category-input" placeholder="Enter new category"
+          style="display: none; margin-top: 5px;" />
+
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" placeholder="Enter amount" required /><br>
+
+        <label>
+          <input type="checkbox" id="recurring-checkbox" name="recurring" />
+          Recurring Expense
+        </label>
+
+        <!-- Recurring Details -->
+        <div id="recurring-details" style="display: none; margin-top: 10px;">
+          <label for="rate">Reoccurrence Rate</label>
+          <select name="reoccurrence-rate" id="rate">
+            <option value="" disabled selected>Select rate</option>
+            <option value="once">Once</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="annually">Annually</option>
+          </select>
+          <br>
+
+          <label>
+            <input type="checkbox" id="reminder-checkbox" name="reminder" checked />
+            Remind me to pay on time
+          </label>
+
+        </div>
+
+        <button type="submit" class="save-btn" style="margin-top: 20px;">Save</button>
       </form>
-
-      <!-- Income Form -->
-      <form id="income-form" class="modal-form hidden">
-        <input type="date" name="date" required />
-        <input type="text" name="income" placeholder="Income Source" required />
-        <input type="number" name="amount" placeholder="Amount" required />
-        <button type="submit" class="save-btn">Save</button>
-      </form>
-
     </div>
   </div>
+
+
+
+
+
+
+
 
   <footer class="footer">
-  <div class="footer-col left-col">
-    <a href="landingPage.html" class="footer-name">BrokeNoMore</a>
-  </div>
-
-  <div class="footer-main">
-    <div class="footer-col">
-      <button class="footer-btn">Logout</button>
-      <a href="profile.html">Settings</a>
-      <a href="contact.html">Contact Us</a>
+    <div class="footer-col left-col">
+      <a href="landingPage.html" class="footer-name">BrokeNoMore</a>
     </div>
 
-    <div class="footer-col">
-      <a href="FAQ.html">FAQ</a>
-      <button class="footer-btn">Change Theme</button>
-    </div>
-
-    <div class="footer-col">
-      <p>Credits:</p>
-      <a href="xyz">website1</a>
-      <a href="xyz">website2</a>
-    </div>
-
-    <div class="footer-col">
-      <a href="https://github.com">GitHub</a>
-    </div>
-  </div>
-</footer>
-
-
-
-
-  <!-- <div class="footer-main">
-      <div class="footer-column">
-        <div class="footer-group">
-          <a href="#">Logout</a>
-          <a href="#">FAQ</a>
-        </div>
-        <div class="footer-group">
-          <a href="#">Settings</a>
-          <a href="#">Change Theme</a>
-        </div>
+    <div class="footer-main">
+      <div class="footer-col">
+        <button class="footer-btn">Logout</button>
+        <a href="profile.html">Settings</a>
+        <a href="contact.html">Contact Us</a>
       </div>
 
-      <div class="footer-divider"></div>
-
-      <div class="footer-column center-column">
-        <div class="footer-group">
-          <span>Credits:</span>
-          <a href="#">GitHub Link</a>
-        </div>
-        <div class="footer-group">
-          <span>abcwebsite</span>
-        </div>
-        <div class="footer-group">
-          <span>xycwebsite</span>
-        </div>
+      <div class="footer-col">
+        <a href="FAQ.html">FAQ</a>
+        <button class="footer-btn">Change Theme</button>
       </div>
 
-      <div class="footer-divider"></div>
+      <div class="footer-col">
+        <p>Credits:</p>
+        <a href="xyz">website1</a>
+        <a href="xyz">website2</a>
+      </div>
 
-      <div class="footer-column right-column">
-        <a href="#">Contact Us</a>
+      <div class="footer-col">
+        <a href="https://github.com">GitHub</a>
       </div>
     </div>
-
-    <div class="footer-brand">
-      <a href="landingPage.html" class="name">BrokeNoMore</a>
-    </div> -->
   </footer>
-
-
-
   <script src="../components/home.js"></script>
 </body>
 </body>
