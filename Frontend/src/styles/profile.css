@@ -41,7 +41,7 @@ body {
 }
 
 .profile-pic {
-  position: relative; 
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,7 +51,7 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  overflow: hidden; 
+  overflow: hidden;
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -67,7 +67,7 @@ body {
 
 .profile-pic .edit-pic-btn {
   position: absolute;
-  bottom: -0px; 
+  bottom: -0px;
   right: -0px;
   background-color: #730027;
   color: #fff;
@@ -82,6 +82,22 @@ body {
   justify-content: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   z-index: 10;
+}
+
+/* Username Section */
+.username-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.security-question-text {
+  font-weight: 600;
+  color: #730027;
+}
+
+.username {
+  font-size: 24px;
+  margin: 5px 0;
 }
 
 /* Form Styling */
@@ -110,19 +126,60 @@ body {
 .edit-form input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 16px;
   background-color: #f9f9f9;
 }
 
-.btn-container {
-  display: flex;
-  justify-content: space-between;
+.input-wrapper {
+  position: relative;
+  margin-bottom: 24px;
 }
 
-.back-btn,
+.tooltip-trigger {
+  visibility: hidden;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #730027;
+  background-color: #ffe6ee;
+  border: 1px solid #730027;
+  border-radius: 50%;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tooltip-text {
+  display: none;
+  position: absolute;
+  top: 38px;
+  right: 0;
+  background-color: #730027;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 260px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+/* Hover behavior */
+.input-wrapper:hover .tooltip-trigger {
+  visibility: visible;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .save-btn {
   background-color: #730027;
   color: #fff;
@@ -134,91 +191,6 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.back-btn:hover,
 .save-btn:hover {
   background-color: #a20e40;
-}
-
-.back-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
-
-/* Footer */
-.footer {
-  margin-top: 60px;
-  padding: 40px 90px;
-  background-color: #730027;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  color: white;
-}
-
-.footer-left img {
-  height: 40px;
-}
-
-.footer-right {
-  display: flex;
-  gap: 40px;
-}
-
-.footer-column h4 {
-  color: white;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-column ul li {
-  margin-bottom: 8px;
-}
-
-.footer-column ul li a {
-  text-decoration: none;
-  color: #ffb3c6;
-  transition: color 0.3s ease;
-}
-
-.footer-column ul li a:hover {
-  color: white;
-}
-
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-right {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-
-  .footer-column {
-    margin-bottom: 20px;
-  }
-
-  .menu {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-  }
 }
