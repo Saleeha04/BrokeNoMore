@@ -11,11 +11,40 @@ function updateCount() {
     alert("Security details saved!");
   });
   
-  document.querySelector(".delete-btn").addEventListener("click", function () {
-    const confirmDelete = confirm("Are you sure you want to delete your account?");
-    if (confirmDelete) {
-      alert("Account deleted.");
-      // Add deletion logic here
-    }
+  document.querySelector(".delete").addEventListener("click", function () {
+    document.getElementById("confirmDeleteModal").style.display = "flex";
   });
+  
+  document.getElementById("confirmYes").addEventListener("click", function () {
+    document.getElementById("confirmDeleteModal").style.display = "none";
+    document.getElementById("passwordModal").style.display = "flex";
+  });
+  
+  document.getElementById("confirmCancel").addEventListener("click", function () {
+    document.getElementById("confirmDeleteModal").style.display = "none";
+  });
+  
+  document.getElementById("cancelDelete").addEventListener("click", function () {
+    document.getElementById("passwordModal").style.display = "none";
+  });
+  
+  document.getElementById("submitDelete").addEventListener("click", function () {
+    const password = document.getElementById("confirmPassword").value;
+  
+    if (password.trim() === "") {
+      alert("Please enter your password.");
+      return;
+    }
+    // When modal opens
+document.body.classList.add("modal-open");
+
+// When modal closes
+document.body.classList.remove("modal-open");
+
+  
+    // Simulate account deletion
+    alert("Your account has been deleted.");
+    window.location.href = "landingPage.html"; // Change this to your actual landing page
+  });
+  
   

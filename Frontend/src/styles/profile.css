@@ -166,3 +166,44 @@ body {
 .save-btn:hover {
   background-color: #a20e40;
 }
+.success-popup {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffe6ee;
+  color: #730027;
+  padding: 16px 28px;
+  border: 2px solid #730027;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: popIn 0.4s ease-out;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translate(-50%, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+.fade-out {
+  animation: fadeAway 1s forwards;
+}
+
+@keyframes fadeAway {
+  to {
+    opacity: 0;
+    transform: scale(0.9) translate(-50%, -50%);
+  }
+}
+
+
