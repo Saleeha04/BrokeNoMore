@@ -1,3 +1,5 @@
+import { renderDonutChart } from './charts.js';
+
 // Array of tips to display
 const tips = [
   "Did you know? Setting a monthly budget can help you save up to 20% more!",
@@ -12,188 +14,220 @@ const tips = [
   "Wise advice: Start investing early, even if it's small amounts."
 ];
 
-// Function to get a random tip
+// Display a random financial tip
 function getRandomTip() {
   const randomIndex = Math.floor(Math.random() * tips.length);
   return tips[randomIndex];
 }
 
-// Function to display the tip
 function displayTip() {
   const tipElement = document.getElementById('tip-text');
   if (tipElement) {
     tipElement.textContent = getRandomTip();
-
-    // Change tip every 15 seconds (15000 milliseconds)
     setInterval(() => {
       tipElement.textContent = getRandomTip();
     }, 15000);
   }
 }
 
-// Call the function when the page loads
 window.addEventListener('DOMContentLoaded', displayTip);
 
+// Recurring logic
 const recurringCheckbox = document.getElementById('recurring-checkbox');
 const recurringDetails = document.getElementById('recurring-details');
 const rateSelect = document.getElementById('rate');
 
-recurringCheckbox.addEventListener('change', () => {
-  if (recurringCheckbox.checked) {
-    recurringDetails.style.display = 'block';
-    rateSelect.setAttribute('required', 'true');
-  } else {
-    recurringDetails.style.display = 'none';
-    rateSelect.removeAttribute('required');
-  }
-});
-
-// Modal wrapper logic
-document.addEventListener('DOMContentLoaded', function () {
-  const plusButton = document.querySelector('.plus-btn');
-  const modal = document.getElementById('entry-modal');
-  const modalTitle = document.getElementById('modal-title');
-  const expenseForm = document.getElementById('expense-form');
-  const closeBtn = document.querySelector('.close-btn');
-
-  const recurringCheckbox = document.getElementById('recurring-checkbox');
-  const recurringDetails = document.getElementById('recurring-details');
-  const categoryInput = document.getElementById('category');
-
-  const expenseTable = document.querySelector('.table-box table');
-
-  plusButton.addEventListener('click', function () {
-    modalTitle.textContent = 'Add Expense';
-    modal.classList.remove('hidden');
-    expenseForm.classList.remove('hidden');
-  });
-
-  closeBtn.addEventListener('click', function () {
-    closeModal();
-  });
-
-  window.addEventListener('click', function (event) {
-    if (event.target === modal) {
-      closeModal();
+if (recurringCheckbox) {
+  recurringCheckbox.addEventListener('change', () => {
+    if (recurringCheckbox.checked) {
+      recurringDetails.style.display = 'block';
+      rateSelect.setAttribute('required', 'true');
+    } else {
+      recurringDetails.style.display = 'none';
+      rateSelect.removeAttribute('required');
     }
   });
+}
 
-  if (recurringCheckbox) {
-    recurringCheckbox.addEventListener('change', function () {
-      if (this.checked) {
-        recurringDetails.style.display = 'block';
-      } else {
-        recurringDetails.style.display = 'none';
-      }
-    });
-  }
+// Modal logic
+document.addEventListener("DOMContentLoaded", () => {
+  const plusBtn = document.querySelector(".plus-btn");
+  const modal = document.getElementById("entry-modal");
+  const closeBtn = document.querySelector(".close-btn");
+  const expenseForm = document.getElementById("expense-form");
+  const expenseTableBody = document.querySelector(".expense-table");
+  const upcomingTableBody = document.querySelector(".upcoming-table");
 
-  if (categoryInput) {
-    categoryInput.addEventListener('click', function () {
-      const newCategory = prompt('Enter or select a category:');
-      if (newCategory) {
-        this.value = newCategory;
-      }
-    });
-  }
+  const filterBtn = document.getElementById("filter-btn");
+  const filterInput = document.getElementById("filter-input");
 
-  expenseForm.addEventListener('submit', function (e) {
+  const recurringCheckbox = document.getElementById("recurring-checkbox");
+  const recurringDetails = document.getElementById("recurring-details");
+
+  let rowBeingEdited = null;
+  let editingUpcoming = false;
+
+  // Toggle recurring fields
+  recurringCheckbox.addEventListener("change", () => {
+    recurringDetails.style.display = recurringCheckbox.checked ? "block" : "none";
+  });
+
+  // Show modal to add new entry
+  plusBtn.addEventListener("click", () => {
+    rowBeingEdited = null;
+    editingUpcoming = false;
+    modal.classList.remove("hidden");
+  });
+
+  // Close modal
+  closeBtn.addEventListener("click", closeModal);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // Handle form submission
+  expenseForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    console.log(expenseForm)
-    const title = expenseForm.querySelector('input[name="title"]').value;
-    const date = expenseForm.querySelector('input[name="date"]').value;
-    const category = expenseForm.querySelector('input[name="category"]').value;
-    const amount = expenseForm.querySelector('input[name="amount"]').value;
-    const isRecurring = document.getElementById('recurring-checkbox').checked; // ✅ fixed
-    const reoccurrenceRate = document.getElementById('rate')?.value || '-';
-    const reminder = document.getElementById('reminder-checkbox')?.checked;
+    const title = expenseForm.title.value;
+    const date = expenseForm.date.value;
+    const category = expenseForm.category.value;
+    const amount = expenseForm.amount.value;
+    const isRecurring = recurringCheckbox.checked;
+    const rate = document.getElementById("rate").value || "-";
 
-    if (isRecurring) {
-      const upcomingTable = document.querySelector('.upcoming-table');
-      const newRow = upcomingTable.insertRow(-1);
-      newRow.innerHTML = `
-      <td>${date}</td>
-      <td>${title}</td>
-      <td>${category}</td>
-      <td>${reoccurrenceRate}</td>
-      <td>$${amount}</td>
-      <td>–</td>
-    `;
-    } else {
-      const expenseTable = document.querySelector('.expense-table');
-      const newRow = expenseTable.insertRow(-1);
-      newRow.innerHTML = `
-      <td>${date}</td>
-      <td>${title}</td>
-      <td>${category}</td>
-      <td>$${amount}</td>
-      <td>–</td>
-    `;
-    }
-    console.log("Recurring checked:", isRecurring);
+    const isUpcoming = isRecurring;
 
-    closeModal();
-  });
-
-  const categorySelect = document.getElementById('category-select');
-  const newCategoryInput = document.getElementById('new-category-input');
-
-  // Initialize with default or saved categories
-  let savedCategories = JSON.parse(localStorage.getItem('categories')) || [];
-
-  // Populate the dropdown
-  function populateCategoryDropdown() {
-    categorySelect.innerHTML = "";
-
-    savedCategories.forEach(cat => {
-      const option = document.createElement('option');
-      option.value = cat;
-      option.textContent = cat;
-      categorySelect.appendChild(option);
-    });
-
-    const createNewOption = document.createElement('option');
-    createNewOption.value = "create-new";
-    createNewOption.textContent = "Create new category";
-    categorySelect.appendChild(createNewOption);
-  }
-
-  // Handle category selection
-  categorySelect.addEventListener('change', () => {
-    if (categorySelect.value === 'create-new') {
-      newCategoryInput.style.display = 'block';
-      newCategoryInput.setAttribute('required', 'true');
-    } else {
-      newCategoryInput.style.display = 'none';
-      newCategoryInput.removeAttribute('required');
-    }
-  });
-
-  // On form submit: handle new category
-  document.getElementById('expense-form').addEventListener('submit', (e) => {
-    const selected = categorySelect.value;
-
-    if (selected === 'create-new') {
-      const newCategory = newCategoryInput.value.trim();
-      if (newCategory && !savedCategories.includes(newCategory)) {
-        savedCategories.push(newCategory);
-        localStorage.setItem('categories', JSON.stringify(savedCategories));
+    if (rowBeingEdited) {
+      // Edit existing row
+      if (editingUpcoming) {
+        rowBeingEdited.innerHTML = `
+          <td>${date}</td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${rate}</td>
+          <td>${amount}</td>
+          <td><button class="delete-btn">X</button><button class="edit-btn">T</button></td>
+        `;
+        attachRowListeners(rowBeingEdited, true);
+      } else {
+        rowBeingEdited.innerHTML = `
+          <td>${date}</td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${amount}</td>
+          <td><button class="delete-btn">X</button><button class="edit-btn">T</button></td>
+        `;
+        attachRowListeners(rowBeingEdited, false);
       }
 
-      // Set the input value so the form submits it correctly
-      categorySelect.value = newCategory;
-      newCategoryInput.style.display = 'none';
+      rowBeingEdited = null;
+      editingUpcoming = false;
+    } else {
+      // New entry
+      const newRow = document.createElement("tr");
+
+      if (isUpcoming) {
+        newRow.innerHTML = `
+          <td>${date}</td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${rate}</td>
+          <td>${amount}</td>
+<td>
+    <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+    <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+  </td>        `;
+        upcomingTableBody.appendChild(newRow);
+        attachRowListeners(newRow, true);
+      } else {
+        newRow.innerHTML = `
+          <td>${date}</td>
+          <td>${title}</td>
+          <td>${category}</td>
+          <td>${amount}</td>
+          <td><button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+            <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+          </td>
+        `;
+        expenseTableBody.appendChild(newRow);
+        attachRowListeners(newRow, false);
+      }
+    }
+
+    closeModal();
+    renderDonutChart();
+  });
+
+  // Attach edit & delete handlers
+  function attachRowListeners(row, isUpcoming) {
+    const deleteBtn = row.querySelector(".delete-btn");
+    const editBtn = row.querySelector(".edit-btn");
+
+    deleteBtn.addEventListener("click", () => {
+      row.remove();
+      renderDonutChart();
+    });
+
+    editBtn.addEventListener("click", () => {
+      rowBeingEdited = row;
+      editingUpcoming = isUpcoming;
+
+      const cells = row.querySelectorAll("td");
+      expenseForm.date.value = cells[0].textContent;
+      expenseForm.title.value = cells[1].textContent;
+      expenseForm.category.value = cells[2].textContent;
+
+      if (isUpcoming) {
+        recurringCheckbox.checked = true;
+        recurringDetails.style.display = "block";
+        document.getElementById("rate").value = cells[3].textContent;
+        expenseForm.amount.value = cells[4].textContent;
+      } else {
+        recurringCheckbox.checked = false;
+        recurringDetails.style.display = "none";
+        expenseForm.amount.value = cells[3].textContent;
+      }
+
+      modal.classList.remove("hidden");
+      
+    });
+  }
+
+  // Filter button toggle
+  filterBtn.addEventListener("click", () => {
+    const isVisible = filterInput.style.display !== "none";
+    filterInput.style.display = isVisible ? "none" : "inline-block";
+
+    if (!isVisible) {
+      filterInput.focus();
+    } else {
+      filterInput.value = '';
+      filterExpenses('');
     }
   });
 
-  // Populate on load
-  populateCategoryDropdown();
+  // Real-time filter
+  filterInput.addEventListener("input", () => {
+    const query = filterInput.value.trim().toLowerCase();
+    filterExpenses(query);
+  });
 
+  function filterExpenses(query) {
+    const rows = expenseTableBody.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+      const categoryCell = row.cells[2]; // Category is in the 3rd column
+      const categoryText = categoryCell?.textContent?.toLowerCase() || "";
+      row.style.display = categoryText.includes(query) ? "" : "none";
+    });
+  }
 
   function closeModal() {
-    modal.classList.add('hidden');
+    modal.classList.add("hidden");
     expenseForm.reset();
-    if (recurringDetails) recurringDetails.style.display = 'none';
+    recurringDetails.style.display = "none";
+    rowBeingEdited = null;
+    editingUpcoming = false;
   }
 });

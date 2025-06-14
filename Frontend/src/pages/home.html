@@ -13,6 +13,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400..800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 </head>
 
@@ -67,57 +71,50 @@
         <div class="table-box">
           <h2>Upcoming Expenses </h2>
           <table class="upcoming-table">
-            <tr>
-              <th>Due Date</th>
-              <th>Expense Title</th>
-              <th>Category</th>
-              <th>Reoccurance</th>
-              <th>Amount</th>
-              <th>Actions</th>
-            </tr>
-            <!-- <tr>
-              <td>2025-03-01</td>
-              <td>Rent</td>
-              <td>Housing</td>
-              <td>$1200</td>
-            </tr>
-            <tr>
-              <td>2025-03-05</td>
-              <td>Groceries</td>
-              <td>Food</td>
-              <td>$150</td>
-            </tr> -->
+            <thead>
+              <tr>
+                <th>Due Date</th>
+                <th>Expense Title</th>
+                <th>Category</th>
+                <th>Reoccurance</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
           </table>
         </div>
+
         <div class="table-box">
           <h2>Expenses</h2>
           <button class="plus-btn">+</button>
+          <div>
+            <button id="filter-btn">Filter</button>
+            <input type="text" id="filter-input" placeholder="Search by category"
+              style="display: none; padding: 5px; font-size: 0.9rem;" />
+          </div>
           <table class="expense-table">
-            <tr>
-              <th>Date</th>
-              <th>Expense Title</th>
-              <th>Category</th>
-              <th>Amount</th>
-              <th>Actions</th>
-            </tr>
-            <!-- <tr>
-              <td>2025-03-01</td>
-              <td>Salary</td>
-              <td>$3000</td>
-            </tr>
-            <tr>
-              <td>2025-03-10</td>
-              <td>Freelance</td>
-              <td>$500</td>
-            </tr> -->
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Expense Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Expense rows will go here dynamically -->
+            </tbody>
           </table>
         </div>
       </div>
-      <div class="chart-area">Charts</div>
-      <!-- <button id="view-chart-btn" class="view-btn">View</button> -->
+
+      <div class="chart-area">
+        <canvas id="donutChart" width="300" height="300"></canvas>
+      </div>
     </div>
   </div>
-
 
   <!-- Modal Wrapper -->
   <div id="entry-modal" class="hidden"
@@ -131,17 +128,14 @@
 
       <!-- Updated Expense Form -->
       <form id="expense-form" class="modal-form">
-        <input type="text" name="title" placeholder="Expense Title" required /><br>
+        <label for="title">Name</label>
+        <input type="text" name="title" placeholder="School fee" required /><br>
 
         <label for="date">Date</label>
         <input type="date" name="date" required /><br>
 
-        <label for="category-select">Category</label>
-        <select id="category-select" name="category" required>
-          <!-- Options populated dynamically -->
-        </select>
-        <input type="text" id="new-category-input" placeholder="Enter new category"
-          style="display: none; margin-top: 5px;" />
+        <label for="category">Category</label>
+        <input type="text" name="category" id="category" placeholder="Enter category" required /><br>
 
         <label for="amount">Amount</label>
         <input type="number" name="amount" placeholder="Enter amount" required /><br>
@@ -167,7 +161,6 @@
             <input type="checkbox" id="reminder-checkbox" name="reminder" checked />
             Remind me to pay on time
           </label>
-
         </div>
 
         <button type="submit" class="save-btn" style="margin-top: 20px;">Save</button>
@@ -211,6 +204,7 @@
     </div>
   </footer>
   <script src="../components/home.js"></script>
+  <script src="../components/charts.js"></script>
 </body>
 </body>
 
