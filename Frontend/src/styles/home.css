@@ -262,10 +262,10 @@ body {
 }
 
 /* Hide button by default */
-.edit-btn {
+.edit-btn-pen {
   background: none;
   border: none;
-  color: #999; /* dull gray */
+  color: #999; 
   cursor: pointer;
   font-size: 14px;
   padding: 2px;
@@ -274,16 +274,17 @@ body {
   pointer-events: none;
 }
 
-.profile-section:hover .edit-btn {
+.edit-btn-pen
+.profile-section:hover {
   opacity: 1;
   pointer-events: auto;
 }
 
-.edit-btn:hover {
+.edit-btn-pen:hover {
   color: #ccc; 
-}
+} */
 
-.edit-btn i {
+.edit-btn-pen i {
   font-size: 14px;
 }
 
@@ -532,7 +533,7 @@ th {
   }
 }
 
-/* .delete-btn, .edit-btn {
+.delete-btn, .edit-btn, .mark-paid-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -547,8 +548,13 @@ th {
 }
 
 .edit-btn:hover {
-  color: royalblue;
+  color: crimson;
 }
+
+.mark-paid-btn:hover {
+  color: crimson;
+}
+
 td button {
   display: inline-block;
   margin-right: 5px;
@@ -556,4 +562,5 @@ td button {
 }
 
 td button i {
-  pointer-events: none; /* Makes clicks pass through the icon to the button }*/
+  pointer-events: none; 
+}
