@@ -467,6 +467,11 @@ th {
   display: none !important;
 }
 
+#new-category-input {
+  transition: all 0.3s ease;
+}
+
+
 .modal-form {
   display: flex;
   flex-direction: column;
@@ -527,3 +532,29 @@ th {
     margin-bottom: 20px;
   }
 }
+
+/* .delete-btn, .edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 1rem;
+  color: #333;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: crimson;
+}
+
+.edit-btn:hover {
+  color: royalblue;
+}
+td button {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+td button i {
+  pointer-events: none; /* Makes clicks pass through the icon to the button }*/
