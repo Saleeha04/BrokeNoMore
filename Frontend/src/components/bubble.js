@@ -75,7 +75,21 @@
     const vy = (Math.random() - 0.5) * 3;
     bubbles.push(new Bubble(x, y, vx, vy, r));
   }
+document.addEventListener("DOMContentLoaded", () => {
+  const background = document.querySelector(".bubble-background");
+  const bubbleCount = 20;
 
+  for (let i = 1; i <= bubbleCount; i++) {
+    const bubble = document.createElement("div");
+    bubble.classList.add("bubble");
+    bubble.style.left = `${Math.random() * 100}%`;
+    bubble.style.animationDuration = `${18 + Math.random() * 10}s`;
+    const size = 18 + Math.random() * 25;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    background.appendChild(bubble);
+  }
+});
   // Animation
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
