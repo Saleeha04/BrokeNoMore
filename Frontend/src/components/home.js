@@ -291,3 +291,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.querySelector(".logout-btn");
+  const logoutModal = document.getElementById("logout-modal");
+  const confirmLogout = document.getElementById("confirm-logout");
+  const cancelLogout = document.getElementById("cancel-logout");
+
+  logoutBtn.addEventListener("click", () => {
+    logoutModal.classList.remove("hidden");
+  });
+
+  confirmLogout.addEventListener("click", () => {
+    window.location.href = "landingPage.html";
+  });
+
+  cancelLogout.addEventListener("click", () => {
+    logoutModal.classList.add("hidden");
+  });
+});
