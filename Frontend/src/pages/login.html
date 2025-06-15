@@ -5,71 +5,104 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Page</title>
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="../styles/login.css" />
+
+  <style>
+    input::-ms-reveal,
+    input::-ms-clear {
+      display: none;
+    }
+
+    input[type="password"]::-webkit-credentials-auto-fill-button {
+      visibility: hidden;
+      display: none !important;
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-container input {
+      width: 100%;
+      padding: 10px 12px;
+      padding-right: 40px;
+      font-family: 'Roboto', sans-serif;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+    }
+    
+  </style>
 </head>
 
 <body>
 
-  <div class="center-logo">
-    <img src="../assets/image.png" alt="Logo" />
-  </div>  
-
-  <canvas id="bubble-canvas"></canvas>
-  <h1 class="login-heading">Login to your account</h1>
-  <!-- Sign Up Button -->
-  <div class="bubble-background">
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-  </div>
-  
-    <!-- Add more bubbles if needed -->
-  </div>
-  
-  <!-- Form Box -->
   <div class="form-container">
+    <a href="home.html">
+      <img src="../assets/hiddenanya.png" alt="Logo" class="form-logo" />
+    </a>
     <form class="signup-form" method="POST" action="/signup">
+      <h1 class="login-heading">Login here!</h1>
+
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" required>
+      <input type="text" id="username" name="username" required style="width: 103%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;" />
 
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" required>
-      
+<div style="position: relative;">
+  <input
+    type="password"
+    id="password"
+    name="password"
+    required
+    style="width: 90%; padding: 10px ; padding-right: 40px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Roboto', sans-serif;"
+  />
+  <i
+    id="toggle-password"
+    class="fa-solid fa-eye"
+    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888;"
+  ></i>
+</div>
+
       <p class="forgot-password">
         Forgot Password? <a href="forgot-password.html">Click here</a>
-      </p>      
-  
-    
-      <button type="submit" class="submit-btn">Submit</button>
-       <p class="new-user">
-          New user? <a href="signup.html">Create an account</a>.
-        </p>
-        
+      </p>
+
+      <button type="submit" class="submit-btn">Log in</button>
+
+      <p class="new-user">
+        New user? <a href="signup.html">Create an account</a>.
+      </p>
     </form>
   </div>
 
+  <script>
+  const togglePassword = document.getElementById("toggle-password");
+  const passwordField = document.getElementById("password");
 
-  <script src="../components/login.js"></script>
-  <script src="../components/bubble.js"></script>
+  togglePassword.addEventListener("click", function () {
+    const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+    passwordField.setAttribute("type", type);
+
+    // Toggle icon class
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });
+</script>
 
 
 </body>
-
 </html>
+
