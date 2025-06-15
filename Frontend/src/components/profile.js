@@ -1,12 +1,22 @@
-
 document.getElementById("profileForm").addEventListener("submit", function (e) {
     e.preventDefault();
   
+    const msg = document.createElement("div");
+    msg.innerText = "✓ Income and Goal saved! Redirecting to home...";
+    msg.className = "success-popup";
+    document.body.appendChild(msg);
   
-    alert("Income and Goal saved!");
-
-    window.location.href = "home.html"; 
+    // Animate and remove after redirect
+    setTimeout(() => {
+      msg.classList.add("fade-out");
+      setTimeout(() => {
+        msg.remove();
+        window.location.href = "home.html"; // Adjust if needed
+      }, 1000);
+    }, 2000);
   });
+  
+  
   
   
 

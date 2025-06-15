@@ -38,29 +38,6 @@ body {
   border-bottom: 1px solid #eee;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-.form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 80vh;
-}
-
-/* Image above form box */
-.form-logo {
-  width: 180px;
-  margin-bottom: 0px;
-}
-
-/* Heading within form box */
-.form-container h2 {
-  color: #730027;
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  text-shadow: 0 0 10px #f8c8dc;
-}
-
-/* rest as previously */
 
 .center-logo {
   text-align: center;
