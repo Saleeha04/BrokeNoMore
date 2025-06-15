@@ -38,8 +38,9 @@
       </form>
     </div>
   </div>
+
   <!-- Confirmation Modal -->
-<div class="modal" id="confirmDeleteModal">
+  <div class="modal" id="confirmDeleteModal">
     <div class="modal-content">
       <p>Are you sure you want to delete your account?<br>This action is <strong>irreversible</strong> and your data will be lost.</p>
       <div class="modal-buttons">
@@ -48,7 +49,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Password Modal -->
   <div class="modal" id="passwordModal">
     <div class="modal-content">
@@ -60,8 +61,16 @@
       </div>
     </div>
   </div>
-  
+
+  <canvas id="bubble-canvas"></canvas>
+  <div class="bubble-background">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <!-- Add more bubbles as desired -->
+  </div>
 
   <script src="../components/security.js"></script>
+  <script src="../components/bubble.js"></script>
 </body>
 </html>

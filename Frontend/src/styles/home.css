@@ -6,29 +6,124 @@
 }
 
 body {
-  background-color: #fef0cd;
+  /* background-color: #fef0cd; */
+  background-color: #f5efe4;
   color: #333;
 }
 
-/* Navbar */
+.top-container {
+  background-color: #730027;
+  /* padding: 2%; */
+}
+
+.svg-div {
+  /* position: absolute; */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.svg-div svg {
+  position: relative;
+  display: block;
+  width: calc(135% + 1.3px);
+  height: 144px;
+}
+
+.svg-div .shape-fill {
+  fill: #f5efe4;
+  /* fill: #730027; */
+}
+
+/* Navbar container */
+.navbar {
+  position: relative;      /* establish stacking context */
+  z-index: 10;   
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #730027;
+  /* Change as needed */
+  padding: 1rem 2rem;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Brand name */
+.navbar .name {
+  text-decoration: none;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-family: "Baloo Tamma 2", system-ui;
+}
+
+/* Prevent any color change or bolding */
+.navbar .name:visited,
+.navbar .name:hover,
+.navbar .name:focus,
+.navbar .name:active {
+  text-decoration: none;
+  color: white;
+  font-weight: normal;
+}
+
+/* Nav links section */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Logout button styling */
+.logout-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+/* Prevent style changes on hover or click */
+.logout-btn:hover,
+.logout-btn:focus,
+.logout-btn:active {
+  background: none;
+  color: white;
+  font-weight: normal;
+  outline: none;
+}
+
+/* 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background-color: #fff;
+  background-color: #730027; 
+  background-color: #c7426e; 
   border-bottom: 1px solid #eee;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  color: white;
+}
+
+.name {
+  color: white;
 }
 
 .logo img {
   height: 40px;
 }
 
-.nav-links a {
+.nav-links .logout-btn {
   margin-left: 20px;
   font-size: 20px;
-  color: #730027;
+  color: white;
   cursor: pointer;
 }
 
@@ -36,17 +131,18 @@ body {
   font-size: 28px;
   cursor: pointer;
   display: none;
-}
+} */
 
 
 .tip-container {
-  background-color: #fef0cd;
+  /* background-color: #fef0cd; */
   padding: 20px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   position: relative;
-  border-bottom: 1px solid #ffd699;
+  /* border-bottom: 1px solid #ffd699; */
+  /* margin: 2%; */
 }
 
 .thought-bubble {
@@ -54,9 +150,10 @@ body {
   background-color: white;
   padding: 15px 20px;
   border-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   max-width: 60%;
-  margin-right: 100px; /* Space for character */
+  margin-right: 100px;
+  /* Space for character */
 }
 
 .thought-bubble::after {
@@ -139,7 +236,10 @@ body {
   align-items: center;
   gap: 20px;
   width: 100%;
+  padding-left: 30px;
   margin-bottom: 30px;
+  color: white;
+  position: relative;
 }
 
 .profile-pic {
@@ -147,33 +247,6 @@ body {
   height: 100px;
   border-radius: 50%;
   background-color: #ddd;
-  /* border: 3px solid #ffb3c6; */
-  position: relative;
-}
-
-.edit-btn {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background-color: #730027;
-  color: white;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.edit-btn:hover {
-  background-color: #a20e40;
-}
-
-.edit-btn i {
-  font-size: 12px;
 }
 
 .user-info {
@@ -181,6 +254,40 @@ body {
   flex-direction: column;
   gap: 6px;
 }
+
+.username {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+/* Hide button by default */
+.edit-btn {
+  background: none;
+  border: none;
+  color: #999; /* dull gray */
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.profile-section:hover .edit-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.edit-btn:hover {
+  color: #ccc; 
+}
+
+.edit-btn i {
+  font-size: 14px;
+}
+
 
 /* Main Dashboard Layout */
 .main-content {
@@ -249,7 +356,8 @@ table {
   box-shadow: 0 4px 20px rgba(115, 0, 39, 0.05);
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ccc;
   padding: 12px;
   text-align: left;
@@ -272,56 +380,88 @@ th {
   min-width: 280px;
 }
 
+
+
 /* Footer */
 .footer {
-  margin-top: 60px;
-  padding: 40px 90px;
+  margin-top: 6%;
+  padding: 20px 40px;
   background-color: #730027;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  color: white;
+  color: #d6d4d4;
+  /* gap: 40px; */
+  /* flex-wrap: wrap; */
 }
 
-.footer-left img {
-  height: 40px;
+/* Left column for branding */
+.left-col {
+  flex: 0 0 10%;
+  align-self: flex-end;
 }
 
-.footer-right {
-  display: flex;
-  gap: 40px;
+.footer-name {
+  text-decoration: none !important;
+  color: white !important;
+  font-size: 1.6rem !important;
+  font-weight: 400 !important;
+  font-family: "Baloo Tamma 2", system-ui !important;
+  padding: 10px 0;
 }
 
-.footer-column h4 {
-  color: white;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-column ul li {
-  margin-bottom: 8px;
-}
-
-.footer-column ul li a {
+.footer-name:hover {
+  font-weight: bold;
   text-decoration: none;
-  color: #ffb3c6;
-  transition: color 0.3s ease;
 }
 
-.footer-column ul li a:hover {
-  color: white;
+/* Right side columns */
+.footer-main {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 10%; /* increased gap from 30px to 60px */
+  flex-wrap: wrap;
 }
+
+
+/* Each content column */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 0.5;
+  min-width: 120px;
+}
+
+/* Links & buttons */
+.footer a,
+.footer button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  transition: font-weight 0.2s ease;
+  text-decoration: none;
+}
+
+.footer a:hover,
+.footer button:hover {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.footer button:focus {
+  outline: none;
+}
+
+
+
+
+/* footer end */
+
 
 .hidden {
   display: none !important;
@@ -362,7 +502,8 @@ th {
     flex-direction: column;
   }
 
-  .tables, .chart-area {
+  .tables,
+  .chart-area {
     width: 100%;
   }
 }

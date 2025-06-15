@@ -23,7 +23,7 @@ function displayTip() {
   const tipElement = document.getElementById('tip-text');
   if (tipElement) {
     tipElement.textContent = getRandomTip();
-    
+
     // Change tip every 15 seconds (15000 milliseconds)
     setInterval(() => {
       tipElement.textContent = getRandomTip();
@@ -34,95 +34,166 @@ function displayTip() {
 // Call the function when the page loads
 window.addEventListener('DOMContentLoaded', displayTip);
 
-document.addEventListener('DOMContentLoaded', function() {
+const recurringCheckbox = document.getElementById('recurring-checkbox');
+const recurringDetails = document.getElementById('recurring-details');
+const rateSelect = document.getElementById('rate');
 
-  const plusButtons = document.querySelectorAll('.plus-btn');
+recurringCheckbox.addEventListener('change', () => {
+  if (recurringCheckbox.checked) {
+    recurringDetails.style.display = 'block';
+    rateSelect.setAttribute('required', 'true');
+  } else {
+    recurringDetails.style.display = 'none';
+    rateSelect.removeAttribute('required');
+  }
+});
+
+// Modal wrapper logic
+document.addEventListener('DOMContentLoaded', function () {
+  const plusButton = document.querySelector('.plus-btn');
   const modal = document.getElementById('entry-modal');
   const modalTitle = document.getElementById('modal-title');
   const expenseForm = document.getElementById('expense-form');
-  const incomeForm = document.getElementById('income-form');
   const closeBtn = document.querySelector('.close-btn');
 
-  let currentTable = null;
-  let currentType = '';
+  const recurringCheckbox = document.getElementById('recurring-checkbox');
+  const recurringDetails = document.getElementById('recurring-details');
+  const categoryInput = document.getElementById('category');
 
-  plusButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const tableBox = this.closest('.table-box');
-      const table = tableBox.querySelector('table');
-      currentTable = table;
+  const expenseTable = document.querySelector('.table-box table');
 
-      if (tableBox.querySelector('h2').textContent.includes('Expenses')) {
-        openModal('Expense');
-      } else if (tableBox.querySelector('h2').textContent.includes('Income')) {
-        openModal('Income');
-      }
-    });
+  plusButton.addEventListener('click', function () {
+    modalTitle.textContent = 'Add Expense';
+    modal.classList.remove('hidden');
+    expenseForm.classList.remove('hidden');
   });
 
-  function openModal(type) {
-    currentType = type;
-    modalTitle.textContent = `Add ${type}`;
-    if (type === 'Expense') {
-      expenseForm.classList.remove('hidden');
-      incomeForm.classList.add('hidden');
-    } else {
-      incomeForm.classList.remove('hidden');
-      expenseForm.classList.add('hidden');
-    }
-    modal.classList.remove('hidden');
-  }
-
-  closeBtn.addEventListener('click', function() {
+  closeBtn.addEventListener('click', function () {
     closeModal();
   });
 
-  window.addEventListener('click', function(event) {
+  window.addEventListener('click', function (event) {
     if (event.target === modal) {
       closeModal();
     }
   });
 
-  expenseForm.addEventListener('submit', function(e) {
+  if (recurringCheckbox) {
+    recurringCheckbox.addEventListener('change', function () {
+      if (this.checked) {
+        recurringDetails.style.display = 'block';
+      } else {
+        recurringDetails.style.display = 'none';
+      }
+    });
+  }
+
+  if (categoryInput) {
+    categoryInput.addEventListener('click', function () {
+      const newCategory = prompt('Enter or select a category:');
+      if (newCategory) {
+        this.value = newCategory;
+      }
+    });
+  }
+
+  expenseForm.addEventListener('submit', function (e) {
     e.preventDefault();
+
+    console.log(expenseForm)
+    const title = expenseForm.querySelector('input[name="title"]').value;
     const date = expenseForm.querySelector('input[name="date"]').value;
-    const expense = expenseForm.querySelector('input[name="expense"]').value;
     const category = expenseForm.querySelector('input[name="category"]').value;
     const amount = expenseForm.querySelector('input[name="amount"]').value;
+    const isRecurring = document.getElementById('recurring-checkbox').checked; // ✅ fixed
+    const reoccurrenceRate = document.getElementById('rate')?.value || '-';
+    const reminder = document.getElementById('reminder-checkbox')?.checked;
 
-    const newRow = currentTable.insertRow(-1);
-    newRow.innerHTML = `
+    if (isRecurring) {
+      const upcomingTable = document.querySelector('.upcoming-table');
+      const newRow = upcomingTable.insertRow(-1);
+      newRow.innerHTML = `
       <td>${date}</td>
-      <td>${expense}</td>
+      <td>${title}</td>
+      <td>${category}</td>
+      <td>${reoccurrenceRate}</td>
+      <td>$${amount}</td>
+      <td>–</td>
+    `;
+    } else {
+      const expenseTable = document.querySelector('.expense-table');
+      const newRow = expenseTable.insertRow(-1);
+      newRow.innerHTML = `
+      <td>${date}</td>
+      <td>${title}</td>
       <td>${category}</td>
       <td>$${amount}</td>
+      <td>–</td>
     `;
+    }
+    console.log("Recurring checked:", isRecurring);
 
     closeModal();
   });
 
-  incomeForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const date = incomeForm.querySelector('input[name="date"]').value;
-    const income = incomeForm.querySelector('input[name="income"]').value;
-    const amount = incomeForm.querySelector('input[name="amount"]').value;
+  const categorySelect = document.getElementById('category-select');
+  const newCategoryInput = document.getElementById('new-category-input');
 
-    const newRow = currentTable.insertRow(-1);
-    newRow.innerHTML = `
-      <td>${date}</td>
-      <td>${income}</td>
-      <td>$${amount}</td>
-    `;
+  // Initialize with default or saved categories
+  let savedCategories = JSON.parse(localStorage.getItem('categories')) || [];
 
-    closeModal();
+  // Populate the dropdown
+  function populateCategoryDropdown() {
+    categorySelect.innerHTML = "";
+
+    savedCategories.forEach(cat => {
+      const option = document.createElement('option');
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+
+    const createNewOption = document.createElement('option');
+    createNewOption.value = "create-new";
+    createNewOption.textContent = "Create new category";
+    categorySelect.appendChild(createNewOption);
+  }
+
+  // Handle category selection
+  categorySelect.addEventListener('change', () => {
+    if (categorySelect.value === 'create-new') {
+      newCategoryInput.style.display = 'block';
+      newCategoryInput.setAttribute('required', 'true');
+    } else {
+      newCategoryInput.style.display = 'none';
+      newCategoryInput.removeAttribute('required');
+    }
   });
+
+  // On form submit: handle new category
+  document.getElementById('expense-form').addEventListener('submit', (e) => {
+    const selected = categorySelect.value;
+
+    if (selected === 'create-new') {
+      const newCategory = newCategoryInput.value.trim();
+      if (newCategory && !savedCategories.includes(newCategory)) {
+        savedCategories.push(newCategory);
+        localStorage.setItem('categories', JSON.stringify(savedCategories));
+      }
+
+      // Set the input value so the form submits it correctly
+      categorySelect.value = newCategory;
+      newCategoryInput.style.display = 'none';
+    }
+  });
+
+  // Populate on load
+  populateCategoryDropdown();
+
 
   function closeModal() {
     modal.classList.add('hidden');
     expenseForm.reset();
-    incomeForm.reset();
+    if (recurringDetails) recurringDetails.style.display = 'none';
   }
-
 });
-
-

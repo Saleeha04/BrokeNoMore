@@ -1,19 +1,20 @@
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
-  background-color: #fef0cd;
+  background-color: #f5efe4;
   color: #333;
 }
 
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+
+
+.center-logo {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.center-logo img {
+  width: 180px; /* or adjust as needed */
 }
 
 .logo img {
@@ -95,7 +96,7 @@ body {
   background-color: #730027;
   color: #fff;
   padding: 12px;
-  width: 100%;
+  width: 105%;
   font-size: 16px;
   border: none;
   border-radius: 9999px;
@@ -129,7 +130,6 @@ body {
 /* Style the answer container */
 #answer-container {
   margin-top: 10px;
-  animation: fadeIn 0.5s ease-in-out; /* subtle fade when it appears */
 }
 
 /* Style the answer input */
@@ -226,7 +226,35 @@ body {
   }
 }
 
+.forgot-password {
+  margin-top: 12px;
+  text-align: right;
+  font-size: 14px;
+}
 
+.forgot-password a {
+  color: #854743;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.new-user {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.new-user a {
+  color: #854743;
+  text-decoration: none;
+}
+
+.new-user a:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 768px) {
   .menu {
@@ -236,4 +264,109 @@ body {
   .nav-links {
     display: none;
   }
+}
+.bubble-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(115, 0, 39, 0.2);
+  border-radius: 50%;
+  animation: float 20s infinite ease-in-out;
+  filter: blur(1px);
+}
+
+.bubble:nth-child(1) {
+  left: 10%;
+  animation-duration: 25s;
+  width: 40px;
+  height: 40px;
+}
+.bubble:nth-child(2) {
+  left: 25%;
+  animation-duration: 18s;
+  width: 20px;
+  height: 20px;
+}
+.bubble:nth-child(3) {
+  left: 40%;
+  animation-duration: 22s;
+  width: 35px;
+  height: 35px;
+}
+.bubble:nth-child(4) {
+  left: 60%;
+  animation-duration: 19s;
+  width: 25px;
+  height: 25px;
+}
+.bubble:nth-child(5) {
+  left: 75%;
+  animation-duration: 24s;
+  width: 30px;
+  height: 30px;
+}
+.bubble:nth-child(6) {
+  left: 85%;
+  animation-duration: 21s;
+  width: 18px;
+  height: 18px;
+}
+.bubble:nth-child(7) {
+  left: 50%;
+  animation-duration: 20s;
+  width: 28px;
+  height: 28px;
+}
+.bubble:nth-child(8) {
+  left: 35%;
+  animation-duration: 23s;
+  width: 22px;
+  height: 22px;
+}
+.bubble:nth-child(9) {
+  left: 5%;
+  animation-duration: 26s;
+  width: 38px;
+  height: 38px;
+}
+.bubble:nth-child(10) {
+  left: 90%;
+  animation-duration: 20s;
+  width: 32px;
+  height: 32px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-500px) translateX(20px);
+  }
+  100% {
+    transform: translateY(-1000px) translateX(-20px);
+    opacity: 0;
+  }
+}
+#bubble-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: transparent;
 }
