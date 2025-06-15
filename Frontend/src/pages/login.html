@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Page</title>
-
-  <!-- Font and Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="../styles/login.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">
-      <img src="../assets/image.png" alt="Logo" />
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">logo</div>
+        <div class="nav-links">
+            <a href="#">profile</a>
+            <a href="#">contact us</a>
+        </div>
+        <div class="menu">=</div>
     </div>
-    <div class="nav-links">
-      <a href="#"><i class="fas fa-user"></i></a>
-      <a href="#"><i class="fas fa-envelope"></i></a>
+
+    <!-- Sign Up Button -->
+    <div class="signup-container">
+        <button class="signup-btn">sign up</button>
     </div>
-    <div class="menu">=</div>
-  </div>
 
-  <!-- Sign Up Button -->
-  <div class="signup-container">
-    <button class="signup-btn" onclick="window.location.href='login.html'">Get Started</button>
-  </div>
+    <!-- Form Box -->
+    <div class="form-container">
+        <form class="signup-form">
+            <label for="username">username</label>
+            <input type="text" id="username" name="username">
+            
+            <label for="password">password</label>
+            <input type="password" id="password" name="password">
+            
+            <label for="question">question</label>
+            <input type="text" id="question" name="question">
 
-  <!-- Form Box -->
-  <div class="form-container">
-    <form class="signup-form">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username">
+            <button type="submit" class="submit-btn">submit</button>
+        </form>
+    </div>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password">
+  <script src="../components/bubble.js"></script>
+  <script>
+  const togglePassword = document.getElementById("toggle-password");
+  const passwordField = document.getElementById("password");
 
-      <label for="question">Security Question</label>
-      <input type="text" id="question" name="question">
+  togglePassword.addEventListener("click", function () {
+    const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+    passwordField.setAttribute("type", type);
 
-      <button type="submit" class="submit-btn">Submit</button>
-    </form>
-  </div>
+    // Toggle icon class
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });
+</script>
+
 
 </body>
 </html>

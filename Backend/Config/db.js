@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 require('dotenv').config({});
+=======
+require('dotenv').config();
+>>>>>>> da21a3c9f73b332f5bfda51fd8138d693adba77a
 console.log("DB_SERVER from env:", process.env.DB_SERVER); 
 const sql = require('mssql');
+
+
+
 
 const config = {
   user: process.env.DB_USER,          // e.g., brokedeveloper
@@ -13,15 +20,15 @@ const config = {
   }
 };
 
-const poolPromise = new sql.ConnectionPool(config)
-  .connect()
-  .then(pool => {
-    console.log("Connected to SQL Server");
-    return pool;
-  })
-  .catch(err => {
-    console.error("DB Connection Failed:", err);
-  });
+let poolPromise;
+
+try {
+  const pool = new sql.ConnectionPool(config);
+  poolPromise = pool.connect();
+  poolPromise.then(() => console.log('Connected to SQL Server'));
+} catch (err) {
+  console.error('Initial DB connection failed:', err);
+}
 
 module.exports = {
   sql,

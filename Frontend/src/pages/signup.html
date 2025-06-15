@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Signup</title>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../styles/login.css" />
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="center-logo">
+    <img src="../assets/image.png" alt="Logo" />
+  </div>    
+
+  <!-- Canvas for animated bubbles -->
+  <canvas id="bubble-canvas"></canvas>
+
+  <!-- Page Heading -->
+  <h1 class="login-heading">Welcome! Anya here.</h1>
+
+  <!-- Decorative bubble divs (optional if animated canvas is used) -->
+  <div class="bubble-background">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="form-container">
+    <form class="signup-form" method="POST" action="/register">
+
+
+
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" required />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required />
+
+      <label for="password">Password</label>
+      <div class="input-wrapper">
+        <input id="password" name="password" type="password" required />
+        <!-- JS will insert toggle icon -->
+      </div>
+
+      <label for="confirm-password">Confirm Password</label>
+      <input id="confirm-password" name="confirm-password" type="password" required />
+
+      <label for="security-question">Security Question</label>
+      <select id="security-question" name="securityQuestion" required>
+        <option value="">-- Select a question --</option>
+        <option value="What is your pet’s name?">What is your pet’s name?</option>
+        <option value="What is your favorite color?">What is your favorite color?</option>
+        <option value="What city were you born in?">What city were you born in?</option>
+      </select>
+
+      <div id="answer-container">
+        <label for="security-answer">Your Answer</label>
+        <input type="text" id="security-answer" name="securityAnswer" required />
+      </div>
+
+      <button type="submit" class="submit-btn">Signup</button>
+
+      <p class="forgot-password">
+        Already have an account? <a href="login.html">Login here</a>.
+      </p>
+    </form>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/login.js"></script>   <!-- Password visibility toggle -->
+  <script src="../components/bubble.js"></script>  <!-- Background bubble animation -->
+  <script src="../components/signup.js"></script>  <!-- Signup form validation + fetch -->
+
+</body>
+</html>

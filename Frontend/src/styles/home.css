@@ -1,93 +1,567 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
+
 body {
-    background-color: #f0f0f0;
-    padding-top: 60px; /* Adjust according to navbar height */
+  background-color: #f5efe4;
+  color: #333;
 }
+
+.top-container {
+  background-color: #730027;
+  /* padding: 2%; */
+}
+
+.svg-div {
+  /* position: absolute; */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.svg-div svg {
+  position: relative;
+  display: block;
+  width: calc(135% + 1.3px);
+  height: 144px;
+}
+
+.svg-div .shape-fill {
+  fill: #f5efe4;
+  /* fill: #730027; */
+}
+
+/* Navbar container */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ccc;
+  position: relative;      /* establish stacking context */
+  z-index: 10;   
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #730027;
+  /* Change as needed */
+  padding: 1rem 2rem;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Brand name */
+.navbar .name {
+  text-decoration: none;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-family: "Baloo Tamma 2", system-ui;
+}
+
+/* Prevent any color change or bolding */
+.navbar .name:visited,
+.navbar .name:hover,
+.navbar .name:focus,
+.navbar .name:active {
+  text-decoration: none;
+  color: white;
+  font-weight: normal;
+}
+
+/* Nav links section */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Logout button styling */
+.logout-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+/* Prevent style changes on hover or click */
+.logout-btn:hover,
+.logout-btn:focus,
+.logout-btn:active {
+  background: none;
+  color: white;
+  font-weight: normal;
+  outline: none;
+}
+
+/* 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #730027; 
+  background-color: #c7426e; 
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  color: white;
+}
+
+.name {
+  color: white;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.nav-links .logout-btn {
+  margin-left: 20px;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.menu {
+  font-size: 28px;
+  cursor: pointer;
+  display: none;
+} */
+
+
+.tip-container {
+  /* background-color: #fef0cd; */
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  /* border-bottom: 1px solid #ffd699; */
+  /* margin: 2%; */
+}
+
+.thought-bubble {
+  position: relative;
+  background-color: white;
+  padding: 15px 20px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 60%;
+  margin-right: 100px;
+  /* Space for character */
+}
+
+.thought-bubble::after {
+  content: '';
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 15px solid white;
+}
+
+.thought-text {
+  font-size: 16px;
+  color: #333;
+  font-style: italic;
+  margin: 0;
+}
+
+.character-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  /* border: 3px solid #ffb3c6; */
+  background-color: #ffb3c6;
+  flex-shrink: 0;
+  position: absolute;
+  right: 20px;
+}
+
+.character-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tip-container {
+    flex-direction: column-reverse;
+    align-items: flex-start;
     padding: 15px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+  }
+
+  .thought-bubble {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .thought-bubble::after {
+    display: none;
+  }
+
+  .character-picture {
+    position: relative;
+    right: auto;
+    align-self: flex-end;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
 }
-.navbar .center-links {
-    display: flex;
-    gap: 20px;
-}
+
+/* Page Container */
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  gap: 20px;
 }
+
+/* Profile Section with Edit Button Inside */
 .profile-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding-left: 30px;
+  margin-bottom: 30px;
+  color: white;
+  position: relative;
 }
+
 .profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: lightgray;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #ddd;
 }
+
 .user-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
+
+.username {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+/* Hide button by default */
 .edit-btn {
-    margin-top: 10px;
-    padding: 5px 10px;
-    background-color: gray;
-    color: white;
-    border: none;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: #999; /* dull gray */
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
 }
-.anime-img {
-    width: 120px;
-    height: auto;
-    margin-left: auto;
+
+.profile-section:hover .edit-btn {
+  opacity: 1;
+  pointer-events: auto;
 }
+
+.edit-btn:hover {
+  color: #ccc; 
+}
+
+.edit-btn i {
+  font-size: 14px;
+}
+
+
+/* Main Dashboard Layout */
 .main-content {
-    display: flex;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
 }
+
+/* Tables - Income and Expenses */
 .tables {
-    width: 75%;
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+
 .table-box {
-    background: white;
-    padding: 10px;
-    margin-bottom: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(115, 0, 39, 0.1);
 }
+
+.table-box h2 {
+  display: inline-block;
+  margin-right: 15px;
+  font-size: 1.2rem;
+  color: #730027;
+  margin-bottom: 10px;
+}
+
+.plus-btn {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: #730027;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(115, 0, 39, 0.5);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.plus-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(115, 0, 39, 0.7);
+}
+
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(115, 0, 39, 0.05);
 }
-th, td {
-    border: 1px solid gray;
-    padding: 8px;
-    text-align: left;
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+  font-size: 16px;
 }
+
 th {
-    background-color: #888;
-    color: white;
+  background-color: #730027;
+  color: white;
 }
+
+/* Charts Section */
 .chart-area {
+<<<<<<< HEAD
     width: 25%;
     background: white;
     padding: 20px;
     text-align: center;
 }
+=======
+  flex: 1;
+  background-color: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(115, 0, 39, 0.1);
+  min-width: 280px;
+}
+
+
+
+/* Footer */
+.footer {
+  margin-top: 6%;
+  padding: 20px 40px;
+  background-color: #730027;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  color: #d6d4d4;
+  /* gap: 40px; */
+  /* flex-wrap: wrap; */
+}
+
+/* Left column for branding */
+.left-col {
+  flex: 0 0 10%;
+  align-self: flex-end;
+}
+
+.footer-name {
+  text-decoration: none !important;
+  color: white !important;
+  font-size: 1.6rem !important;
+  font-weight: 400 !important;
+  font-family: "Baloo Tamma 2", system-ui !important;
+  padding: 10px 0;
+}
+
+.footer-name:hover {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Right side columns */
+.footer-main {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 10%; /* increased gap from 30px to 60px */
+  flex-wrap: wrap;
+}
+
+
+/* Each content column */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 0.5;
+  min-width: 120px;
+}
+
+/* Links & buttons */
+.footer a,
+.footer button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  transition: font-weight 0.2s ease;
+  text-decoration: none;
+}
+
+.footer a:hover,
+.footer button:hover {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.footer button:focus {
+  outline: none;
+}
+
+
+
+
+/* footer end */
+
+
+.hidden {
+  display: none !important;
+}
+
+#new-category-input {
+  transition: all 0.3s ease;
+}
+
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.modal-form input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-btn {
+  background-color: #730027;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-btn:hover {
+  background-color: #d1688b;
+}
+
+
+/* Responsive Layout */
+@media (max-width: 992px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .tables,
+  .chart-area {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 20px;
+  }
+}
+
+/* .delete-btn, .edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 1rem;
+  color: #333;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: crimson;
+}
+
+.edit-btn:hover {
+  color: royalblue;
+}
+td button {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+td button i {
+  pointer-events: none; /* Makes clicks pass through the icon to the button }*/
+>>>>>>> da21a3c9f73b332f5bfda51fd8138d693adba77a

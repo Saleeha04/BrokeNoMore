@@ -66,6 +66,7 @@ CREATE TABLE Alerts (
     CreatedAT DATETIME DEFAULT GETDATE()
 );
 
+<<<<<<< HEAD
 -- Dummy Data to see if the tables are working or not
 -- 🚀 Insert test user
 INSERT INTO Users (Username, Email, PasswordHash)
@@ -95,12 +96,44 @@ VALUES (1, '2025-05-01', 50000);
 INSERT INTO Alerts (UserID, Message)
 VALUES (1, 'You have spent more than 80% of your budget!');
 
+=======
+ALTER TABLE Users
+ADD SecurityQuestion NVARCHAR(255),
+    SecurityAnswer NVARCHAR(255);
+
+
+-- Dummy Data to see if the tables are working or not
+INSERT INTO Users (Username, Email, PasswordHash)
+VALUES ('testuser', 'test@example.com', 'hashedpassword123'),
+('testuser2', 'test2@example.com', 'hashedpassword1234');
+
+INSERT INTO Income (UserID, Amount, MonthI)
+VALUES (1, 80000, '2025-05-01');
+
+INSERT INTO Expenses (UserID, Title, Amount, Date, IsRecurring, Category)
+VALUES (1, 'Groceries', 6000, '2025-05-05', 0, 'Food');
+
+INSERT INTO Expenses (UserID, Title, Amount, Date, IsRecurring, Category)
+VALUES (1, 'Rent', 25000, '2025-05-01', 1, 'Housing');
+
+INSERT INTO RecurringExpenses (ExpenseID, NextDueDate, Frequency)
+VALUES (2, '2025-06-01', 'Monthly');
+
+INSERT INTO BudgetGoals (UserID, Month, Amount)
+VALUES (1, '2025-05-01', 50000);
+
+INSERT INTO Alerts (UserID, Message)
+VALUES (1, 'You have spent more than 80% of your budget!');
+
+DBCC CHECKIDENT ('Users', RESEED, 0);
+>>>>>>> da21a3c9f73b332f5bfda51fd8138d693adba77a
 SELECT * FROM Users;
 SELECT * FROM Income;
 SELECT * FROM Expenses;
 SELECT * FROM BudgetGoals;
 SELECT * FROM Alerts;
 
+<<<<<<< HEAD
 DELETE FROM Income WHERE UserID = 1;
 DELETE FROM Users WHERE UserID = 1;
 DELETE FROM Expenses WHERE UserID = 1;
@@ -114,3 +147,14 @@ DELETE FROM  Alerts WHERE UserID = 1;
 
 -- i have deleted all the previous records cuz password hashing use kar ke tables match nai ho rage
 -- thay u guys can do it too then masla nai hoga while testing routes
+=======
+/*DELETE FROM Income WHERE UserID = 1;
+DELETE FROM Users WHERE UserID = 1;
+DELETE FROM RecurringExpenses WHERE ExpenseID = 2;
+DELETE FROM BudgetGoals WHERE UserID = 1;
+DELETE FROM  Alerts WHERE UserID = 1;
+DELETE FROM Expenses WHERE UserID = 1;
+
+-- i have deleted all the previous records cuz password hashing use kar ke tables match nai ho rage
+-- thay u guys can do it too then masla nai hoga while testing routes
+>>>>>>> da21a3c9f73b332f5bfda51fd8138d693adba77a

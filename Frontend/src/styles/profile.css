@@ -1,4 +1,5 @@
 body {
+<<<<<<< HEAD
     font-family: 'Roboto', sans-serif;
     margin: 0;
     background-color: #fef0cd;
@@ -162,3 +163,311 @@ body {
       display: none;
     }
   }
+=======
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background-color: #f5efe4;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo img {
+  height: 40px;
+}
+
+.nav-links a {
+  margin-left: 20px;
+  font-size: 20px;
+  color: #730027;
+  cursor: pointer;
+}
+
+.menu {
+  font-size: 28px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Profile Picture */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.profile-pic {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-pic .circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-pic .circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-pic .edit-pic-btn {
+  position: absolute;
+  bottom: -0px;
+  right: -0px;
+  background-color: #730027;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+/* Username Section */
+.username-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.security-question-text {
+  font-weight: 600;
+  color: #730027;
+}
+
+.username {
+  font-size: 24px;
+  margin: 5px 0;
+}
+
+/* Form Styling */
+.form-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.edit-form {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(115, 0, 39, 0.2), 0 0 40px rgba(255, 179, 198, 0.3);
+
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.3s ease-in-out;
+ 
+
+}
+.edit-form:hover {
+  box-shadow: 0 0 25px rgba(115, 0, 39, 0.3), 0 0 60px rgba(255, 179, 198, 0.4);
+}
+
+
+.edit-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #730027;
+}
+
+.edit-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #ffffff;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.tooltip-trigger {
+  visibility: hidden;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #730027;
+  background-color: #ffe6ee;
+  border: 1px solid #730027;
+  border-radius: 50%;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tooltip-text {
+  display: none;
+  position: absolute;
+  top: 38px;
+  right: 0;
+  background-color: #730027;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 260px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+/* Hover behavior */
+.input-wrapper:hover .tooltip-trigger {
+  visibility: visible;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.save-btn {
+  background-color: #730027;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #a20e40;
+}
+
+.success-popup {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffe6ee;
+  color: #730027;
+  padding: 16px 28px;
+  border: 2px solid #730027;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: popIn 0.4s ease-out;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translate(-50%, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+.fade-out {
+  animation: fadeAway 1s forwards;
+}
+
+@keyframes fadeAway {
+  to {
+    opacity: 0;
+    transform: scale(0.9) translate(-50%, -50%);
+  }
+}
+
+/* Bubble Canvas and Background */
+#bubble-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.bubble-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(245, 205, 179, 0.3); /* soft bubble tone */
+  border-radius: 50%;
+  animation: float 20s infinite ease-in-out;
+  filter: blur(1px);
+}
+
+/* Adjust sizes and animation duration for variety */
+.bubble:nth-child(1) { left: 10%; animation-duration: 25s; width: 40px; height: 40px; }
+.bubble:nth-child(2) { left: 25%; animation-duration: 18s; width: 20px; height: 20px; }
+.bubble:nth-child(3) { left: 40%; animation-duration: 22s; width: 35px; height: 35px; }
+.bubble:nth-child(4) { left: 60%; animation-duration: 19s; width: 25px; height: 25px; }
+.bubble:nth-child(5) { left: 75%; animation-duration: 24s; width: 30px; height: 30px; }
+.bubble:nth-child(6) { left: 85%; animation-duration: 21s; width: 18px; height: 18px; }
+.bubble:nth-child(7) { left: 50%; animation-duration: 20s; width: 28px; height: 28px; }
+.bubble:nth-child(8) { left: 35%; animation-duration: 23s; width: 22px; height: 22px; }
+.bubble:nth-child(9) { left: 5%;  animation-duration: 26s; width: 38px; height: 38px; }
+.bubble:nth-child(10){ left: 90%; animation-duration: 20s; width: 32px; height: 32px; }
+.bubble:nth-child(19) { left: 15%; animation-duration: 22s; width: 26px; height: 26px; }
+.bubble:nth-child(20) { left: 65%; animation-duration: 27s; width: 34px; height: 34px; }
+.bubble:nth-child(21) { left: 80%; animation-duration: 19s; width: 20px; height: 20px; }
+.bubble:nth-child(22) { left: 30%; animation-duration: 23s; width: 36px; height: 36px; }
+.bubble:nth-child(23) { left: 95%; animation-duration: 21s; width: 24px; height: 24px; }
+
+
+@keyframes float {
+  0%   { transform: translateY(0) translateX(0);      opacity: 0.4; }
+  50%  { transform: translateY(-500px) translateX(20px); opacity: 0.8; }
+  100% { transform: translateY(-1000px) translateX(-20px); opacity: 0; }
+}
+
+.edit-form input:focus,
+.edit-form input:valid {
+  outline: none;
+  box-shadow: 0 0 10px #ff99bb, 0 0 20px #ffccd9;
+  transition: box-shadow 0.3s ease-in-out;
+}
+>>>>>>> da21a3c9f73b332f5bfda51fd8138d693adba77a
