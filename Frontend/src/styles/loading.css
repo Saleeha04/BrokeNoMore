@@ -1,5 +1,5 @@
 body {
-  background: wheat;
+  background: #f5efe4;
   margin: 0;
   height: 100vh;
   display: flex;
@@ -27,23 +27,23 @@ body {
 }
 
 .bubble--1 {
-  animation-delay: 250ms;
+  animation-delay: 350ms;
 }
 
 .bubble--2 {
-  animation-delay: 125ms;
+  animation-delay: 300ms;
 }
 
 .bubble--3 {
-  animation-delay: 0ms;
+  animation-delay: 100ms;
 }
 
 .bubble--4 {
-  animation-delay: 125ms;
+  animation-delay: 300ms;
 }
 
 .bubble--5 {
-  animation-delay: 250ms;
+  animation-delay: 350ms;
 }
 
 @keyframes bubble {
