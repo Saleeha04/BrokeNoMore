@@ -83,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Optional: Navbar menu click
-  const menu = document.querySelector('.menu');
-  menu.addEventListener('click', () => {
-    alert('Menu button clicked! You can implement sidebar here.');
-  });
+  // const menu = document.querySelector('.menu');
+  // menu.addEventListener('click', () => {
+  //   alert('Menu button clicked! You can implement sidebar here.');
+  // });
 });
