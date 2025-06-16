@@ -103,18 +103,18 @@ const rateSelect = document.getElementById('rate');
 
 if (recurringCheckbox) {
   recurringCheckbox.addEventListener("change", () => {
-  if (recurringCheckbox.checked) {
-    recurringDetails.style.display = "block";
-    rateSelect.setAttribute("required", "true");
-  } else {
-    recurringDetails.style.display = "none";
-    rateSelect.removeAttribute("required"); // <-- this again
-  }
-});
+    if (recurringCheckbox.checked) {
+      recurringDetails.style.display = "block";
+      rateSelect.setAttribute("required", "true");
+    } else {
+      recurringDetails.style.display = "none";
+      rateSelect.removeAttribute("required"); // <-- this again
+    }
+  });
 
 }
 
-// Modal logic
+
 document.addEventListener("DOMContentLoaded", () => {
   const plusBtn = document.querySelector(".plus-btn");
   const modal = document.getElementById("entry-modal");
@@ -129,6 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const recurringCheckbox = document.getElementById("recurring-checkbox");
   const recurringDetails = document.getElementById("recurring-details");
 
+  function closeModal() {
+    modal.classList.add("hidden");
+    expenseForm.reset();
+    recurringDetails.style.display = "none";
+    rateSelect.removeAttribute('required'); // <-- this line is critical
+    rowBeingEdited = null;
+    editingUpcoming = false;
+  }
+
   let rowBeingEdited = null;
   let editingUpcoming = false;
 
@@ -142,12 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("hidden");
   });
 
+
   closeBtn.addEventListener("click", closeModal);
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeModal();
   });
 
-  expenseForm.addEventListener("submit", (e) => {
+   expenseForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const title = expenseForm.title.value;
@@ -155,21 +165,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const category = expenseForm.category.value;
     const amount = expenseForm.amount.value;
     const isRecurring = recurringCheckbox.checked;
-    const rate = document.getElementById("rate").value || "-";
+    const rate = rateSelect.value || "-";
     const isUpcoming = isRecurring;
 
     const newRow = document.createElement("tr");
+    newRow.innerHTML = getRowHTML(date, title, category, rate, amount, isUpcoming);
 
     if (rowBeingEdited) {
-      // Editing logic
-      newRow.innerHTML = getRowHTML(date, title, category, rate, amount, isUpcoming);
-      rowBeingEdited.replaceWith(newRow);
-    } else {
-      // New entry
-      newRow.innerHTML = getRowHTML(date, title, category, rate, amount, isUpcoming);
-      (isUpcoming ? upcomingTableBody : expenseTableBody).appendChild(newRow);
+      rowBeingEdited.remove(); // 🔄 remove old row to handle switch between tables
     }
 
+    (isUpcoming ? upcomingTableBody : expenseTableBody).appendChild(newRow);
     attachRowListeners(newRow, isUpcoming);
     closeModal();
     renderDonutChart();
@@ -183,8 +189,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <td>${rate}</td>
       <td>${amount}</td>
       <td>
-        <button class="delete-btn"><i class="fas fa-trash"></i></button>
-        <button class="edit-btn"><i class="fas fa-pen"></i></button>
+      <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+      <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+      <button class="mark-paid-btn" title="Mark as Paid"><i class="fas fa-check"></i></button>
       </td>
     ` : `
       <td>${date}</td>
@@ -199,12 +206,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function attachRowListeners(row, isUpcoming) {
-    row.querySelector(".delete-btn").addEventListener("click", () => {
+    const deleteBtn = row.querySelector(".delete-btn");
+    const editBtn = row.querySelector(".edit-btn");
+    const markPaidBtn = row.querySelector(".mark-paid-btn");
+
+    deleteBtn.addEventListener("click", () => {
       row.remove();
       renderDonutChart();
     });
 
-    row.querySelector(".edit-btn").addEventListener("click", () => {
+    editBtn.addEventListener("click", () => {
       rowBeingEdited = row;
       editingUpcoming = isUpcoming;
 
@@ -212,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
       expenseForm.date.value = cells[0].textContent;
       expenseForm.title.value = cells[1].textContent;
       expenseForm.category.value = cells[2].textContent;
+
       if (isUpcoming) {
         recurringCheckbox.checked = true;
         recurringDetails.style.display = "block";
@@ -225,38 +237,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
       modal.classList.remove("hidden");
     });
-  }
 
-function closeModal() {
-  modal.classList.add("hidden");
-  expenseForm.reset();
-  recurringDetails.style.display = "none";
-  rateSelect.removeAttribute('required'); // <-- this line is critical
-  rowBeingEdited = null;
-  editingUpcoming = false;
-}
+    if (isUpcoming && markPaidBtn) {
+      markPaidBtn.addEventListener("click", () => {
+        const cells = row.querySelectorAll("td");
+
+        const paidRow = document.createElement("tr");
+        paidRow.innerHTML = `
+        <td>${cells[0].textContent}</td>
+        <td>${cells[1].textContent}</td>
+        <td>${cells[2].textContent}</td>
+        <td>${cells[4].textContent}</td>
+        <td>
+          <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+          <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
+        </td>
+      `;
+
+        expenseTableBody.appendChild(paidRow);
+        row.remove();
+        attachRowListeners(paidRow, false);
+        renderDonutChart();
+      });
+    }
+  }
 
   filterBtn.addEventListener("click", () => {
     const isVisible = filterInput.style.display !== "none";
     filterInput.style.display = isVisible ? "none" : "inline-block";
-    if (!isVisible) filterInput.focus();
-    else {
+
+    if (!isVisible) {
+      filterInput.focus();
+    } else {
       filterInput.value = '';
       filterExpenses('');
     }
   });
 
   filterInput.addEventListener("input", () => {
-    filterExpenses(filterInput.value.trim().toLowerCase());
+    const query = filterInput.value.trim().toLowerCase();
+    filterExpenses(query);
   });
 
   function filterExpenses(query) {
-const rows = Array.from(expenseTableBody.querySelectorAll("tr")).slice(1);
+    const rows = Array.from(expenseTableBody.querySelectorAll("tr")).slice(1); // skip header row
+
     rows.forEach(row => {
-      const categoryText = row.querySelector("td:nth-child(3)")?.textContent.toLowerCase() || "";
+      const categoryCell = row.querySelector("td:nth-child(3)");
+      const categoryText = categoryCell?.textContent?.toLowerCase() || "";
+
       row.style.display = categoryText.includes(query) ? "" : "none";
     });
   }
 
-  renderDonutChart();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.querySelector(".logout-btn");
+  const logoutModal = document.getElementById("logout-modal");
+  const confirmLogout = document.getElementById("confirm-logout");
+  const cancelLogout = document.getElementById("cancel-logout");
+
+  logoutBtn.addEventListener("click", () => {
+    logoutModal.classList.remove("hidden");
+  });
+
+  confirmLogout.addEventListener("click", () => {
+    window.location.href = "landingPage.html";
+  });
+
+  cancelLogout.addEventListener("click", () => {
+    logoutModal.classList.add("hidden");
+  });
 });
