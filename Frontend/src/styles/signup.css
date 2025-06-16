@@ -33,20 +33,3 @@ select {
 .submit-btn {
   margin-top: 12px;
 }
-
-#answer-container input {
-  width: 96%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: 'Roboto', sans-serif;
-}
-
-#security-question {
-  width: 102%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: 'Roboto', sans-serif;
-  background-color: #fff;
-}

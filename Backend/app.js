@@ -7,14 +7,17 @@ const expenseRoutes = require('./routes/expenseRoutes');
 // middleware:
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 // import routes here:
-const userRoutes = require('./routes/userRoutes');
+
 const budgetRoutes = require('./routes/budgetRoutes');
 const alertRoutes = require('./routes/alertRoutes');
 const summaryRoutes = require('./routes/summaryRoutes');
 
 // use routes here:
+
 app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api', budgetRoutes);
