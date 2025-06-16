@@ -1,61 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Signup</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
-    <link rel="stylesheet" href="../styles/login.css" />
-    <link rel="stylesheet" href="../styles/signup.css" />
-  </head>
-  <body>
-    <canvas id="bubble-canvas"></canvas>
-    <div class="bubble-background">
-      <div class="bubble"></div> <!-- (repeat bubble divs as is) -->
-      <!-- ... -->
-    </div>
-
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Security Settings</title>
+  <link rel="stylesheet" href="../styles/security.css" />
+  <link rel="stylesheet" href="../styles/backButton.css" />
+</head>
+<body>
+  <div class="page-wrapper">
     <div class="form-container">
-      <a href="landingPage.html">
-        <img class="form-logo" src="../assets/hiddenanya.png" alt="Logo above form" />
-      </a>
-
-      <form id="signup-form" class="signup-form" method="POST" action="/signup">
-        <h1 class="login-heading">Welcome! Anya here.</h1>
-
-        <label for="username">Username</label>
-        <input id="username" type="text" required />
-
-        <label for="password">Password</label>
-        <div class="password-wrapper">
-          <input id="password" name="password" type="password" required />
+      <form class="edit-form slide-in" id="securityForm">
+        <div class="username-section">
+          <h2 class="username">Security Settings</h2>
         </div>
 
-        <label for="confirm-password">Confirm Password</label>
-        <div class="password-wrapper">
-          <input id="confirm-password" name="confirm-password" type="password" required />
-        </div>
+        <label for="username">Username <span style="color:red">*</span></label>
+        <input type="text" id="username" required>
 
-        <label for="security-question">Security Question <style> width: 104%; </style></label>
-        <select id="security-question" name="question">
+        <label for="previous-password">Previous Password <span style="color:red">*</span></label>
+        <input type="password" id="previous-password" required>
+
+        <label for="password">New Password <span style="color:red">*</span></label>
+        <input type="password" id="password" required>
+
+        <label for="security-question">Security Question <span style="color:red">*</span></label>
+        <select id="security-question" required>
+          <option value="">Select a question</option>
           <option>What is your pet's name?</option>
-          <option>What is your mother’s maiden name?</option>
-          <option>What is your first school name?</option>
+          <option>What is your mother's maiden name?</option>
+          <option>What is your favorite book?</option>
         </select>
 
-        <div id="answer-container">
-          <label for="security-answer">Answer</label>
-          <input type="text" id="security-answer" name="answer" placeholder="Enter your answer" required />
+        <label for="security-answer">Answer <span style="color:red">*</span></label>
+        <input type="text" id="security-answer" required>
+
+        <div class="btn-container">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="save-btn delete">Delete Account</button>
         </div>
-
-        <button type="submit" class="submit-btn">Sign up</a></button>
-
-        <p class="forgot-password">
-          Already have an account? <a href="login.html">Login here</a>.
-        </p>
       </form>
+
+      <!-- Back Button -->
+      <div class="back-button-wrapper">
+        <button type="button" class="back-btn" id="backToProfileBtn">← Back to Profile</button>
+      </div>
     </div>
-    <script src="../components/bubble.js" ></script>
-    <script src="../components/signup.js" ></script>
-  </body>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal" id="confirmDeleteModal">
+    <div class="modal-content">
+      <p>Are you sure you want to delete your account?<br>This action is <strong>irreversible</strong> and your data will be lost.</p>
+      <div class="modal-buttons">
+        <button id="confirmYes">Yes</button>
+        <button id="confirmCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal" id="passwordModal">
+    <div class="modal-content">
+      <p>Please enter your password to confirm deletion:</p>
+      <input type="password" id="confirmPassword" placeholder="Enter password" />
+      <div class="modal-buttons">
+        <button id="submitDelete">Delete</button>
+        <button id="cancelDelete">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="bubble-canvas"></canvas>
+  <div class="bubble-background">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <!-- Add more bubbles as desired -->
+  </div>
+
+  <script src="../components/security.js"></script>
+  <script src="../components/bubble.js"></script>
+  <script src="../components/backButton.js"></script>
+</body>
 </html>

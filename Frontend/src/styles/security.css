@@ -25,6 +25,8 @@ body.modal-open .bubble-background {
   display: flex;
   justify-content: center;
   width: 100%;
+  flex-direction: column; /* Stack vertically */
+  align-items: center; /* Center align items */
 }
 
 .edit-form {
@@ -70,27 +72,26 @@ body.modal-open .bubble-background {
   font-size: 16px;
   background-color: #ffffff;
 }
+
 .edit-form input:hover,
 .edit-form select:hover {
   box-shadow: 0 0 8px #ffb3c6;
   border-color: #ffb3c6;
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
 .edit-form input:focus,
 .edit-form select:focus {
-  outline: none !important; /* prevent browser from adding a blue outline */
-  border-color: #ffb3c6 !important; /* soft pink border */
-  box-shadow: 0 0 8px #ffb3c6 !important; /* soft glow */
+  outline: none !important;
+  border-color: #ffb3c6 !important;
+  box-shadow: 0 0 8px #ffb3c6 !important;
 }
+
 .edit-form input,
 .edit-form select {
   border: 1px solid #ccc;
   box-shadow: none;
 }
-
-
-
-
 
 .btn-container {
   display: flex;
@@ -100,28 +101,34 @@ body.modal-open .bubble-background {
 .save-btn {
   background-color: #730027;
   color: #fff;
-  padding: 12px 20px;
+  padding: 10px 20px;
   font-size: 16px;
+  margin-right: 10px;
   border: none;
-  border-radius: 9999px;
+  border-radius: 999px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.save-btn:hover {
-  background-color: #a20e40;
-}
+/* .save-btn:hover {
+  background-color: #ffe6ec;
+} */
 
 .save-btn.delete {
   background-color: transparent;
   color: #730027;
   border: 2px solid #730027;
+
+}
+.save-btn.delete:hover{
+  background-color: #ffe6ec;
 }
 
 /* Slide Animation */
 .slide-in {
   animation: slideFromRight 0.5s ease forwards;
 }
+
 @keyframes slideFromRight {
   from {
     transform: translateX(100%);
@@ -133,14 +140,15 @@ body.modal-open .bubble-background {
   }
 }
 
-
 /* Modals */
 .modal {
   display: none;
   position: fixed;
   z-index: 9999;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
@@ -157,6 +165,7 @@ body.modal-open .bubble-background {
   animation: popIn 0.3s ease-out;
   transition: all 0.3s ease-in-out;
 }
+
 .modal-content:hover {
   box-shadow: 0 0 25px rgba(115, 0, 39, 0.3), 0 0 60px rgba(255, 179, 198, 0.4);
 }
@@ -198,12 +207,14 @@ body.modal-open .bubble-background {
   font-weight: bold;
   transition: background-color 0.3s;
 }
+
 .modal-buttons button:hover {
   background-color: #a30035;
 }
 
 /* Bubbles and Canvas */
-#bubble-canvas, .bubble-background {
+#bubble-canvas,
+.bubble-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -221,9 +232,9 @@ body.modal-open .bubble-background {
   position: absolute;
   animation: float 15s linear infinite;
 }
+
 @keyframes float {
   0%   { transform: translateY(0); opacity: 0.4; }
   50%  { transform: translateY(-500px); opacity: 0.8; }
   100% { transform: translateY(-1000px); opacity: 0; }
 }
-

@@ -42,3 +42,16 @@ document.getElementById("securityForm").addEventListener("submit", function (e) 
   e.preventDefault();
   alert("Security details saved!");
 });
+
+ // backButton.js
+
+document.addEventListener("DOMContentLoaded", function () {
+  const backBtn = document.getElementById("backToProfileBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", function () {
+      window.location.href = "profile.html"; // adjust if path is different
+    });
+  }
+});
+
+
