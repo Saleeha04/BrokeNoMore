@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Signup</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../styles/login.css" />
     <link rel="stylesheet" href="../styles/signup.css" />
   </head>
@@ -17,11 +16,11 @@
     </div>
 
     <div class="form-container">
-      <a href="home.html">
+      <a href="landingPage.html">
         <img class="form-logo" src="../assets/hiddenanya.png" alt="Logo above form" />
       </a>
 
-      <form class="signup-form" method="POST" action="/signup">
+      <form id="signup-form" class="signup-form" method="POST" action="/signup">
         <h1 class="login-heading">Welcome! Anya here.</h1>
 
         <label for="username">Username</label>
@@ -30,13 +29,11 @@
         <label for="password">Password</label>
         <div class="password-wrapper">
           <input id="password" name="password" type="password" required />
-          <i id="toggle-password" class="fa-solid fa-eye"></i>
         </div>
 
         <label for="confirm-password">Confirm Password</label>
         <div class="password-wrapper">
           <input id="confirm-password" name="confirm-password" type="password" required />
-          <i id="toggle-confirm-password" class="fa-solid fa-eye"></i>
         </div>
 
         <label for="security-question">Security Question <style> width: 104%; </style></label>
@@ -51,15 +48,14 @@
           <input type="text" id="security-answer" name="answer" placeholder="Enter your answer" required />
         </div>
 
-        <button type="submit" class="submit-btn">Signup</button>
+        <button type="submit" class="submit-btn">Sign up</a></button>
 
         <p class="forgot-password">
           Already have an account? <a href="login.html">Login here</a>.
         </p>
       </form>
     </div>
-
-    <script src="../components/bubble.js"></script>
-    <script src="../scripts/signup.js"></script>
+    <script src="../components/bubble.js" ></script>
+    <script src="../components/signup.js" ></script>
   </body>
 </html>
