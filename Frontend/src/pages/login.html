@@ -2,44 +2,118 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Form</title>
-    <link rel="stylesheet" href="login.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../styles/login.css" />
+
+  <style>
+    input::-ms-reveal,
+    input::-ms-clear {
+      display: none;
+    }
+
+    input[type="password"]::-webkit-credentials-auto-fill-button {
+      visibility: hidden;
+      display: none !important;
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-container input {
+      width: 100%;
+      padding: 10px 12px;
+      padding-right: 40px;
+      font-family: 'Roboto', sans-serif;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+    }
+    
+  </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">logo</div>
-        <div class="nav-links">
-            <a href="#">profile</a>
-            <a href="#">contact us</a>
-        </div>
-        <div class="menu">=</div>
+   <canvas id="bubble-canvas"></canvas>
+    <div class="bubble-background">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
     </div>
 
-    <!-- Sign Up Button -->
-    <div class="signup-container">
-        <button class="signup-btn">sign up</button>
-    </div>
+  <div class="form-container">
+    <a href="home.html">
+      <img src="../assets/hiddenanya.png" alt="Logo" class="form-logo" />
+    </a>
+    <form class="signup-form" method="POST" action="/signup">
+      <h1 class="login-heading">Login here!</h1>
 
-    <!-- Form Box -->
-    <div class="form-container">
-        <form class="signup-form">
-            <label for="username">username</label>
-            <input type="text" id="username" name="username">
-            
-            <label for="password">password</label>
-            <input type="password" id="password" name="password">
-            
-            <label for="question">question</label>
-            <input type="text" id="question" name="question">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required style="width: 103%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;" />
 
-            <button type="submit" class="submit-btn">submit</button>
-        </form>
-    </div>
+      <label for="password">Password</label>
+<div style="position: relative;">
+  <input
+    type="password"
+    id="password"
+    name="password"
+    required
+    style="width: 90%; padding: 10px ; padding-right: 40px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Roboto', sans-serif;"
+  />
+  <i
+    id="toggle-password"
+    class="fa-solid fa-eye"
+    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888;"
+  ></i>
+</div>
+
+      <p class="forgot-password">
+        Forgot Password? <a href="forgot-password.html">Click here</a>
+      </p>
+
+      <button type="submit" class="submit-btn">Log in</button>
+
+      <p class="new-user">
+        New user? <a href="signup.html">Create an account</a>.
+      </p>
+    </form>
+  </div>
 
   <script src="../components/bubble.js"></script>
   <script>

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-require('dotenv').config({});
-=======
 require('dotenv').config();
->>>>>>> da21a3c9f73b332f5bfda51fd8138d693adba77a
 console.log("DB_SERVER from env:", process.env.DB_SERVER); 
 const sql = require('mssql');
 
