@@ -19,7 +19,7 @@ const summaryRoutes = require('./routes/summaryRoutes');
 // use routes here:
 
 app.use('/api/users', userRoutes);
-app.use('/api', expenseRoutes);
+app.use('/api/expenses', expenseRoutes);
 app.use('/api', budgetRoutes);
 app.use('/api', alertRoutes);
 app.use('/api', summaryRoutes);

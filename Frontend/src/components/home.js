@@ -140,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let rowBeingEdited = null;
   let editingUpcoming = false;
+  let editingExpenseId = null;
 
   recurringCheckbox.addEventListener("change", () => {
     recurringDetails.style.display = recurringCheckbox.checked ? "block" : "none";
@@ -183,29 +184,35 @@ document.addEventListener("DOMContentLoaded", () => {
       rate
     };
 
-    fetch('http://localhost:5000/api/expenses', {
-      method: 'POST',
+    const method = editingExpenseId ? 'PUT' : 'POST';
+    const url = editingExpenseId
+      ? `http://localhost:5000/api/expenses/${editingExpenseId}`
+      : `http://localhost:5000/api/expenses`;
+
+    fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
       .then(res => res.json())
       .then(data => {
         console.log("Server response:", data);
+        location.reload();
       })
       .catch(err => {
         console.error("Error sending expense data:", err);
       });
 
-      // BACKEND SHENINAGINS
+    // BACKEND SHENINAGINS
 
-    newRow.innerHTML = getRowHTML(date, title, category, rate, amount, isUpcoming);
+    // newRow.innerHTML = getRowHTML(date, title, category, rate, amount, isUpcoming);
 
-    if (rowBeingEdited) {
-      rowBeingEdited.remove(); // 🔄 remove old row to handle switch between tables
-    }
+    // if (rowBeingEdited) {
+    //   rowBeingEdited.remove(); // 🔄 remove old row to handle switch between tables
+    // }
 
-    (isUpcoming ? upcomingTableBody : expenseTableBody).appendChild(newRow);
-    attachRowListeners(newRow, isUpcoming);
+    // (isUpcoming ? upcomingTableBody : expenseTableBody).appendChild(newRow);
+    // attachRowListeners(newRow, isUpcoming);
     closeModal();
     renderDonutChart();
   });
@@ -240,13 +247,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const markPaidBtn = row.querySelector(".mark-paid-btn");
 
     deleteBtn.addEventListener("click", () => {
-      row.remove();
-      renderDonutChart();
+
+      // Backend: Deleting
+      const expenseId = row.dataset.id;
+      fetch(`http://localhost:5000/api/expenses/${expenseId}`, {
+        method: 'DELETE'
+      })
+        .then(res => res.json)
+        .then(data => {
+          console.log(data.message);
+          row.remove();
+          renderDonutChart();
+        }).catch(err => console.log('Error deleting', err));
     });
 
     editBtn.addEventListener("click", () => {
       rowBeingEdited = row;
       editingUpcoming = isUpcoming;
+      editingExpenseId = row.dataset.id; // ✅ Store ID for form submission
 
       const cells = row.querySelectorAll("td");
       expenseForm.date.value = cells[0].textContent;
@@ -269,26 +287,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isUpcoming && markPaidBtn) {
       markPaidBtn.addEventListener("click", () => {
-        const cells = row.querySelectorAll("td");
+        const expenseId = row.dataset.id;
 
-        const paidRow = document.createElement("tr");
-        paidRow.innerHTML = `
-        <td>${cells[0].textContent}</td>
-        <td>${cells[1].textContent}</td>
-        <td>${cells[2].textContent}</td>
-        <td>${cells[4].textContent}</td>
-        <td>
-          <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
-          <button class="edit-btn" title="Edit"><i class="fas fa-pen"></i></button>
-        </td>
-      `;
-
-        expenseTableBody.appendChild(paidRow);
-        row.remove();
-        attachRowListeners(paidRow, false);
+        fetch(`http://localhost:5000/api/expenses/mark-paid/${expenseId}`, {
+          method: 'POST'
+        })
+          .then(res => {
+            if (!res.ok) throw new Error('Failed to mark as paid');
+            return res.json();
+          })
+          .then(data => {
+            console.log(data.message);
+            // Refresh tables or re-fetch
+            location.reload();
+          })
+          .catch(err => console.error('Error marking as paid:', err));
         renderDonutChart();
+
       });
     }
+
+
+
   }
 
   filterBtn.addEventListener("click", () => {
@@ -309,16 +329,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function filterExpenses(query) {
-    const rows = Array.from(expenseTableBody.querySelectorAll("tr")).slice(1); // skip header row
-
+    const rows = Array.from(expenseTableBody.querySelectorAll("tr")).slice(1);
     rows.forEach(row => {
       const categoryCell = row.querySelector("td:nth-child(3)");
       const categoryText = categoryCell?.textContent?.toLowerCase() || "";
-
       row.style.display = categoryText.includes(query) ? "" : "none";
     });
   }
 
+  const userId = 2;
+  fetch(`http://localhost:5000/api/expenses/${userId}`)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json(); // <-- fails if no content returned
+    })
+    .then(data => {
+      console.log("Fetched normal expenses:", data);
+
+      data.forEach(expense => {
+        const row = document.createElement("tr");
+        row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
+        row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, "", expense.Amount, false);
+        expenseTableBody.appendChild(row);
+        attachRowListeners(row, false);
+      });
+    }).catch(err => console.error("Error loading expenses: ", err));
+
+  fetch(`http://localhost:5000/api/expenses/upcoming/${userId}`)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      data.forEach(expense => {
+        const row = document.createElement("tr");
+        row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
+        row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
+        upcomingTableBody.appendChild(row);
+        attachRowListeners(row, true);
+      });
+    }).catch(err => console.error("Error loading upcoming expenses: ", err));
 });
 
 document.addEventListener("DOMContentLoaded", () => {
