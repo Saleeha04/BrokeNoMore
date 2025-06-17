@@ -95,27 +95,29 @@ VALUES (1, '2025-05-01', 50000);
 INSERT INTO Alerts (UserID, Message)
 VALUES (1, 'You have spent more than 80% of your budget!');
 
+
+
+-- ALTER TABLE QUERIES:
 ALTER TABLE Users
 ADD SecurityQuestion NVARCHAR(255),
     SecurityAnswer NVARCHAR(255);
-    -- Remove Email column (if already created)
-ALTER TABLE Users DROP COLUMN Email;
+
 ALTER TABLE Users
-DROP CONSTRAINT UQ__Users__A9D105346D2E83CB;
+DROP CONSTRAINT UQ__Users__A9D10534EA3C593D; -- the constraint may change depending on your database entries, so edit krlena
+ALTER TABLE Users DROP COLUMN Email;
 
-
-
-
+-- DISPLAY:
 SELECT * FROM Users;
 SELECT * FROM Income;
 SELECT * FROM Expenses;
+SELECT * FROM RecurringExpenses;
 SELECT * FROM BudgetGoals;
 SELECT * FROM Alerts;
 
-DELETE FROM Income WHERE UserID = 1;
+-- DELETE:
 DELETE FROM Users WHERE UserID = 1;
+DELETE FROM Income WHERE UserID = 1;
 DELETE FROM Expenses WHERE UserID = 1;
 DELETE FROM RecurringExpenses WHERE ExpenseID = 2;
-
 DELETE FROM BudgetGoals WHERE UserID = 1;
-DELETE FROM  Alerts WHERE UserID = 1;
+DELETE FROM Alerts WHERE UserID = 1;

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {
+  addExpense,
   createExpense,
   getExpensesByUser,
   updateExpense,
@@ -12,8 +13,9 @@ const {
 //  Create a new expense
 router.post('/', createExpense);
 
-// Get filtered expenses for a user (e.g., by month or category)
+router.post('/expenses', addExpense);
 
+// Get filtered expenses for a user (e.g., by month or category)
 router.get('/:userId/filter', getExpensesFiltered);
 
 //  Get all expenses for a specific user

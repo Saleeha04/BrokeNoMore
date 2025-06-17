@@ -1,3 +1,5 @@
+const { poolPromise, sql } = require('../Config/db');
+
 const {
   createExpenseDB,
   getExpensesByUserDB,
@@ -7,6 +9,74 @@ const {
   createRecurringExpenseDB,
   updateNextDueDateDB,
 } = require('../Models/expenseModel');
+
+// Last Updated by Saleeha :D       -- Edit krdena isse if you change anything
+const addExpense = async (req, res) => {
+  console.log("▶️ Request body:", req.body);
+
+  const { userId, title, date, category, amount, isRecurring, Rate } = req.body;
+
+  try {
+    const pool = await poolPromise;
+
+    const expenseResult = await pool.request()
+      .input('userId', sql.Int, userId)
+      .input('title', sql.NVarChar, title)
+      .input('amount', sql.Decimal(10, 2), amount)
+      .input('date', sql.Date, date)
+      .input('isRecurring', sql.Bit, isRecurring ? 1 : 0)
+      .input('category', sql.NVarChar, category)
+      .query(`INSERT INTO Expenses (UserID, Title, Amount, Date, IsRecurring, Category)
+        OUTPUT INSERTED.ExpenseID
+        VALUES (@userId, @title, @amount, @date, @isRecurring, @category)`);
+
+    const expenseId = expenseResult.recordSet[0].ExpenseID;
+
+    // Insert into RecurringExpenses only if rate is not 'once'
+    if (isRecurring) {
+      const nextDueDate = calculateNextDate(date, rate);
+      await pool.request()
+        .input('expenseId', sql.Int, expenseId)
+        .input('nextDueDate', sql.Date, nextDueDate)
+        .input('frequency', sql.NVarChar, rate)
+        .query(`INSERT INTO RecurringExpenses (ExpenseID, NextDueDate, Frequency)
+            VALUES (@expenseId, @nextDueDate, @frequency)`);
+    }
+
+
+
+    res.status(201).json({ message: 'Expenses saved Successfully!' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Error saving expense...', error: err.message });
+  }
+};
+
+function calculateNextDate(currentDate, frequency) {
+  const date = new Date(currentDate);
+  switch (frequency.toLowerCase()) {
+    case 'weekly':
+      date.setDate(date.getDate() + 7);
+      break;
+    case 'monthly':
+      date.setMonth(date.getMonth() + 1);
+      break;
+    case 'annually':
+      date.setFullYear(date.getFullYear() + 1);
+      break;
+    case 'once':
+    default:
+      return new Date(currentDate).toISOString().split('T')[0]; // keep the original date
+  }
+  return date.toISOString().split('T')[0];
+}
+
+
+
+
+
+
+
 
 // POST /expenses - Create a new expense
 const createExpense = async (req, res) => {
@@ -146,6 +216,7 @@ const generateRecurringExpenses = async () => {
 };
 
 module.exports = {
+  addExpense, // NEW 
   createExpense,
   getExpensesFiltered,
   getExpensesByUser,

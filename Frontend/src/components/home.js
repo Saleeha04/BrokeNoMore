@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeModal();
   });
 
-   expenseForm.addEventListener("submit", (e) => {
+  expenseForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const title = expenseForm.title.value;
@@ -169,6 +169,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const isUpcoming = isRecurring;
 
     const newRow = document.createElement("tr");
+
+    // BACKEND SHENINANGINS
+
+    const userId = 2; // 🔑 Replace with the logged-in user's ID if you have it
+    const payload = {
+      userId,
+      title,
+      date,
+      category,
+      amount,
+      isRecurring,
+      rate
+    };
+
+    fetch('http://localhost:5000/api/expenses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Server response:", data);
+      })
+      .catch(err => {
+        console.error("Error sending expense data:", err);
+      });
+
+      // BACKEND SHENINAGINS
+
     newRow.innerHTML = getRowHTML(date, title, category, rate, amount, isUpcoming);
 
     if (rowBeingEdited) {
