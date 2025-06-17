@@ -19,8 +19,8 @@
       <a href="landingPage.html">
         <img class="form-logo" src="../assets/hiddenanya.png" alt="Logo above form" />
       </a>
+      <form id="signup-form" class="signup-form">
 
-      <form id="signup-form" class="signup-form" method="POST" action="/signup">
         <h1 class="login-heading">Welcome! Anya here.</h1>
 
         <label for="username">Username</label>
@@ -36,7 +36,9 @@
           <input id="confirm-password" name="confirm-password" type="password" required />
         </div>
 
-        <select id="security-question" name="question" style="width: 104%;">
+        <label for="security-question" style="width: 104%;">Security Question</label>
+
+        <select id="security-question" name="question">
           <option>What is your pet's name?</option>
           <option>What is your mother’s maiden name?</option>
           <option>What is your first school name?</option>
