@@ -27,6 +27,7 @@ app.use('/api/expenses', expenseRoutes);
 app.use('/api', budgetRoutes);
 app.use('/api', alertRoutes);
 app.use('/api', summaryRoutes);
+app.use('/api/user', userRoutes); 
 
 // Test Route
 app.get('/', (req, res) => {
