@@ -2,14 +2,15 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const app = express();
+// const app = express();
+const app = require('./app');
 
 // ✅ CORS Middleware — Must come before routes
-app.use(cors({
-  origin: 'http://127.0.0.1:5500', // Allow Live Server
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'http://127.0.0.1:5500', // Allow Live Server
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   credentials: true
+// }));
 
 // Other middleware
 app.use(express.json());

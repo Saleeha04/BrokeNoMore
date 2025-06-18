@@ -2,6 +2,54 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { createUser, getUserByUsername, getUserById, saveIncomeAndGoal } = require('../Models/userModel');
 
+// is file mn changings kr rahi, so don't freak out if it isn't working anymore
+
+const login = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await getUserByUsername(username);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const match = await bcrypt.compare(password, user.PasswordHash);
+    if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+
+    req.session.user = {
+      id: user.id, // ✅ not user.UserID
+      username: user.username // ✅ not user.Username
+    };
+
+
+    res.status(200).json({ message: 'Login successful', user: req.session.user });
+  } catch (err) {
+    console.error("❌ Login error:", err.message);
+    res.status(500).json({ message: 'Login error', error: err.message });
+  }
+};
+
+
+const logout = async (req, res) => {
+  req.session.destroy(err => {
+    if (err) return res.status(500).json({ message: 'Logout failed' });
+    res.clearCookie('connect.sid');
+    res.json({ message: 'Logout successful' });
+  });
+};
+
+const getCurrentUser = async (req, res) => {
+  if (req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.status(401).json({ message: 'Not logged in' });
+  }
+};
+
+
+// End of my shaninagins
+
+
+
+
 const register = async (req, res) => {
   const { username, password, securityQuestion, securityAnswer } = req.body;
 
@@ -26,23 +74,25 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  const { username, password } = req.body;
 
-  try {
-    const user = await getUserByUsername(username);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+// ========= this is your original login:
+// const login = async (req, res) => {
+//   const { username, password } = req.body;
 
-    const match = await bcrypt.compare(password, user.PasswordHash);
-    if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+//   try {
+//     const user = await getUserByUsername(username);
+//     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const token = jwt.sign({ id: user.id }, 'secret_key');
-    res.json({ message: 'Login successful', token, userId: user.id });
-  } catch (err) {
-    console.error("❌ Login error:", err.message);
-    res.status(500).json({ message: 'Login error', error: err.message });
-  }
-};
+//     const match = await bcrypt.compare(password, user.PasswordHash);
+//     if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+
+//     const token = jwt.sign({ id: user.id }, 'secret_key');
+//     res.json({ message: 'Login successful', token, userId: user.id });
+//   } catch (err) {
+//     console.error("❌ Login error:", err.message);
+//     res.status(500).json({ message: 'Login error', error: err.message });
+//   }
+// };
 
 const getProfile = async (req, res) => {
   const { id } = req.params;
@@ -72,8 +122,11 @@ const updateUserIncomeGoal = async (req, res) => {
 };
 
 module.exports = {
+  getCurrentUser, // NEW
+  logout, // NEW
+
   register,
   login,
   getProfile,
-  updateUserIncomeGoal // ✅ Correct export here
+  updateUserIncomeGoal
 };

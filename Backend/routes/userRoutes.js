@@ -4,8 +4,14 @@ const {
   register,
   login,
   getProfile,
-  updateUserIncomeGoal // ✅ Correct controller here
+  updateUserIncomeGoal,
+  logout, // NEW
+  getCurrentUser // NEW 
 } = require('../Controllers/userController');
+
+// NEW
+router.get('/logout', logout);
+router.get('/me', getCurrentUser)
 
 router.post('/register', register);
 router.post('/login', login);

@@ -114,6 +114,8 @@ SELECT * FROM RecurringExpenses;
 SELECT * FROM BudgetGoals;
 SELECT * FROM Alerts;
 
+-- Kaori04 = saleeha04 = Mao
+
 -- DELETE:
 DELETE FROM Users WHERE UserID = 1;
 DELETE FROM Income WHERE UserID = 1;
