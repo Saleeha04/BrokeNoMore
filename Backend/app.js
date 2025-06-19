@@ -3,12 +3,29 @@ const cors = require('cors');
 const app = express();
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+const session = require('express-session');
 
 // middleware:
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5500',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// session handling coming through bzzz
+app.use(session({
+    secret: 'secretShushKey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 3, // 3 hour session hy.
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: false
+    }
+}));
 
 // import routes here:
 

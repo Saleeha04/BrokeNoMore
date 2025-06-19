@@ -1,3 +1,5 @@
+const { poolPromise, sql } = require('../Config/db');
+
 const {
   createExpenseDB,
   getExpensesByUserDB,
@@ -7,6 +9,237 @@ const {
   createRecurringExpenseDB,
   updateNextDueDateDB,
 } = require('../Models/expenseModel');
+
+// Last Updated by Saleeha :D       -- Edit krdena isse if you change anything (so i know who to blame)
+const addExpense = async (req, res) => {
+  console.log("▶️ Request body:", req.body);
+
+  const { userId, title, date, category, amount, isRecurring, Rate } = req.body;
+
+  try {
+    const pool = await poolPromise;
+
+    const expenseResult = await pool.request()
+      .input('userId', sql.Int, userId)
+      .input('title', sql.NVarChar, title)
+      .input('amount', sql.Decimal(10, 2), amount)
+      .input('date', sql.Date, date)
+      .input('isRecurring', sql.Bit, isRecurring ? 1 : 0)
+      .input('category', sql.NVarChar, category)
+      .query(`INSERT INTO Expenses (UserID, Title, Amount, Date, IsRecurring, Category)
+        OUTPUT INSERTED.ExpenseID
+        VALUES (@userId, @title, @amount, @date, @isRecurring, @category)`);
+
+    const expenseId = expenseResult.recordSet[0].ExpenseID;
+
+    if (isRecurring) {
+      const nextDueDate = calculateNextDate(date, rate);
+      await pool.request()
+        .input('expenseId', sql.Int, expenseId)
+        .input('nextDueDate', sql.Date, nextDueDate)
+        .input('frequency', sql.NVarChar, rate)
+        .query(`INSERT INTO RecurringExpenses (ExpenseID, NextDueDate, Frequency)
+            VALUES (@expenseId, @nextDueDate, @frequency)`);
+    }
+
+    res.status(201).json({ message: 'Expenses saved Successfully!' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Error saving expense...', error: err.message });
+  }
+};
+
+function calculateNextDate(currentDate, frequency) {
+  const date = new Date(currentDate);
+  switch (frequency.toLowerCase()) {
+    case 'weekly':
+      date.setDate(date.getDate() + 7);
+      break;
+    case 'monthly':
+      date.setMonth(date.getMonth() + 1);
+      break;
+    case 'annually':
+      date.setFullYear(date.getFullYear() + 1);
+      break;
+    case 'once':
+    default:
+      return new Date(currentDate).toISOString().split('T')[0]; // keep the original date
+  }
+  return date.toISOString().split('T')[0];
+}
+
+const deleteExpense = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const pool = await poolPromise;
+
+    // First delete from RecurringExpenses (if exists)
+    await pool.request()
+      .input('expenseId', sql.Int, id)
+      .query('DELETE FROM RecurringExpenses WHERE ExpenseID = @expenseId');
+
+    // Then delete from Expenses
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .query('DELETE FROM Expenses WHERE ExpenseID = @id');
+
+    // Check if any row was deleted
+    if (result.rowsAffected[0] === 0) {
+      return res.status(404).json({ message: 'Expense not found.' });
+    }
+
+    res.status(200).json({ message: 'Expense deleted successfully.' });
+  } catch (err) {
+    console.error('❌ Error deleting expense:', err);
+    res.status(500).json({ message: 'Error deleting expense', error: err.message });
+  }
+};
+
+
+const updateExpense = async (req, res) => {
+  const { id } = req.params;
+  const { title, amount, date, category, isRecurring, rate } = req.body;
+
+  try {
+    const pool = await poolPromise;
+
+    // ✅ Update the expense
+    await pool.request()
+      .input('id', sql.Int, id)
+      .input('title', sql.VarChar(200), title)
+      .input('amount', sql.Decimal(10, 2), amount)
+      .input('date', sql.DateTime, date)
+      .input('category', sql.VarChar(50), category)
+      .input('isRecurring', sql.Bit, isRecurring)
+      .query(`
+        UPDATE Expenses
+        SET Title = @title,
+            Amount = @amount,
+            Date = @date,
+            Category = @category,
+            IsRecurring = @isRecurring
+        WHERE ExpenseID = @id
+      `);
+
+    // ✅ If no longer recurring, remove from RecurringExpenses
+    if (!isRecurring) {
+      await pool.request()
+        .input('id', sql.Int, id)
+        .query('DELETE FROM RecurringExpenses WHERE ExpenseID = @id');
+    }
+
+    // ✅ If still recurring or newly marked as recurring
+    if (isRecurring) {
+      const frequency = rate || 'Monthly'; // default to Monthly if rate missing
+      const nextDate = new Date(date);
+      nextDate.setMonth(nextDate.getMonth() + 1); // crude "next" date
+
+      // Check if already exists
+      const check = await pool.request()
+        .input('id', sql.Int, id)
+        .query('SELECT * FROM RecurringExpenses WHERE ExpenseID = @id');
+
+      if (check.recordset.length > 0) {
+        // Update existing
+        await pool.request()
+          .input('id', sql.Int, id)
+          .input('nextDueDate', sql.Date, nextDate)
+          .input('frequency', sql.VarChar(20), frequency)
+          .query(`
+            UPDATE RecurringExpenses
+            SET NextDueDate = @nextDueDate,
+                Frequency = @frequency
+            WHERE ExpenseID = @id
+          `);
+      } else {
+        // Insert new
+        await pool.request()
+          .input('id', sql.Int, id)
+          .input('nextDueDate', sql.Date, nextDate)
+          .input('frequency', sql.VarChar(20), frequency)
+          .query(`
+            INSERT INTO RecurringExpenses (ExpenseID, NextDueDate, Frequency)
+            VALUES (@id, @nextDueDate, @frequency)
+          `);
+      }
+    }
+
+    res.status(200).json({ message: 'Expense updated successfully.' });
+  } catch (err) {
+    console.error('❌ Error updating expense:', err);
+    res.status(500).json({ message: 'Error updating expense', error: err.message });
+  }
+};
+
+const getExpenses = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const pool = await poolPromise;
+
+    const result = await pool.request()
+      .input('userId', sql.Int, userId)
+      .query('SELECT * FROM Expenses WHERE UserID = @userId AND IsRecurring = 0');
+
+    console.log('Fetched expenses:', result.recordset);
+
+    res.status(200).json(result.recordset); // ✅ Must always respond
+  } catch (err) {
+    console.error('❌ Error in getExpenses:', err);
+    res.status(500).json({ message: 'Error retrieving expenses', error: err.message });
+  }
+};
+
+const getUpcomingExpenses = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('userId', sql.Int, userId)
+      .query(`SELECT e.ExpenseID, e.Title, e.Amount, e.Date, e.Category, r.Frequency
+        FROM Expenses e
+        JOIN RecurringExpenses r ON e.ExpenseID = r.ExpenseID
+        WHERE e.UserID = @userId`);
+    res.json(result.recordset);
+  } catch (err) {
+    console.error("❌ Error fetching upcoming expenses:", err);
+    res.status(500).json({ message: "Error retrieving upcoming expenses", error: err.message });
+  }
+};
+
+const markExpenseAsPaid = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const pool = await poolPromise;
+
+    // 1. Update the existing expense
+    await pool.request()
+      .input('id', sql.Int, id)
+      .input('date', sql.DateTime, new Date()) // mark today as paid date
+      .query(`
+        UPDATE Expenses
+        SET IsRecurring = 0,
+            Date = @date
+        WHERE ExpenseID = @id
+      `);
+
+    // 2. Delete it from RecurringExpenses
+    await pool.request()
+      .input('id', sql.Int, id)
+      .query('DELETE FROM RecurringExpenses WHERE ExpenseID = @id');
+
+    res.status(200).json({ message: 'Expense marked as paid successfully.' });
+  } catch (err) {
+    console.error('❌ Error marking expense as paid:', err);
+    res.status(500).json({ message: 'Error marking as paid', error: err.message });
+  }
+};
+
+
+
+
 
 // POST /expenses - Create a new expense
 const createExpense = async (req, res) => {
@@ -84,34 +317,34 @@ const getExpensesByUser = async (req, res) => {
 };
 
 // PUT /expenses/:expenseId - Update expense by ID
-const updateExpense = async (req, res) => {
-  try {
-    const expenseId = parseInt(req.params.expenseId);
-    if (!expenseId) return res.status(400).json({ message: 'Invalid expense ID' });
+// const updateExpense = async (req, res) => {
+//   try {
+//     const expenseId = parseInt(req.params.expenseId);
+//     if (!expenseId) return res.status(400).json({ message: 'Invalid expense ID' });
 
-    const { title, amount, date, isRecurring, category } = req.body;
+//     const { title, amount, date, isRecurring, category } = req.body;
 
-    await updateExpenseDB(expenseId, { title, amount, date, isRecurring, category });
+//     await updateExpenseDB(expenseId, { title, amount, date, isRecurring, category });
 
-    res.json({ message: 'Expense updated successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating expense', error: err.message });
-  }
-};
+//     res.json({ message: 'Expense updated successfully' });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error updating expense', error: err.message });
+//   }
+// };
 
 // DELETE /expenses/:expenseId - Delete expense by ID
-const deleteExpense = async (req, res) => {
-  try {
-    const expenseId = parseInt(req.params.expenseId);
-    if (!expenseId) return res.status(400).json({ message: 'Invalid expense ID' });
+// const deleteExpense = async (req, res) => {
+//   try {
+//     const expenseId = parseInt(req.params.expenseId);
+//     if (!expenseId) return res.status(400).json({ message: 'Invalid expense ID' });
 
-    await deleteExpenseDB(expenseId);
+//     await deleteExpenseDB(expenseId);
 
-    res.json({ message: 'Expense deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting expense', error: err.message });
-  }
-};
+//     res.json({ message: 'Expense deleted successfully' });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error deleting expense', error: err.message });
+//   }
+// };
 
 // BONUS: Function to auto-generate recurring entries monthly (run by a cron job or manual call)
 const generateRecurringExpenses = async () => {
@@ -146,10 +379,14 @@ const generateRecurringExpenses = async () => {
 };
 
 module.exports = {
+  addExpense, // NEW 
+  getUpcomingExpenses, // NEW
+  getExpenses, // NEW
+  markExpenseAsPaid, // NEW
   createExpense,
   getExpensesFiltered,
   getExpensesByUser,
-  updateExpense,
-  deleteExpense,
+  updateExpense, // NEW
+  deleteExpense, // NEW
   generateRecurringExpenses, // Optional export for periodic job
 };

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Security Settings</title>
   <link rel="stylesheet" href="../styles/security.css" />
+  <link rel="stylesheet" href="../styles/backButton.css" />
 </head>
 <body>
   <div class="page-wrapper">
@@ -15,14 +16,13 @@
         </div>
 
         <label for="username">Username <span style="color:red">*</span></label>
-<input type="text" id="username" required>
+        <input type="text" id="username" required>
 
-<label for="previous-password">Previous Password <span style="color:red">*</span></label>
-<input type="password" id="previous-password" required>
+        <label for="previous-password">Previous Password <span style="color:red">*</span></label>
+        <input type="password" id="previous-password" required>
 
-<label for="password">New Password <span style="color:red">*</span></label>
-<input type="password" id="password" required>
-
+        <label for="password">New Password <span style="color:red">*</span></label>
+        <input type="password" id="password" required>
 
         <label for="security-question">Security Question <span style="color:red">*</span></label>
         <select id="security-question" required>
@@ -36,14 +36,21 @@
         <input type="text" id="security-answer" required>
 
         <div class="btn-container">
-          <button type="submit" class="save-btn">Save</button>
-          <button type="button" class="save-btn delete">Delete Account</button>
+          <div class="left-btn">
+            <button type="button" class="back-btn" id="backToProfileBtn">← Back to Profile</button>
+          </div>
+          <div class="center-btn">
+            <button type="submit" class="save-btn">Save</button>
+          </div>
+          <div class="right-btn">
+            <button type="button" class="save-btn delete">Delete Account</button>
+          </div>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Confirmation Modal -->
+  <!-- Optional modals -->
   <div class="modal" id="confirmDeleteModal">
     <div class="modal-content">
       <p>Are you sure you want to delete your account?<br>This action is <strong>irreversible</strong> and your data will be lost.</p>
@@ -54,7 +61,6 @@
     </div>
   </div>
 
-  <!-- Password Modal -->
   <div class="modal" id="passwordModal">
     <div class="modal-content">
       <p>Please enter your password to confirm deletion:</p>
@@ -71,10 +77,10 @@
     <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
-    <!-- Add more bubbles as desired -->
   </div>
 
   <script src="../components/security.js"></script>
   <script src="../components/bubble.js"></script>
+  <script src="../components/backButton.js"></script>
 </body>
 </html>

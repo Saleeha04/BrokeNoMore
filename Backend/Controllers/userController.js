@@ -1,54 +1,98 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { poolPromise, sql } = require('../Config/db');
-const { createUser, getUserByEmail, getUserById } = require('../Models/userModel')
+const { createUser, getUserByUsername, getUserById, saveIncomeAndGoal } = require('../Models/userModel');
 
-const register = async (req, res) => {
-  const { username, email, password, securityQuestion, securityAnswer } = req.body;
-
-  try {
-    console.log("✅ Signup request received");
-    console.log("Received data:", { username, email, securityQuestion, securityAnswer });
-
-    const existing = await getUserByEmail(email);
-    if (existing) {
-      console.log("⚠️ Email already exists in database");
-      return res.status(400).json({ message: 'Email already in use' });
-    }
-
-    const hashed = await bcrypt.hash(password, 10);
-    console.log("✅ Password hashed");
-
-    await createUser(username, email, hashed, securityQuestion, securityAnswer);
-    console.log("✅ User created in DB");
-
-    res.status(201).json({ message: 'User registered successfully' });
-
-  } catch (err) {
-    console.error("❌ Error during signup:");
-    console.error("Message:", err.message);
-    console.error("Stack:", err.stack);
-
-    res.status(500).json({ message: 'Error registering user', error: err.message });
-  }
-};
-
+// is file mn changings kr rahi, so don't freak out if it isn't working anymore
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
+
   try {
-    const user = await getUserByEmail(email);
+    const user = await getUserByUsername(username);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const match = await bcrypt.compare(password, user.PasswordHash);
     if (!match) return res.status(401).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id }, 'secret_key'); // Replace with real secret
-    res.json({ message: 'Login successful', token, userId: user.UserID });
+    req.session.user = {
+      id: user.id, // ✅ not user.UserID
+      username: user.username // ✅ not user.Username
+    };
+
+
+    res.status(200).json({ message: 'Login successful', user: req.session.user });
   } catch (err) {
+    console.error("❌ Login error:", err.message);
     res.status(500).json({ message: 'Login error', error: err.message });
   }
 };
+
+
+const logout = async (req, res) => {
+  req.session.destroy(err => {
+    if (err) return res.status(500).json({ message: 'Logout failed' });
+    res.clearCookie('connect.sid');
+    res.json({ message: 'Logout successful' });
+  });
+};
+
+const getCurrentUser = async (req, res) => {
+  if (req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.status(401).json({ message: 'Not logged in' });
+  }
+};
+
+
+// End of my shaninagins
+
+
+
+
+const register = async (req, res) => {
+  const { username, password, securityQuestion, securityAnswer } = req.body;
+
+  try {
+    console.log("✅ Signup request received");
+    console.log("Received data:", { username, securityQuestion, securityAnswer });
+
+    const existing = await getUserByUsername(username);
+    if (existing) {
+      console.log("⚠️ Username already exists");
+      return res.status(400).json({ message: 'Username already in use' });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    await createUser(username, hashed, securityQuestion, securityAnswer);
+    console.log("✅ User created");
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (err) {
+    console.error("❌ Error during signup:", err);
+    res.status(500).json({ message: 'Error registering user', error: err.message });
+  }
+};
+
+
+// ========= this is your original login:
+// const login = async (req, res) => {
+//   const { username, password } = req.body;
+
+//   try {
+//     const user = await getUserByUsername(username);
+//     if (!user) return res.status(404).json({ message: 'User not found' });
+
+//     const match = await bcrypt.compare(password, user.PasswordHash);
+//     if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+
+//     const token = jwt.sign({ id: user.id }, 'secret_key');
+//     res.json({ message: 'Login successful', token, userId: user.id });
+//   } catch (err) {
+//     console.error("❌ Login error:", err.message);
+//     res.status(500).json({ message: 'Login error', error: err.message });
+//   }
+// };
 
 const getProfile = async (req, res) => {
   const { id } = req.params;
@@ -61,20 +105,28 @@ const getProfile = async (req, res) => {
   }
 };
 
+const updateUserIncomeGoal = async (req, res) => {
+  const { userId, income, goal } = req.body;
 
-const checkEmail = async (req, res) => {
-  const { email } = req.query;
+  if (!userId || !income || !goal) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
   try {
-    const user = await getUserByEmail(email);
-    if (user) {
-      return res.status(409).json({ exists: true });
-    }
-    res.status(200).json({ exists: false });
+    await saveIncomeAndGoal(userId, income, goal);
+    res.status(200).json({ message: 'Income and goal saved successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Error checking email', error: err.message });
+    console.error("❌ Error saving income/goal:", err.message);
+    res.status(500).json({ message: 'Error saving data', error: err.message });
   }
 };
 
+module.exports = {
+  getCurrentUser, // NEW
+  logout, // NEW
 
-
-module.exports = { register, login, getProfile, checkEmail  };
+  register,
+  login,
+  getProfile,
+  updateUserIncomeGoal
+};

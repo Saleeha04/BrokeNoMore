@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('signup-form');
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
+    const securityQuestion = document.getElementById('security-question').value;
+    const securityAnswer = document.getElementById('security-answer').value;
 
     if (username.length < 5) {
       alert('Username must be at least 5 characters long.');
@@ -23,11 +25,27 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // All checks passed — redirect to login page
-    window.location.href = 'login.html';
+    try {
+      const response = await fetch('http://localhost:5000/api/users/register'
+        , {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, securityQuestion, securityAnswer })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+        window.location.href = 'login.html';
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      alert('Error registering user');
+    }
   });
 
-  // Optional: link transition animation
+  // Keep the link transition animation code
   document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', function (e) {
       if (this.href && this.href.indexOf(window.location.origin) === 0) {
