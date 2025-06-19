@@ -54,4 +54,30 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+ 
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileImage = document.getElementById('profileImage');
+      const editPicBtn = document.querySelector('.edit-pic-btn');
+      const profilePhotoUpload = document.getElementById('profilePhotoUpload');
+      
+      // Handle edit button click
+      editPicBtn.addEventListener('click', function() {
+        profilePhotoUpload.click();
+      });
+      
+      // Handle file selection
+      profilePhotoUpload.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+          const reader = new FileReader();
+          
+          reader.onload = function(event) {
+            profileImage.src = event.target.result;
+          };
+          
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      });
+    });
+  
+
 
