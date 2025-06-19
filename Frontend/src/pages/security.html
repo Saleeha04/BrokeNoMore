@@ -11,6 +11,17 @@
   <div class="page-wrapper">
     <div class="form-container">
       <form class="edit-form slide-in" id="securityForm">
+        <!-- Profile Picture Section - Moved inside the form -->
+        <div class="profile-pic-container">
+          <div class="profile-pic">
+            <div class="circle">
+              <img src="profile.jpg" id="profileImage" />
+            </div>
+            <button type="button" class="edit-pic-btn">✎</button>
+            <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;">
+          </div>
+        </div>
+
         <div class="username-section">
           <h2 class="username">Security Settings</h2>
         </div>
@@ -82,5 +93,7 @@
   <script src="../components/security.js"></script>
   <script src="../components/bubble.js"></script>
   <script src="../components/backButton.js"></script>
+  
+ 
 </body>
 </html>
