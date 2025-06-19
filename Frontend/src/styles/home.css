@@ -6,56 +6,189 @@
 }
 
 body {
-  background-color: #fef0cd;
+  background-color: #f5efe4;
   color: #333;
 }
 
-/* Navbar */
+.top-container {
+  background-color: #730027;
+  /* padding: 2%; */
+}
+
+.svg-div {
+  /* position: absolute; */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.svg-div svg {
+  position: relative;
+  display: block;
+  width: calc(135% + 1.3px);
+  height: 144px;
+}
+
+.svg-div .shape-fill {
+  fill: #f5efe4;
+  /* fill: #730027; */
+}
+
+/* Navbar container */
 .navbar {
+  position: relative;      /* establish stacking context */
+  z-index: 10;   
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  background-color: #730027;
+  /* Change as needed */
+  padding: 1rem 2rem;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.logo img {
-  height: 40px;
+/* Brand name */
+.navbar .name {
+  text-decoration: none;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-family: "Baloo Tamma 2", system-ui;
 }
 
-.nav-links a {
-  margin-left: 20px;
-  font-size: 20px;
-  color: #730027;
+/* Prevent any color change or bolding */
+.navbar .name:visited,
+.navbar .name:hover,
+.navbar .name:focus,
+.navbar .name:active {
+  text-decoration: none;
+  color: white;
+  font-weight: normal;
+}
+
+/* Nav links section */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Logout button styling */
+.logout-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-size: 1.1rem;
   cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
 }
 
-.menu {
-  font-size: 28px;
-  cursor: pointer;
+/* Prevent style changes on hover or click */
+.logout-btn:hover,
+.logout-btn:focus,
+.logout-btn:active {
+  background: none;
+  color: white;
+  font-weight: normal;
+  outline: none;
+}
+
+.tip-container {
+  /* background-color: #fef0cd; */
+  padding: 2%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  /* border-bottom: 1px solid #ffd699; */
+  /* margin: 2%; */
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal.hidden {
   display: none;
 }
 
-/* Tip Section Styles */
-.tip-container {
-  background-color: #fef0cd;
-  padding: 20px 10px;
-  border-bottom: 1px solid #ffd699;
-  display: flex;
-  align-items: center;
-  position: relative;
+.modal-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    animation: popup 0.3s ease-in-out;
+
 }
+
+
+.logout-image {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 15px;
+  object-fit: contain;
+}
+
+
+.modal-actions {
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  margin: 0 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+#confirm-logout {
+  background-color: crimson;
+  color: white;
+}
+
+#cancel-logout {
+  background-color: #ccc;
+}
+
 
 .thought-bubble {
   position: relative;
   background-color: white;
   padding: 15px 20px;
   border-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  max-width: calc(100% - 100px);
-  margin-right: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 60%;
+  margin-right: 100px;
+  /* Space for character */
 }
 
 .thought-bubble::after {
@@ -83,9 +216,11 @@ body {
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #ffb3c6;
+  /* border: 3px solid #ffb3c6; */
   background-color: #ffb3c6;
   flex-shrink: 0;
+  position: absolute;
+  right: 20px;
 }
 
 .character-picture img {
@@ -97,7 +232,7 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .tip-container {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: flex-start;
     padding: 15px;
   }
@@ -113,11 +248,12 @@ body {
   }
 
   .character-picture {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
+    position: relative;
+    right: auto;
+    align-self: flex-end;
     width: 60px;
     height: 60px;
+    margin-bottom: 10px;
   }
 }
 
@@ -129,21 +265,23 @@ body {
   gap: 20px;
 }
 
-/* Profile Section */
+/* Profile Section with Edit Button Inside */
 .profile-section {
   display: flex;
   align-items: center;
   gap: 20px;
   width: 100%;
+  padding-left: 30px;
   margin-bottom: 30px;
+  color: white;
+  position: relative;
 }
 
 .profile-pic {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   background-color: #ddd;
-  border: 3px solid #ffb3c6;
 }
 
 .user-info {
@@ -152,20 +290,39 @@ body {
   gap: 6px;
 }
 
-.edit-btn {
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: #730027;
-  color: white;
-  border: none;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.username {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  font-size: 20px;
 }
 
-.edit-btn:hover {
-  background-color: #a20e40;
+/* Make the pen initially invisible */
+.edit-profile-link {
+  opacity: 0;
+  pointer-events: none;
+  font-size: 14px;
+  top: 1rem;
+  right: 1rem;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  color: #ccc;
 }
+
+/* Show pen when hovering on the profile section */
+.profile-section:hover 
+.edit-profile-link {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Optional hover effects */
+.edit-profile-link:hover {
+  transform: scale(1.2);
+  color: white
+}
+
 
 /* Main Dashboard Layout */
 .main-content {
@@ -175,7 +332,86 @@ body {
   width: 100%;
 }
 
-/* Tables - Income and Expenses (Left Side) */
+
+
+
+.expense-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.expense-header .left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.expense-header .right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Style the plus button (you can tweak these colors if needed) */
+/* .plus-btn {
+  background-color: #457b9d;
+  color: white;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+} */
+
+/* Filter button styles */
+#filter-btn {
+  background-color: #730027;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(115, 0, 39, 0.5);
+  transition: transform 0.2s, box-shadow 0.3s;
+
+}
+
+#filter-btn:hover {
+  background-color: #730027;
+    transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(115, 0, 39, 0.7);
+}
+
+/* Filter input */
+#filter-input {
+  display: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+/* Focus style with crimson border */
+#filter-input:focus {
+  border-color: #730027;
+  box-shadow: 0 0 0 1px crimson;
+}
+
+/* Tables - Income and Expenses */
 .tables {
   flex: 3;
   display: flex;
@@ -190,20 +426,17 @@ body {
   box-shadow: 0 0 15px rgba(115, 0, 39, 0.1);
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.table-box h2 {
+  display: inline-block;
+  margin-right: 15px;
+  font-size: 1.2rem;
+  color: #730027;
   margin-bottom: 10px;
 }
 
-.section-header h2 {
-  font-size: 1.2rem;
-  color: #730027;
-  margin: 0;
-}
-
 .plus-btn {
+  display: inline-block;
+  vertical-align: middle;
   background-color: #730027;
   color: white;
   font-size: 18px;
@@ -237,7 +470,8 @@ table {
   box-shadow: 0 4px 20px rgba(115, 0, 39, 0.05);
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ccc;
   padding: 12px;
   text-align: left;
@@ -249,7 +483,7 @@ th {
   color: white;
 }
 
-/* Charts Section (Right Side) */
+/* Charts Section */
 .chart-area {
   flex: 1;
   background-color: white;
@@ -260,81 +494,126 @@ th {
   min-width: 280px;
 }
 
-/* Anime Image (if used) */
-.anime-img {
-  width: 120px;
-  height: auto;
-  margin-left: auto;
-}
 
+
+/* Footer */
 .footer {
-  margin-top: 60px;
-  padding: 40px 90px;
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  margin-top: 6%;
+  padding: 20px 40px;
+  background-color: #730027;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-radius: 0;
-  box-shadow: 0 -4px 20px rgba(160, 1, 54, 0.1);
+  color: #d6d4d4;
+  /* gap: 40px; */
+  /* flex-wrap: wrap; */
 }
 
-.footer-left img {
-  height: 40px;
+/* Left column for branding */
+.left-col {
+  flex: 0 0 10%;
+  align-self: flex-end;
 }
 
-.footer-right {
-  display: flex;
-  gap: 40px;
+.footer-name {
+  text-decoration: none !important;
+  color: white !important;
+  font-size: 1.6rem !important;
+  font-weight: 400 !important;
+  font-family: "Baloo Tamma 2", system-ui !important;
+  padding: 10px 0;
 }
 
-.footer-column h4 {
-  color: #730027;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-column ul li {
-  margin-bottom: 8px;
-}
-
-.footer-column ul li a {
+.footer-name:hover {
+  font-weight: bold;
   text-decoration: none;
-  color: #333;
-  transition: color 0.3s ease;
 }
 
-.footer-column ul li a:hover {
-  color: #730027;
+/* Right side columns */
+.footer-main {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 10%; /* increased gap from 30px to 60px */
+  flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
 
-  .footer-right {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-
-  .footer-column {
-    margin-bottom: 20px;
-  }
+/* Each content column */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 0.5;
+  min-width: 120px;
 }
+
+/* Links & buttons */
+.footer a,
+.footer button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  transition: font-weight 0.2s ease;
+  text-decoration: none;
+}
+
+.footer a:hover,
+.footer button:hover {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.footer button:focus {
+  outline: none;
+}
+
+
+
+
+/* footer end */
+
+
+.hidden {
+  display: none !important;
+}
+
+#new-category-input {
+  transition: all 0.3s ease;
+}
+
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.modal-form input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-btn {
+  background-color: #730027;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-btn:hover {
+  background-color: #d1688b;
+}
+
 
 /* Responsive Layout */
 @media (max-width: 992px) {
@@ -342,7 +621,61 @@ th {
     flex-direction: column;
   }
 
-  .tables, .chart-area {
+  .tables,
+  .chart-area {
     width: 100%;
   }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 20px;
+  }
+}
+
+.delete-btn, .edit-btn, .mark-paid-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 1rem;
+  color: #333;
+  transition: color 0.2s;
+  padding-right: 5px;
+}
+
+.delete-btn:hover {
+  color: crimson;
+}
+
+.edit-btn:hover {
+  color: crimson;
+}
+
+.mark-paid-btn:hover {
+  color: crimson;
+}
+
+td button {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+td button i {
+  pointer-events: none; 
 }

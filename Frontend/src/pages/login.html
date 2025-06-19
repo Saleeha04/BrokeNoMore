@@ -1,71 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Page</title>
 
-  <!-- Font and Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
   <link rel="stylesheet" href="../styles/login.css" />
 </head>
+
 <body>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">
-      <img src="../assets/image.png" alt="Logo" />
+   <canvas id="bubble-canvas"></canvas>
+    <div class="bubble-background">
     </div>
-    <div class="nav-links">
-      <a href="#"><i class="fas fa-user"></i></a>
-      <a href="#"><i class="fas fa-envelope"></i></a>
-    </div>
-    <div class="menu">=</div>
+
+  <div class="form-container">
+    <a href="landingPage.html">
+      <img src="../assets/hiddenanya.png" alt="Logo" class="form-logo" />
+    </a>
+    <form class="signup-form" method="POST" action="/signup">
+      <h1 class="login-heading">Login here!</h1>
+
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required style="width: 103%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;" />
+
+      <label for="password">Password</label>
+<input
+  type="password"
+  id="password"
+  name="password"
+  required
+  style="width: 103%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-family: 'Roboto', sans-serif;"
+/>
+
+
+      <p class="forgot-password">
+        Forgot Password? <a href="forgot-password.html">Click here</a>
+      </p>
+
+      <button type="submit" class="submit-btn">Log in<a href="forgot-password.html"> </a></button>
+
+      <p class="new-user">
+        New user? <a href="signup.html">Create an account</a>.
+      </p>
+    </form>
   </div>
 
-  <!-- Sign Up Button -->
-<h1 class="login-heading">Login</h1>
-
-  <!-- Form Box -->
- <div class="form-container">
-  <form class="signup-form" method="POST" action="/signup">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
-
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-
-    <label for="question">Security Question</label>
-    <input type="text" id="question" name="question" required>
-
-    <button type="submit" class="submit-btn">Submit</button>
-  </form>
-</div>
-
-<footer class="footer">
-  <div class="footer-left">
-    <img src="../assets/image.png" alt="Logo" />
-  </div>
-  <div class="footer-right">
-    <div class="footer-column">
-      <h4>Main Navigation</h4>
-      <ul>
-        <li><a href="login.html">Profile</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>More</h4>
-      <ul>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Support</a></li>
-      </ul>
-    </div>
-  </div>
-</footer>
+  <script src="../components/bubble.js"></script>
+  <script src="../components/login.js"></script>
 
 </body>
 </html>

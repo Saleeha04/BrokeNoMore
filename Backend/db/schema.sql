@@ -101,14 +101,13 @@ SELECT * FROM Expenses;
 SELECT * FROM BudgetGoals;
 SELECT * FROM Alerts;
 
-DELETE FROM Income WHERE UserID = 1;
+/*DELETE FROM Income WHERE UserID = 1;
 DELETE FROM Users WHERE UserID = 1;
 DELETE FROM RecurringExpenses WHERE ExpenseID = 2;
 DELETE FROM BudgetGoals WHERE UserID = 1;
 DELETE FROM  Alerts WHERE UserID = 1;
-
-
-
+DELETE FROM Expenses WHERE UserID = 1;
 
 -- i have deleted all the previous records cuz password hashing use kar ke tables match nai ho rage
+>>>>>>> aa7519b46d306d9faba3c4634ab9fe0cb576a0e9
 -- thay u guys can do it too then masla nai hoga while testing routes

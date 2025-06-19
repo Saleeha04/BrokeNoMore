@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Signup</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="../styles/login.css" />
+    <link rel="stylesheet" href="../styles/signup.css" />
+  </head>
+  <body>
+    <canvas id="bubble-canvas"></canvas>
+    <div class="bubble-background">
+      <div class="bubble"></div> <!-- (repeat bubble divs as is) -->
+      <!-- ... -->
+    </div>
+
+    <div class="form-container">
+      <a href="landingPage.html">
+        <img class="form-logo" src="../assets/hiddenanya.png" alt="Logo above form" />
+      </a>
+
+      <form id="signup-form" class="signup-form" method="POST" action="/signup">
+        <h1 class="login-heading">Welcome! Anya here.</h1>
+
+        <label for="username">Username</label>
+        <input id="username" type="text" required />
+
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input id="password" name="password" type="password" required />
+        </div>
+
+        <label for="confirm-password">Confirm Password</label>
+        <div class="password-wrapper">
+          <input id="confirm-password" name="confirm-password" type="password" required />
+        </div>
+
+        <select id="security-question" name="question" style="width: 104%;">
+          <option>What is your pet's name?</option>
+          <option>What is your mother’s maiden name?</option>
+          <option>What is your first school name?</option>
+        </select>
+
+        <div id="answer-container">
+          <label for="security-answer">Answer</label>
+          <input type="text" id="security-answer" name="answer" placeholder="Enter your answer" required />
+        </div>
+
+        <button type="submit" class="submit-btn">Sign up</a></button>
+
+        <p class="forgot-password">
+          Already have an account? <a href="login.html">Login here</a>.
+        </p>
+      </form>
+    </div>
+    <script src="../components/bubble.js" ></script>
+    <script src="../components/signup.js" ></script>
+  </body>
+</html>

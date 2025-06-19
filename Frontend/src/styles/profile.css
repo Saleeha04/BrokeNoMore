@@ -1,8 +1,9 @@
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
-  background-color: #fef0cd;
+  background-color: #f5efe4;
   color: #333;
+  overflow-x: hidden;
 }
 
 /* Navbar */
@@ -14,10 +15,16 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #eee;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  position: relative;
 }
 
 .logo img {
   height: 40px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
@@ -25,12 +32,44 @@ body {
   font-size: 20px;
   color: #730027;
   cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #a20e40;
 }
 
 .menu {
   font-size: 28px;
   cursor: pointer;
   display: none;
+  color: #730027;
+}
+
+/* Mobile Navigation */
+.nav-links.mobile-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  flex-direction: column;
+  padding: 20px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: none;
+}
+
+.nav-links.mobile-nav.active {
+  display: flex;
+}
+
+.nav-links.mobile-nav a {
+  margin: 10px 0;
+  padding: 10px 30px;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+  text-align: left;
 }
 
 /* Profile Picture */
@@ -38,37 +77,68 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+  padding: 0 20px;
+}
+
+.profile-pic {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-pic .circle {
   width: 120px;
   height: 120px;
-  background-color: #fff;
   border-radius: 50%;
+  overflow: hidden;
+  background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
 }
 
-.square {
-  width: 60px;
-  height: 60px;
-  background-color: #ccc;
-  border-radius: 10px;
-  margin-bottom: 10px;
+.profile-pic .circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.edit-pic-btn {
+.profile-pic .edit-pic-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   background-color: #730027;
   color: #fff;
   border: none;
-  padding: 6px 12px;
-  font-size: 12px;
-  border-radius: 9999px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+/* Username Section */
+.username-section {
+  text-align: center;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.security-question-text {
+  font-weight: 600;
+  color: #730027;
+}
+
+.username {
+  font-size: 24px;
+  margin: 5px 0;
 }
 
 /* Form Styling */
@@ -76,15 +146,21 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+  padding: 0 20px;
 }
 
 .edit-form {
   background-color: #ffffff;
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(115, 0, 39, 0.2), 0 0 40px rgba(255, 179, 198, 0.3);
   width: 100%;
   max-width: 400px;
+  transition: all 0.3s ease-in-out;
+}
+
+.edit-form:hover {
+  box-shadow: 0 0 25px rgba(115, 0, 39, 0.3), 0 0 60px rgba(255, 179, 198, 0.4);
 }
 
 .edit-form label {
@@ -97,19 +173,61 @@ body {
 .edit-form input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 16px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.tooltip-trigger {
+  visibility: hidden;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #730027;
+  background-color: #ffe6ee;
+  border: 1px solid #730027;
+  border-radius: 50%;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tooltip-text {
+  display: none;
+  position: absolute;
+  top: 38px;
+  right: 0;
+  background-color: #730027;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 260px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+/* Hover behavior */
+.input-wrapper:hover .tooltip-trigger {
+  visibility: visible;
 }
 
 .btn-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.back-btn,
 .save-btn {
   background-color: #730027;
   color: #fff;
@@ -119,46 +237,496 @@ body {
   border-radius: 9999px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  min-width: 120px;
 }
 
-.back-btn:hover,
 .save-btn:hover {
   background-color: #a20e40;
 }
 
-.back-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
+.success-popup {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffe6ee;
+  color: #730027;
+  padding: 16px 28px;
+  border: 2px solid #730027;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: popIn 0.4s ease-out;
+  max-width: 90%;
+  text-align: center;
 }
 
-.edit-pic-btn {
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translate(-50%, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+.fade-out {
+  animation: fadeAway 1s forwards;
+}
+
+@keyframes fadeAway {
+  to {
+    opacity: 0;
+    transform: scale(0.9) translate(-50%, -50%);
+  }
+}
+
+/* Bubble Canvas and Background */
+#bubble-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.bubble-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bubble {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background-color: #730027;
-  color: #fff;
-  border: none;
+  bottom: -60px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(245, 205, 179, 0.3);
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  animation: float 20s infinite ease-in-out;
+  filter: blur(1px);
 }
 
+/* Bubble variations */
+.bubble:nth-child(1) { left: 10%; animation-duration: 25s; width: 40px; height: 40px; }
+.bubble:nth-child(2) { left: 25%; animation-duration: 18s; width: 20px; height: 20px; }
+.bubble:nth-child(3) { left: 40%; animation-duration: 22s; width: 35px; height: 35px; }
+.bubble:nth-child(4) { left: 60%; animation-duration: 19s; width: 25px; height: 25px; }
+.bubble:nth-child(5) { left: 75%; animation-duration: 24s; width: 30px; height: 30px; }
+.bubble:nth-child(6) { left: 85%; animation-duration: 21s; width: 18px; height: 18px; }
+.bubble:nth-child(7) { left: 50%; animation-duration: 20s; width: 28px; height: 28px; }
+.bubble:nth-child(8) { left: 35%; animation-duration: 23s; width: 22px; height: 22px; }
+.bubble:nth-child(9) { left: 5%; animation-duration: 26s; width: 38px; height: 38px; }
+.bubble:nth-child(10){ left: 90%; animation-duration: 20s; width: 32px; height: 32px; }
+.bubble:nth-child(19) { left: 15%; animation-duration: 22s; width: 26px; height: 26px; }
+.bubble:nth-child(20) { left: 65%; animation-duration: 27s; width: 34px; height: 34px; }
+.bubble:nth-child(21) { left: 80%; animation-duration: 19s; width: 20px; height: 20px; }
+.bubble:nth-child(22) { left: 30%; animation-duration: 23s; width: 36px; height: 36px; }
+.bubble:nth-child(23) { left: 95%; animation-duration: 21s; width: 24px; height: 24px; }
 
-/* Responsive */
-@media (max-width: 768px) {
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); opacity: 0.4; }
+  50% { transform: translateY(-500px) translateX(20px); opacity: 0.8; }
+  100% { transform: translateY(-1000px) translateX(-20px); opacity: 0; }
+}
+
+.edit-form input:focus,
+.edit-form input:valid {
+  outline: none;
+  box-shadow: 0 0 10px #ff99bb, 0 0 20px #ffccd9;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+  
+  .nav-links a {
+    font-size: 18px;
+    margin-left: 15px;
+  }
+  
+  .edit-form {
+    padding: 35px;
+    max-width: 450px;
+  }
+  
+  .tooltip-text {
+    width: 220px;
+  }
+}
+
+/* Mobile Styles (up to 768px) */
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+  
+  .logo img {
+    height: 35px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
   .menu {
     display: block;
   }
-
-  .nav-links {
+  
+  .profile-container {
+    margin-top: 30px;
+    padding: 0 25px;
+  }
+  
+  .profile-pic .circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .profile-pic .edit-pic-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  
+  .username {
+    font-size: 20px;
+  }
+  
+  .form-container {
+    margin-top: 30px;
+    padding: 0 25px; /* Increased padding for smaller form */
+  }
+  
+  .edit-form {
+    padding: 20px 18px; /* Reduced padding */
+    max-width: 320px; /* Much smaller max-width */
+    border-radius: 12px;
+  }
+  
+  .edit-form label {
+    font-size: 14px;
+  }
+  
+  .edit-form input {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .tooltip-text {
+    width: 180px;
+    font-size: 12px;
+    padding: 8px;
+    right: -10px;
+  }
+  
+  .save-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    width: 100%;
+    max-width: 160px; /* Smaller button */
+  }
+  
+  .success-popup {
+    font-size: 16px;
+    padding: 12px 20px;
+    margin: 0 25px;
+  }
+  
+  /* Reduce bubble count and size on mobile for performance */
+  .bubble:nth-child(n+11) {
     display: none;
+  }
+  
+  .bubble {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .bubble:nth-child(1) { width: 25px; height: 25px; }
+  .bubble:nth-child(3) { width: 22px; height: 22px; }
+  .bubble:nth-child(5) { width: 18px; height: 18px; }
+  .bubble:nth-child(7) { width: 20px; height: 20px; }
+  .bubble:nth-child(9) { width: 24px; height: 24px; }
+}
+
+/* Small Mobile Styles (up to 480px) */
+@media screen and (max-width: 480px) {
+  .navbar {
+    padding: 8px 12px;
+  }
+  
+  .logo img {
+    height: 30px;
+  }
+  
+  .menu {
+    font-size: 24px;
+  }
+  
+  .profile-container {
+    margin-top: 20px;
+    padding: 0 30px; /* More padding for very small screens */
+  }
+  
+  .profile-pic .circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .profile-pic .edit-pic-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .username {
+    font-size: 18px;
+  }
+  
+  .username-section {
+    margin-top: 15px;
+    padding: 0 30px;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+    padding: 0 30px; /* Increased side padding */
+  }
+  
+  .edit-form {
+    padding: 18px 15px; /* Very compact padding */
+    max-width: 280px; /* Even smaller width */
+    border-radius: 10px;
+  }
+  
+  .edit-form label {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  .edit-form input {
+    padding: 9px;
+    font-size: 16px;
+  }
+  
+  .input-wrapper {
+    margin-bottom: 18px; /* Reduced spacing */
+  }
+  
+  .tooltip-trigger {
+    font-size: 12px;
+    padding: 1px 4px;
+  }
+  
+  .tooltip-text {
+    width: 160px; /* Smaller tooltip */
+    font-size: 11px;
+    padding: 6px;
+    right: -20px;
+  }
+  
+  .save-btn {
+    padding: 11px 18px;
+    font-size: 14px;
+    max-width: 140px; /* Smaller button */
+  }
+  
+  .success-popup {
+    font-size: 14px;
+    padding: 10px 16px;
+    margin: 0 30px;
+  }
+  
+  /* Further reduce bubbles on very small screens */
+  .bubble:nth-child(n+6) {
+    display: none;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    50% { transform: translateY(-300px) translateX(15px); opacity: 0.6; }
+    100% { transform: translateY(-600px) translateX(-15px); opacity: 0; }
+  }
+}
+
+/* Extra Small Mobile Styles (up to 360px) */
+@media screen and (max-width: 360px) {
+  .profile-container {
+    padding: 0 35px;
+  }
+  
+  .username-section {
+    padding: 0 35px;
+  }
+  
+  .form-container {
+    padding: 0 35px; /* Maximum side padding */
+  }
+  
+  .edit-form {
+    padding: 15px 12px; /* Minimal padding */
+    max-width: 250px; /* Very compact width */
+  }
+  
+  .edit-form input {
+    padding: 8px;
+  }
+  
+  .input-wrapper {
+    margin-bottom: 16px;
+  }
+  
+  .save-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    max-width: 120px;
+  }
+  
+  .tooltip-text {
+    width: 140px;
+    font-size: 10px;
+  }
+  
+  .success-popup {
+    margin: 0 35px;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+}
+
+/* Large Desktop Styles (1200px and up) */
+@media screen and (min-width: 1200px) {
+  .navbar {
+    padding: 20px 50px;
+  }
+  
+  .nav-links a {
+    font-size: 22px;
+    margin-left: 25px;
+  }
+  
+  .profile-pic .circle {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .profile-pic .edit-pic-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  
+  .username {
+    font-size: 28px;
+  }
+  
+  .edit-form {
+    padding: 50px;
+    max-width: 500px;
+  }
+  
+  .tooltip-text {
+    width: 300px;
+    font-size: 15px;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .profile-container {
+    margin-top: 15px;
+  }
+  
+  .form-container {
+    margin-top: 15px;
+  }
+  
+  .edit-form {
+    padding: 15px;
+    max-width: 300px; /* Compact in landscape */
+  }
+  
+  .input-wrapper {
+    margin-bottom: 15px;
+  }
+  
+  .bubble {
+    display: none;
+  }
+}
+
+/* High DPI displays */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+  .edit-form {
+    box-shadow: 0 0 15px rgba(115, 0, 39, 0.15), 0 0 30px rgba(255, 179, 198, 0.25);
+  }
+  
+  .edit-form:hover {
+    box-shadow: 0 0 20px rgba(115, 0, 39, 0.25), 0 0 45px rgba(255, 179, 198, 0.35);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+  }
+  
+  .edit-form {
+    transition: none;
+  }
+  
+  .save-btn {
+    transition: none;
+  }
+  
+  .success-popup {
+    animation: none;
+  }
+}
+
+/* Focus improvements for keyboard navigation */
+.save-btn:focus,
+.edit-form input:focus,
+.menu:focus,
+.nav-links a:focus {
+  outline: 2px solid #730027;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .bubble-background,
+  .bubble,
+  #bubble-canvas {
+    display: none;
+  }
+  
+  .navbar {
+    box-shadow: none;
+    border-bottom: 1px solid #000;
+  }
+  
+  .edit-form {
+    box-shadow: none;
+    border: 1px solid #ccc;
   }
 }
