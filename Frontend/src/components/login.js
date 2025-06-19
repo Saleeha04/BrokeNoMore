@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('username', data.user.username);
         console.log('✅ Login successful:', data);
         window.location.href = 'home.html'; // ✅ redirect to dashboard
       } else {

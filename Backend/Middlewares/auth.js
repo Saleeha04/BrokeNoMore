@@ -1,8 +1,7 @@
 const auth = (req, res, next) => {
-  if (!req.headers.authorization) {
-    return res.status(401).json({ message: "Unauthorized" });
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ message: "Unauthorized: No session" });
   }
-  // Check token logic here...
   next();
 };
 

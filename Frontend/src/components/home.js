@@ -120,8 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("entry-modal");
   const closeBtn = document.querySelector(".close-btn");
   const expenseForm = document.getElementById("expense-form");
-  const expenseTableBody = document.querySelector(".expense-table");
-  const upcomingTableBody = document.querySelector(".upcoming-table");
+  const expenseTableBody = document.querySelector(".expense-table tbody");
+  const upcomingTableBody = document.querySelector(".upcoming-table tbody");
+
 
   const filterBtn = document.getElementById("filter-btn");
   const filterInput = document.getElementById("filter-input");
@@ -167,14 +168,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const category = expenseForm.category.value;
     const amount = expenseForm.amount.value;
     const isRecurring = recurringCheckbox.checked;
-    const rate = rateSelect.value || "-";
+    const rate = isRecurring ? rateSelect.value : "";
     const isUpcoming = isRecurring;
 
     const newRow = document.createElement("tr");
 
     // BACKEND SHENINANGINS
 
-    const userId = 2; // 🔑 Replace with the logged-in user's ID if you have it
+    const userId = localStorage.getItem('userId');
     const payload = {
       userId,
       title,
@@ -193,18 +194,16 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      credentials: 'include'
     })
       .then(res => res.json())
       .then(data => {
-        console.log("Server response:", data);
-        // getExpenses();
-        // if(method === 'POST'){
-        //   
-        // }
-        // renderDonutChart();
-        // location.reload();
+        console.log("✅ Expense saved:", data);
+        getExpenses(); // ✅ re-render tables
+        renderDonutChart(); // ✅ keep chart fresh
       })
+      
       .catch(err => {
         console.error("Error sending expense data:", err);
       });
@@ -256,12 +255,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Backend: Deleting
       const expenseId = row.dataset.id;
       fetch(`http://localhost:5000/api/expenses/${expenseId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       })
         .then(res => res.json)
         .then(data => {
           console.log(data.message);
-          row.remove();
+          getExpenses();
           renderDonutChart();
         }).catch(err => console.log('Error deleting', err));
     });
@@ -295,7 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const expenseId = row.dataset.id;
 
         fetch(`http://localhost:5000/api/expenses/mark-paid/${expenseId}`, {
-          method: 'POST'
+          method: 'POST', 
+          credentials: 'include'
         })
           .then(res => {
             if (!res.ok) throw new Error('Failed to mark as paid');
@@ -303,9 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(data => {
             console.log(data.message);
+            getExpenses();
             renderDonutChart();
-            // Refresh tables or re-fetch
-            // location.reload();
           })
           .catch(err => console.error('Error marking as paid:', err));
         
@@ -346,44 +346,57 @@ document.addEventListener("DOMContentLoaded", () => {
   getExpenses();
 
   function getExpenses() {
-    const userId = 2;
-  fetch(`http://localhost:5000/api/expenses/${userId}`)
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json(); // <-- fails if no content returned
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert("User not logged in. Please log in again.");
+      window.location.href = "login.html";
+      return;
+    }
+    fetch(`http://localhost:5000/api/expenses/${userId}`, {
+      credentials: 'include'
     })
-    .then(data => {
-      console.log("Fetched normal expenses:", data);
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json(); // <-- fails if no content returned
+      })
+      .then(data => {
+        console.log("Fetched normal expenses:", data);
 
-      data.forEach(expense => {
-        const row = document.createElement("tr");
-        row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
-        row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, "", expense.Amount, false);
-        expenseTableBody.appendChild(row);
-        
-        renderDonutChart(); 
-        attachRowListeners(row, false);
-      });
-    }).catch(err => console.error("Error loading expenses: ", err));
+        expenseTableBody.innerHTML = ""; // Clear old rows
+        upcomingTableBody.innerHTML = "";
 
-  fetch(`http://localhost:5000/api/expenses/upcoming/${userId}`)
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
+
+        data.forEach(expense => {
+          const row = document.createElement("tr");
+          row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
+          row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, "", expense.Amount, false);
+          expenseTableBody.appendChild(row);
+          
+          renderDonutChart(); 
+          attachRowListeners(row, false);
+        });
+      }).catch(err => console.error("Error loading expenses: ", err));
+
+    fetch(`http://localhost:5000/api/expenses/upcoming/${userId}`, {
+      credentials: 'include'
     })
-    .then(data => {
-      data.forEach(expense => {
-        const row = document.createElement("tr");
-        row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
-        row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
-        upcomingTableBody.appendChild(row);
-        
-        renderDonutChart();
-        attachRowListeners(row, true);
-      });
-    }).catch(err => console.error("Error loading upcoming expenses: ", err));
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        data.forEach(expense => {
+          const row = document.createElement("tr");
+          row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
+          row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
+          upcomingTableBody.appendChild(row);
+          
+          renderDonutChart();
+          attachRowListeners(row, true);
+        });
+      }).catch(err => console.error("Error loading upcoming expenses: ", err));
 
-  
+    
   }
 });
 

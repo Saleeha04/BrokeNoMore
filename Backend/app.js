@@ -1,37 +1,39 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const userRoutes = require('./routes/userRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
 const session = require('express-session');
 
-// middleware:
+const app = express();
+
+// Import routes
+const userRoutes = require('./routes/userRoutes');
+const expenseRoutes = require('./routes/expenseRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
+const alertRoutes = require('./routes/alertRoutes');
+const summaryRoutes = require('./routes/summaryRoutes');
+
+// Middleware: CORS
 app.use(cors({
-    origin: 'http://localhost:5500',
+    origin: ['http://localhost:5500', 'http://localhost:5502'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
+
+// Middleware: JSON & URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// session handling coming through bzzz
+// Middleware: Session handling
 app.use(session({
     secret: 'secretShushKey',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 3, // 3 hour session hy.
+        maxAge: 1000 * 60 * 60 * 3, // 3 hours
         httpOnly: true,
         sameSite: 'lax',
-        secure: false
+        secure: false // Set to true if using HTTPS
     }
 }));
-
-// import routes here:
-
-const budgetRoutes = require('./routes/budgetRoutes');
-const alertRoutes = require('./routes/alertRoutes');
-const summaryRoutes = require('./routes/summaryRoutes');
 
 // use routes here:
 

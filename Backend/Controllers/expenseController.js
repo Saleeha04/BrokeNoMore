@@ -14,7 +14,7 @@ const {
 const addExpense = async (req, res) => {
   console.log("▶️ Request body:", req.body);
 
-  const { userId, title, date, category, amount, isRecurring, Rate } = req.body;
+  const { userId, title, date, category, amount, isRecurring, rate } = req.body;
 
   try {
     const pool = await poolPromise;
@@ -30,9 +30,12 @@ const addExpense = async (req, res) => {
         OUTPUT INSERTED.ExpenseID
         VALUES (@userId, @title, @amount, @date, @isRecurring, @category)`);
 
-    const expenseId = expenseResult.recordSet[0].ExpenseID;
+    if (!expenseResult.recordset || !expenseResult.recordset[0]) {
+      throw new Error("Expense insert failed, no record returned. SQL result: " + JSON.stringify(expenseResult));
+    }
+    const expenseId = expenseResult.recordset[0].ExpenseID;
 
-    if (isRecurring) {
+    if (isRecurring && rate && rate !== "-") {
       const nextDueDate = calculateNextDate(date, rate);
       await pool.request()
         .input('expenseId', sql.Int, expenseId)
@@ -44,8 +47,8 @@ const addExpense = async (req, res) => {
 
     res.status(201).json({ message: 'Expenses saved Successfully!' });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: 'Error saving expense...', error: err.message });
+    console.error("❌ Error saving expense:", err);
+    res.status(500).json({ message: 'Error saving expense...', error: err.message, details: err });
   }
 };
 
@@ -243,43 +246,63 @@ const markExpenseAsPaid = async (req, res) => {
 
 // POST /expenses - Create a new expense
 const createExpense = async (req, res) => {
+  const { userId, title, amount, date, isRecurring, category, rate } = req.body;
+
+  if (!userId || !title || !amount || !date) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
   try {
-    const { userId, title, amount, date, isRecurring, category } = req.body;
+    const pool = await poolPromise;
 
-    // Validate required fields
-    if (!userId || !title || !amount || !date) {
-      return res.status(400).json({ message: 'Missing required fields' });
-    }
+    // Insert into Expenses table
+    const expenseResult = await pool.request()
+      .input("userId", sql.Int, userId)
+      .input("title", sql.VarChar, title)
+      .input("amount", sql.Decimal(10, 2), amount)
+      .input("date", sql.DateTime, date)
+      .input("isRecurring", sql.Bit, isRecurring)
+      .input("category", sql.VarChar, category || "")
+      .query(`
+        INSERT INTO Expenses (UserID, Title, Amount, Date, IsRecurring, Category)
+        OUTPUT INSERTED.ExpenseID
+        VALUES (@userId, @title, @amount, @date, @isRecurring, @category)
+      `);
 
-    // Create the expense in DB
-    const expenseId = await createExpenseDB({
-      userId,
-      title,
-      amount,
-      date,
-      isRecurring: isRecurring || false,
-      category,
-    });
+    const expenseId = expenseResult.recordset[0].ExpenseID;
 
-    // If recurring, create entry in RecurringExpenses
-    if (isRecurring) {
-      // NextDueDate: next month from the given date
+    console.log("✅ Expense inserted with ID:", expenseId);
+
+    // ✅ If it's recurring and not a "once" type
+    if (isRecurring && rate && rate.toLowerCase() !== "once") {
       const nextDueDate = new Date(date);
-      nextDueDate.setMonth(nextDueDate.getMonth() + 1);
 
-      await createRecurringExpenseDB({
-        expenseId,
-        nextDueDate,
-        frequency: 'Monthly',
-      });
+      // Calculate next date based on frequency
+      if (rate === "weekly") nextDueDate.setDate(nextDueDate.getDate() + 7);
+      else if (rate === "monthly") nextDueDate.setMonth(nextDueDate.getMonth() + 1);
+      else if (rate === "annually") nextDueDate.setFullYear(nextDueDate.getFullYear() + 1);
+
+      await pool.request()
+        .input("expenseId", sql.Int, expenseId)
+        .input("nextDueDate", sql.Date, nextDueDate)
+        .input("frequency", sql.VarChar, rate)
+        .query(`
+          INSERT INTO RecurringExpenses (ExpenseID, NextDueDate, Frequency)
+          VALUES (@expenseId, @nextDueDate, @frequency)
+        `);
+
+      console.log("📌 Recurring expense recorded:", { expenseId, nextDueDate, rate });
+    } else {
+      console.log("📌 Non-recurring or once-only expense, skipping recurring logic.");
     }
 
-    res.status(201).json({ message: 'Expense created successfully', expenseId });
+    res.status(201).json({ message: "Expense created successfully", expenseId });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Error creating expense', error: err.message });
+    console.error("❌ Error creating expense:", err);
+    res.status(500).json({ message: "Error creating expense", error: err.message });
   }
 };
+
 
 
 
