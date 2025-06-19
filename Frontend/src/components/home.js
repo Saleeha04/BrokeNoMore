@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
   expenseForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
+    console.log(expenseForm.date.value)
     const title = expenseForm.title.value;
     const date = expenseForm.date.value;
     const category = expenseForm.category.value;
@@ -197,7 +198,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(data => {
         console.log("Server response:", data);
-        location.reload();
+        // getExpenses();
+        // if(method === 'POST'){
+        //   
+        // }
+        // renderDonutChart();
+        // location.reload();
       })
       .catch(err => {
         console.error("Error sending expense data:", err);
@@ -214,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // (isUpcoming ? upcomingTableBody : expenseTableBody).appendChild(newRow);
     // attachRowListeners(newRow, isUpcoming);
     closeModal();
-    renderDonutChart();
   });
 
   function getRowHTML(date, title, category, rate, amount, isUpcoming) {
@@ -267,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
       editingExpenseId = row.dataset.id; // ✅ Store ID for form submission
 
       const cells = row.querySelectorAll("td");
-      expenseForm.date.value = cells[0].textContent;
+      expenseForm.date.value = new Date(cells[0].textContent).toISOString().slice(0, 10);
       expenseForm.title.value = cells[1].textContent;
       expenseForm.category.value = cells[2].textContent;
 
@@ -298,11 +303,12 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(data => {
             console.log(data.message);
+            renderDonutChart();
             // Refresh tables or re-fetch
-            location.reload();
+            // location.reload();
           })
           .catch(err => console.error('Error marking as paid:', err));
-        renderDonutChart();
+        
 
       });
     }
@@ -337,7 +343,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const userId = 2;
+  getExpenses();
+
+  function getExpenses() {
+    const userId = 2;
   fetch(`http://localhost:5000/api/expenses/${userId}`)
     .then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -351,6 +360,8 @@ document.addEventListener("DOMContentLoaded", () => {
         row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
         row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, "", expense.Amount, false);
         expenseTableBody.appendChild(row);
+        
+        renderDonutChart(); 
         attachRowListeners(row, false);
       });
     }).catch(err => console.error("Error loading expenses: ", err));
@@ -366,10 +377,16 @@ document.addEventListener("DOMContentLoaded", () => {
         row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
         row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
         upcomingTableBody.appendChild(row);
+        
+        renderDonutChart();
         attachRowListeners(row, true);
       });
     }).catch(err => console.error("Error loading upcoming expenses: ", err));
+
+  
+  }
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.querySelector(".logout-btn");
