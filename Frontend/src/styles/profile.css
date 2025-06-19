@@ -3,6 +3,7 @@ body {
   margin: 0;
   background-color: #f5efe4;
   color: #333;
+  overflow-x: hidden;
 }
 
 /* Navbar */
@@ -14,10 +15,16 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #eee;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  position: relative;
 }
 
 .logo img {
   height: 40px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
@@ -25,12 +32,44 @@ body {
   font-size: 20px;
   color: #730027;
   cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #a20e40;
 }
 
 .menu {
   font-size: 28px;
   cursor: pointer;
   display: none;
+  color: #730027;
+}
+
+/* Mobile Navigation */
+.nav-links.mobile-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  flex-direction: column;
+  padding: 20px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: none;
+}
+
+.nav-links.mobile-nav.active {
+  display: flex;
+}
+
+.nav-links.mobile-nav a {
+  margin: 10px 0;
+  padding: 10px 30px;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+  text-align: left;
 }
 
 /* Profile Picture */
@@ -38,6 +77,7 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+  padding: 0 20px;
 }
 
 .profile-pic {
@@ -68,8 +108,8 @@ body {
 
 .profile-pic .edit-pic-btn {
   position: absolute;
-  bottom: -0px;
-  right: -0px;
+  bottom: 0;
+  right: 0;
   background-color: #730027;
   color: #fff;
   border: none;
@@ -89,6 +129,7 @@ body {
 .username-section {
   text-align: center;
   margin-top: 20px;
+  padding: 0 20px;
 }
 
 .security-question-text {
@@ -106,6 +147,7 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+  padding: 0 20px;
 }
 
 .edit-form {
@@ -113,17 +155,14 @@ body {
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(115, 0, 39, 0.2), 0 0 40px rgba(255, 179, 198, 0.3);
-
   width: 100%;
   max-width: 400px;
   transition: all 0.3s ease-in-out;
- 
-
 }
+
 .edit-form:hover {
   box-shadow: 0 0 25px rgba(115, 0, 39, 0.3), 0 0 60px rgba(255, 179, 198, 0.4);
 }
-
 
 .edit-form label {
   display: block;
@@ -140,6 +179,7 @@ body {
   border: 1px solid #ccc;
   font-size: 16px;
   background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .input-wrapper {
@@ -198,6 +238,7 @@ body {
   border-radius: 9999px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  min-width: 120px;
 }
 
 .save-btn:hover {
@@ -220,6 +261,8 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   animation: popIn 0.4s ease-out;
+  max-width: 90%;
+  text-align: center;
 }
 
 @keyframes popIn {
@@ -270,13 +313,13 @@ body {
   bottom: -60px;
   width: 30px;
   height: 30px;
-  background-color: rgba(245, 205, 179, 0.3); /* soft bubble tone */
+  background-color: rgba(245, 205, 179, 0.3);
   border-radius: 50%;
   animation: float 20s infinite ease-in-out;
   filter: blur(1px);
 }
 
-/* Adjust sizes and animation duration for variety */
+/* Bubble variations */
 .bubble:nth-child(1) { left: 10%; animation-duration: 25s; width: 40px; height: 40px; }
 .bubble:nth-child(2) { left: 25%; animation-duration: 18s; width: 20px; height: 20px; }
 .bubble:nth-child(3) { left: 40%; animation-duration: 22s; width: 35px; height: 35px; }
@@ -285,7 +328,7 @@ body {
 .bubble:nth-child(6) { left: 85%; animation-duration: 21s; width: 18px; height: 18px; }
 .bubble:nth-child(7) { left: 50%; animation-duration: 20s; width: 28px; height: 28px; }
 .bubble:nth-child(8) { left: 35%; animation-duration: 23s; width: 22px; height: 22px; }
-.bubble:nth-child(9) { left: 5%;  animation-duration: 26s; width: 38px; height: 38px; }
+.bubble:nth-child(9) { left: 5%; animation-duration: 26s; width: 38px; height: 38px; }
 .bubble:nth-child(10){ left: 90%; animation-duration: 20s; width: 32px; height: 32px; }
 .bubble:nth-child(19) { left: 15%; animation-duration: 22s; width: 26px; height: 26px; }
 .bubble:nth-child(20) { left: 65%; animation-duration: 27s; width: 34px; height: 34px; }
@@ -293,10 +336,9 @@ body {
 .bubble:nth-child(22) { left: 30%; animation-duration: 23s; width: 36px; height: 36px; }
 .bubble:nth-child(23) { left: 95%; animation-duration: 21s; width: 24px; height: 24px; }
 
-
 @keyframes float {
-  0%   { transform: translateY(0) translateX(0);      opacity: 0.4; }
-  50%  { transform: translateY(-500px) translateX(20px); opacity: 0.8; }
+  0% { transform: translateY(0) translateX(0); opacity: 0.4; }
+  50% { transform: translateY(-500px) translateX(20px); opacity: 0.8; }
   100% { transform: translateY(-1000px) translateX(-20px); opacity: 0; }
 }
 
@@ -305,4 +347,387 @@ body {
   outline: none;
   box-shadow: 0 0 10px #ff99bb, 0 0 20px #ffccd9;
   transition: box-shadow 0.3s ease-in-out;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+  
+  .nav-links a {
+    font-size: 18px;
+    margin-left: 15px;
+  }
+  
+  .edit-form {
+    padding: 35px;
+    max-width: 450px;
+  }
+  
+  .tooltip-text {
+    width: 220px;
+  }
+}
+
+/* Mobile Styles (up to 768px) */
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+  
+  .logo img {
+    height: 35px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .menu {
+    display: block;
+  }
+  
+  .profile-container {
+    margin-top: 30px;
+    padding: 0 25px;
+  }
+  
+  .profile-pic .circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .profile-pic .edit-pic-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  
+  .username {
+    font-size: 20px;
+  }
+  
+  .form-container {
+    margin-top: 30px;
+    padding: 0 25px; /* Increased padding for smaller form */
+  }
+  
+  .edit-form {
+    padding: 20px 18px; /* Reduced padding */
+    max-width: 320px; /* Much smaller max-width */
+    border-radius: 12px;
+  }
+  
+  .edit-form label {
+    font-size: 14px;
+  }
+  
+  .edit-form input {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .tooltip-text {
+    width: 180px;
+    font-size: 12px;
+    padding: 8px;
+    right: -10px;
+  }
+  
+  .save-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    width: 100%;
+    max-width: 160px; /* Smaller button */
+  }
+  
+  .success-popup {
+    font-size: 16px;
+    padding: 12px 20px;
+    margin: 0 25px;
+  }
+  
+  /* Reduce bubble count and size on mobile for performance */
+  .bubble:nth-child(n+11) {
+    display: none;
+  }
+  
+  .bubble {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .bubble:nth-child(1) { width: 25px; height: 25px; }
+  .bubble:nth-child(3) { width: 22px; height: 22px; }
+  .bubble:nth-child(5) { width: 18px; height: 18px; }
+  .bubble:nth-child(7) { width: 20px; height: 20px; }
+  .bubble:nth-child(9) { width: 24px; height: 24px; }
+}
+
+/* Small Mobile Styles (up to 480px) */
+@media screen and (max-width: 480px) {
+  .navbar {
+    padding: 8px 12px;
+  }
+  
+  .logo img {
+    height: 30px;
+  }
+  
+  .menu {
+    font-size: 24px;
+  }
+  
+  .profile-container {
+    margin-top: 20px;
+    padding: 0 30px; /* More padding for very small screens */
+  }
+  
+  .profile-pic .circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .profile-pic .edit-pic-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .username {
+    font-size: 18px;
+  }
+  
+  .username-section {
+    margin-top: 15px;
+    padding: 0 30px;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+    padding: 0 30px; /* Increased side padding */
+  }
+  
+  .edit-form {
+    padding: 18px 15px; /* Very compact padding */
+    max-width: 280px; /* Even smaller width */
+    border-radius: 10px;
+  }
+  
+  .edit-form label {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  .edit-form input {
+    padding: 9px;
+    font-size: 16px;
+  }
+  
+  .input-wrapper {
+    margin-bottom: 18px; /* Reduced spacing */
+  }
+  
+  .tooltip-trigger {
+    font-size: 12px;
+    padding: 1px 4px;
+  }
+  
+  .tooltip-text {
+    width: 160px; /* Smaller tooltip */
+    font-size: 11px;
+    padding: 6px;
+    right: -20px;
+  }
+  
+  .save-btn {
+    padding: 11px 18px;
+    font-size: 14px;
+    max-width: 140px; /* Smaller button */
+  }
+  
+  .success-popup {
+    font-size: 14px;
+    padding: 10px 16px;
+    margin: 0 30px;
+  }
+  
+  /* Further reduce bubbles on very small screens */
+  .bubble:nth-child(n+6) {
+    display: none;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    50% { transform: translateY(-300px) translateX(15px); opacity: 0.6; }
+    100% { transform: translateY(-600px) translateX(-15px); opacity: 0; }
+  }
+}
+
+/* Extra Small Mobile Styles (up to 360px) */
+@media screen and (max-width: 360px) {
+  .profile-container {
+    padding: 0 35px;
+  }
+  
+  .username-section {
+    padding: 0 35px;
+  }
+  
+  .form-container {
+    padding: 0 35px; /* Maximum side padding */
+  }
+  
+  .edit-form {
+    padding: 15px 12px; /* Minimal padding */
+    max-width: 250px; /* Very compact width */
+  }
+  
+  .edit-form input {
+    padding: 8px;
+  }
+  
+  .input-wrapper {
+    margin-bottom: 16px;
+  }
+  
+  .save-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    max-width: 120px;
+  }
+  
+  .tooltip-text {
+    width: 140px;
+    font-size: 10px;
+  }
+  
+  .success-popup {
+    margin: 0 35px;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+}
+
+/* Large Desktop Styles (1200px and up) */
+@media screen and (min-width: 1200px) {
+  .navbar {
+    padding: 20px 50px;
+  }
+  
+  .nav-links a {
+    font-size: 22px;
+    margin-left: 25px;
+  }
+  
+  .profile-pic .circle {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .profile-pic .edit-pic-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  
+  .username {
+    font-size: 28px;
+  }
+  
+  .edit-form {
+    padding: 50px;
+    max-width: 500px;
+  }
+  
+  .tooltip-text {
+    width: 300px;
+    font-size: 15px;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .profile-container {
+    margin-top: 15px;
+  }
+  
+  .form-container {
+    margin-top: 15px;
+  }
+  
+  .edit-form {
+    padding: 15px;
+    max-width: 300px; /* Compact in landscape */
+  }
+  
+  .input-wrapper {
+    margin-bottom: 15px;
+  }
+  
+  .bubble {
+    display: none;
+  }
+}
+
+/* High DPI displays */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+  .edit-form {
+    box-shadow: 0 0 15px rgba(115, 0, 39, 0.15), 0 0 30px rgba(255, 179, 198, 0.25);
+  }
+  
+  .edit-form:hover {
+    box-shadow: 0 0 20px rgba(115, 0, 39, 0.25), 0 0 45px rgba(255, 179, 198, 0.35);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+  }
+  
+  .edit-form {
+    transition: none;
+  }
+  
+  .save-btn {
+    transition: none;
+  }
+  
+  .success-popup {
+    animation: none;
+  }
+}
+
+/* Focus improvements for keyboard navigation */
+.save-btn:focus,
+.edit-form input:focus,
+.menu:focus,
+.nav-links a:focus {
+  outline: 2px solid #730027;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .bubble-background,
+  .bubble,
+  #bubble-canvas {
+    display: none;
+  }
+  
+  .navbar {
+    box-shadow: none;
+    border-bottom: 1px solid #000;
+  }
+  
+  .edit-form {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
 }

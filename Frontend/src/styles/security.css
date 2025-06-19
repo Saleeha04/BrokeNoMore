@@ -1,9 +1,10 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   background-color: #f5efe4;
   color: #333;
   transition: filter 0.3s ease;
+  overflow-x: hidden;
 }
 
 body.modal-open .page-wrapper,
@@ -19,14 +20,15 @@ body.modal-open .bubble-background {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 
 .form-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  flex-direction: column; /* Stack vertically */
-  align-items: center; /* Center align items */
+  flex-direction: column;
+  align-items: center;
 }
 
 .edit-form {
@@ -38,21 +40,69 @@ body.modal-open .bubble-background {
   max-width: 400px;
   transition: all 0.3s ease-in-out;
   z-index: 10;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .edit-form:hover {
   box-shadow: 0 0 25px rgba(115, 0, 39, 0.3), 0 0 60px rgba(255, 179, 198, 0.4);
 }
 
+/* Back button styling - positioned at top */
+.back-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: #730027;
+  color: #fff;
+  border: none !important;
+  outline: none !important;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(115, 0, 39, 0.3);
+  z-index: 20;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.back-btn:hover {
+  background-color: #a20e40;
+  transform: translateX(-3px);
+  box-shadow: 0 5px 15px rgba(115, 0, 39, 0.4);
+}
+
+.back-btn:focus {
+  outline: 3px solid #ffb3c6 !important;
+  outline-offset: 3px;
+  border: none !important;
+}
+
+.back-btn:active {
+  transform: translateX(-1px);
+  box-shadow: 0 2px 8px rgba(115, 0, 39, 0.5);
+}
+
 .username-section {
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 20px; /* Add space for back button */
 }
 
 .edit-form h2.username {
   font-size: 24px;
   text-align: center;
   color: #730027;
+  margin: 0 0 20px 0;
 }
 
 .edit-form label {
@@ -71,6 +121,7 @@ body.modal-open .bubble-background {
   border: 1px solid #ccc;
   font-size: 16px;
   background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .edit-form input:hover,
@@ -87,15 +138,10 @@ body.modal-open .bubble-background {
   box-shadow: 0 0 8px #ffb3c6 !important;
 }
 
-.edit-form input,
-.edit-form select {
-  border: 1px solid #ccc;
-  box-shadow: none;
-}
-
 .btn-container {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .save-btn {
@@ -103,24 +149,25 @@ body.modal-open .bubble-background {
   color: #fff;
   padding: 10px 20px;
   font-size: 16px;
-  margin-right: 10px;
   border: none;
   border-radius: 999px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  flex: 1;
+  min-height: 44px;
 }
 
-/* .save-btn:hover {
-  background-color: #ffe6ec;
-} */
+.save-btn:hover {
+  background-color: #a20e40;
+}
 
 .save-btn.delete {
   background-color: transparent;
   color: #730027;
   border: 2px solid #730027;
-
 }
-.save-btn.delete:hover{
+
+.save-btn.delete:hover {
   background-color: #ffe6ec;
 }
 
@@ -152,6 +199,8 @@ body.modal-open .bubble-background {
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .modal-content {
@@ -160,10 +209,11 @@ body.modal-open .bubble-background {
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(115, 0, 39, 0.2), 0 0 40px rgba(255, 179, 198, 0.3);
   max-width: 400px;
-  width: 90%;
+  width: 100%;
   color: #730027;
   animation: popIn 0.3s ease-out;
   transition: all 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
 .modal-content:hover {
@@ -171,8 +221,14 @@ body.modal-open .bubble-background {
 }
 
 @keyframes popIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modal-content p {
@@ -190,11 +246,13 @@ body.modal-open .bubble-background {
   border: 1px solid #ccc;
   font-size: 16px;
   background-color: #fff;
+  box-sizing: border-box;
 }
 
 .modal-buttons {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .modal-buttons button {
@@ -206,6 +264,8 @@ body.modal-open .bubble-background {
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s;
+  flex: 1;
+  min-height: 44px;
 }
 
 .modal-buttons button:hover {
@@ -234,74 +294,482 @@ body.modal-open .bubble-background {
 }
 
 @keyframes float {
-  0%   { transform: translateY(0); opacity: 0.4; }
-  50%  { transform: translateY(-500px); opacity: 0.8; }
-  100% { transform: translateY(-1000px); opacity: 0; }
+  0% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-500px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-1000px);
+    opacity: 0;
+  }
 }
 
-/* Add these styles to your security.css file */
+/* ===== RESPONSIVE DESIGN ===== */
 
-/* Profile Picture Container */
-.profile-pic-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .page-wrapper {
+    padding: 15px;
+  }
+
+  .edit-form {
+    padding: 35px;
+    max-width: 450px;
+  }
+
+  .modal-content {
+    padding: 35px;
+    max-width: 450px;
+  }
+
+  .edit-form h2.username {
+    font-size: 22px;
+  }
 }
 
-.profile-pic {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+/* Mobile Styles (up to 768px) */
+@media screen and (max-width: 768px) {
+  .back-btn {
+    top: 12px;
+    left: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .page-wrapper {
+    padding: 25px;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+
+  .edit-form {
+    padding: 20px 18px;
+    max-width: 320px;
+    border-radius: 12px;
+  }
+
+  .username-section {
+    margin-top: 25px;
+  }
+
+  .edit-form h2.username {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .edit-form label {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .edit-form input,
+  .edit-form select {
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+
+  .btn-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .save-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    width: 100%;
+  }
+
+  /* Modal adjustments */
+  .modal {
+    padding: 25px;
+  }
+
+  .modal-content {
+    padding: 20px 18px;
+    max-width: 320px;
+    border-radius: 12px;
+  }
+
+  .modal-content p {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .modal-content input {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .modal-buttons button {
+    padding: 12px 20px;
+    font-size: 15px;
+    width: 100%;
+  }
+
+  /* Reduce bubbles on mobile */
+  .bubble:nth-child(n + 8) {
+    display: none;
+  }
+
+  .bubble {
+    width: 15px;
+    height: 15px;
+  }
 }
 
-.profile-pic .circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #730027;
+/* Small Mobile Styles (up to 480px) */
+@media screen and (max-width: 480px) {
+  .back-btn {
+    top: 10px;
+    left: 10px;
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .page-wrapper {
+    padding: 30px;
+    padding-top: 30px;
+  }
+
+  .edit-form {
+    padding: 18px 15px;
+    max-width: 280px;
+    border-radius: 10px;
+  }
+
+  .username-section {
+    margin-top: 20px;
+  }
+
+  .edit-form h2.username {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .edit-form label {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+  .edit-form input,
+  .edit-form select {
+    padding: 9px 10px;
+    margin-bottom: 14px;
+    font-size: 16px;
+  }
+
+  .save-btn {
+    padding: 11px 18px;
+    font-size: 14px;
+  }
+
+  /* Modal adjustments */
+  .modal {
+    padding: 30px;
+  }
+
+  .modal-content {
+    padding: 18px 15px;
+    max-width: 280px;
+    border-radius: 10px;
+  }
+
+  .modal-content p {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .modal-content input {
+    padding: 9px 10px;
+    margin-bottom: 10px;
+  }
+
+  .modal-buttons button {
+    padding: 11px 18px;
+    font-size: 14px;
+  }
+
+  /* Further reduce bubbles */
+  .bubble:nth-child(n + 5) {
+    display: none;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-300px);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(-600px);
+      opacity: 0;
+    }
+  }
 }
 
-.profile-pic .circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Extra Small Mobile Styles (up to 360px) */
+@media screen and (max-width: 360px) {
+  .back-btn {
+    top: 8px;
+    left: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .page-wrapper {
+    padding: 35px;
+  }
+
+  .edit-form {
+    padding: 15px 12px;
+    max-width: 250px;
+  }
+
+  .username-section {
+    margin-top: 18px;
+  }
+
+  .edit-form h2.username {
+    font-size: 17px;
+    margin-bottom: 14px;
+  }
+
+  .edit-form input,
+  .edit-form select {
+    padding: 8px 9px;
+    margin-bottom: 12px;
+  }
+
+  .save-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  /* Modal adjustments */
+  .modal {
+    padding: 35px;
+  }
+
+  .modal-content {
+    padding: 15px 12px;
+    max-width: 250px;
+  }
+
+  .modal-content p {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .modal-content input {
+    padding: 8px 9px;
+    margin-bottom: 8px;
+  }
+
+  .modal-buttons button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
 }
 
-.profile-pic .edit-pic-btn {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #730027;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-  transition: all 0.3s ease;
+/* Large Desktop Styles (1200px and up) */
+@media screen and (min-width: 1200px) {
+  .back-btn {
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .page-wrapper {
+    padding: 30px;
+  }
+
+  .edit-form {
+    padding: 50px;
+    max-width: 500px;
+  }
+
+  .username-section {
+    margin-top: 25px;
+  }
+
+  .edit-form h2.username {
+    font-size: 28px;
+  }
+
+  .modal-content {
+    padding: 50px;
+    max-width: 500px;
+  }
 }
 
-.profile-pic .edit-pic-btn:hover {
-  background-color: #a30035;
-  transform: scale(1.1);
+/* Landscape orientation adjustments for mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .back-btn {
+    top: 8px;
+    left: 8px;
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .page-wrapper {
+    padding: 15px;
+    align-items: center;
+  }
+
+  .edit-form {
+    padding: 15px;
+    max-width: 300px;
+  }
+
+  .username-section {
+    margin-top: 15px;
+  }
+
+  .edit-form h2.username {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .edit-form input,
+  .edit-form select {
+    margin-bottom: 10px;
+    padding: 7px 10px;
+  }
+
+  .btn-container {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .modal-content {
+    padding: 15px;
+    max-width: 300px;
+  }
+
+  .bubble {
+    display: none;
+  }
 }
 
+/* High DPI displays */
+@media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min-resolution: 192dpi) {
+  .edit-form {
+    box-shadow: 0 0 15px rgba(115, 0, 39, 0.15), 0 0 30px rgba(255, 179, 198, 0.25);
+  }
 
-.edit-form {
-  padding-top: 30px;
-  padding-bottom: 40px;
+  .edit-form:hover {
+    box-shadow: 0 0 20px rgba(115, 0, 39, 0.25), 0 0 45px rgba(255, 179, 198, 0.35);
+  }
+
+  .modal-content {
+    box-shadow: 0 0 15px rgba(115, 0, 39, 0.15), 0 0 30px rgba(255, 179, 198, 0.25);
+  }
+
+  .modal-content:hover {
+    box-shadow: 0 0 20px rgba(115, 0, 39, 0.25), 0 0 45px rgba(255, 179, 198, 0.35);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+  }
+
+  .edit-form {
+    transition: none;
+  }
+
+  .save-btn {
+    transition: none;
+  }
+
+  .back-btn {
+    transition: none;
+  }
+
+  .modal-content {
+    animation: none;
+    transition: none;
+  }
+
+  .slide-in {
+    animation: none;
+  }
+}
+
+/* Focus improvements for keyboard navigation */
+.save-btn:focus,
+.edit-form input:focus,
+.edit-form select:focus,
+.modal-buttons button:focus,
+.modal-content input:focus,
+.back-btn:focus {
+  outline: 2px solid #730027;
+  outline-offset: 2px;
+}
+
+/* Touch target improvements */
+@media (pointer: coarse) {
+  .save-btn,
+  .modal-buttons button {
+    min-height: 48px;
+    padding: 14px 20px;
+  }
+
+  .back-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .edit-form input,
+  .edit-form select,
+  .modal-content input {
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .bubble-background,
+  .bubble,
+  #bubble-canvas {
+    display: none;
+  }
+
+  .edit-form,
+  .modal-content {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .modal {
+    position: static;
+    background: none;
+    display: block;
+  }
+
+  .back-btn {
+    display: none;
+  }
 }
