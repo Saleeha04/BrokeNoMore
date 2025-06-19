@@ -2,6 +2,16 @@
 
 let donutChart = null;
 
+// Function to format date as YYYY/MM/DD
+function formatDate(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}/${month}/${day}`;
+}
+
 function renderDonutChart() {
   const expenseTableBody = document.querySelector(".expense-table");
   const rows = expenseTableBody.querySelectorAll("tr");
@@ -116,6 +126,21 @@ if (recurringCheckbox) {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Load user data and income/goal information
+  loadUserData();
+  loadIncomeGoalData();
+  loadProfilePicture();
+
+  // Check if we're returning from profile page with updated income/goal
+  if (localStorage.getItem('incomeGoalUpdated') === 'true') {
+    // Clear the flag
+    localStorage.removeItem('incomeGoalUpdated');
+    // Refresh the income/goal display after a short delay to ensure data is updated
+    setTimeout(() => {
+      loadIncomeGoalData();
+    }, 500);
+  }
+
   const plusBtn = document.querySelector(".plus-btn");
   const modal = document.getElementById("entry-modal");
   const closeBtn = document.querySelector(".close-btn");
@@ -130,6 +155,152 @@ document.addEventListener("DOMContentLoaded", () => {
   const recurringCheckbox = document.getElementById("recurring-checkbox");
   const recurringDetails = document.getElementById("recurring-details");
 
+  // Function to load user data
+  function loadUserData() {
+    fetch("http://localhost:5000/api/user/me", {
+      method: "GET",
+      credentials: 'include'
+    })
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            alert("Session expired. Please log in again.");
+            window.location.href = "login.html";
+            return;
+          }
+          throw new Error('Failed to fetch user data');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Update username display while preserving the edit button
+        const usernameElement = document.querySelector(".username");
+        if (usernameElement) {
+          // Preserve the edit button by only updating the text content
+          const editButton = usernameElement.querySelector('.edit-profile-link');
+          usernameElement.innerHTML = '';
+          usernameElement.appendChild(document.createTextNode(data.username || 'Username'));
+          if (editButton) {
+            usernameElement.appendChild(editButton);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading user data:", err);
+      });
+  }
+
+  // Function to load profile picture
+  function loadProfilePicture() {
+    fetch("http://localhost:5000/api/user/profile-picture", {
+      method: "GET",
+      credentials: 'include'
+    })
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            alert("Session expired. Please log in again.");
+            window.location.href = "login.html";
+            return;
+          }
+          if (res.status === 404) {
+            return { profilePicture: null };
+          }
+          throw new Error('Failed to fetch profile picture');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const profilePicElement = document.querySelector(".profile-pic");
+        if (profilePicElement) {
+          // Create an img element if it doesn't exist
+          let imgElement = profilePicElement.querySelector('img');
+          if (!imgElement) {
+            imgElement = document.createElement('img');
+            imgElement.style.cssText = `
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 50%;
+            `;
+            profilePicElement.appendChild(imgElement);
+          }
+          // Set profile picture or default
+          if (data.profilePicture) {
+            imgElement.src = data.profilePicture;
+          } else {
+            // Set a default background color or placeholder
+            imgElement.style.display = 'none';
+            profilePicElement.style.backgroundColor = '#ddd';
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading profile picture:", err);
+      });
+  }
+
+  // Function to load income and goal data
+  function loadIncomeGoalData() {
+    fetch("http://localhost:5000/api/user/income-goal", {
+      method: "GET",
+      credentials: 'include'
+    })
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            alert("Session expired. Please log in again.");
+            window.location.href = "login.html";
+            return;
+          }
+          throw new Error('Failed to fetch income/goal data');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Update the profile section with income and goal data
+        updateProfileWithIncomeGoal(data);
+      })
+      .catch((err) => {
+        console.error("Error loading income/goal data:", err);
+      });
+  }
+
+  // Function to update profile section with income and goal data
+  function updateProfileWithIncomeGoal(data) {
+    const userInfoElement = document.querySelector(".user-info");
+    if (userInfoElement) {
+      // Keep the username (first child)
+      const usernameElement = userInfoElement.querySelector(".username");
+      
+      // Clear existing content except username
+      userInfoElement.innerHTML = '';
+      if (usernameElement) {
+        userInfoElement.appendChild(usernameElement);
+      }
+      
+      // Add income display
+      const incomeElement = document.createElement('div');
+      incomeElement.className = 'income-display';
+      incomeElement.innerHTML = `<span>Income: $${data.income || 0}</span>`;
+      userInfoElement.appendChild(incomeElement);
+      
+      // Add goal display
+      const goalElement = document.createElement('div');
+      goalElement.className = 'goal-display';
+      goalElement.innerHTML = `<span>Goal: $${data.goal || 0}</span>`;
+      userInfoElement.appendChild(goalElement);
+    }
+  }
+
+  // Function to refresh income/goal display (can be called from other pages)
+  function refreshIncomeGoalDisplay() {
+    loadIncomeGoalData();
+  }
+
+  // Make the function globally available so other pages can call it
+  window.refreshIncomeGoalDisplay = refreshIncomeGoalDisplay;
+
   function closeModal() {
     modal.classList.add("hidden");
     expenseForm.reset();
@@ -143,6 +314,30 @@ document.addEventListener("DOMContentLoaded", () => {
   let editingUpcoming = false;
   let editingExpenseId = null;
 
+  // Function to set date constraints for current month
+  function setDateConstraints() {
+    const dateInput = expenseForm.date;
+    const now = new Date();
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
+    // Format dates as YYYY-MM-DD for input constraints
+    const minDate = firstDayOfMonth.toISOString().slice(0, 10);
+    const maxDate = lastDayOfMonth.toISOString().slice(0, 10);
+    
+    console.log('Setting date constraints:', { minDate, maxDate, currentDate: now.toISOString().slice(0, 10) });
+    
+    dateInput.min = minDate;
+    dateInput.max = maxDate;
+    
+    // Force the input to refresh by temporarily clearing and resetting
+    const currentValue = dateInput.value;
+    dateInput.value = '';
+    dateInput.value = currentValue || now.toISOString().slice(0, 10);
+    
+    console.log('Date input constraints set:', { min: dateInput.min, max: dateInput.max, value: dateInput.value });
+  }
+
   recurringCheckbox.addEventListener("change", () => {
     recurringDetails.style.display = recurringCheckbox.checked ? "block" : "none";
   });
@@ -150,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
   plusBtn.addEventListener("click", () => {
     rowBeingEdited = null;
     editingUpcoming = false;
+    setDateConstraints();
     modal.classList.remove("hidden");
   });
 
@@ -272,7 +468,50 @@ document.addEventListener("DOMContentLoaded", () => {
       editingExpenseId = row.dataset.id; // ✅ Store ID for form submission
 
       const cells = row.querySelectorAll("td");
-      expenseForm.date.value = new Date(cells[0].textContent).toISOString().slice(0, 10);
+      const existingDate = new Date(cells[0].textContent);
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth();
+      const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+      const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+      
+      console.log('Edit button clicked:', {
+        existingDate: cells[0].textContent,
+        parsedExistingDate: existingDate.toISOString().slice(0, 10),
+        currentYear,
+        currentMonth,
+        firstDayOfMonth: firstDayOfMonth.toISOString().slice(0, 10),
+        lastDayOfMonth: lastDayOfMonth.toISOString().slice(0, 10)
+      });
+      
+      // Always set constraints to current month
+      expenseForm.date.min = firstDayOfMonth.toISOString().slice(0, 10);
+      expenseForm.date.max = lastDayOfMonth.toISOString().slice(0, 10);
+      
+      // Check if existing date is within current month
+      const existingDateObj = new Date(existingDate);
+      const isInCurrentMonth = existingDateObj.getFullYear() === currentYear && 
+                              existingDateObj.getMonth() === currentMonth;
+      
+      console.log('Date validation:', {
+        existingDateYear: existingDateObj.getFullYear(),
+        existingDateMonth: existingDateObj.getMonth(),
+        isInCurrentMonth,
+        willUseExistingDate: isInCurrentMonth
+      });
+      
+      if (isInCurrentMonth) {
+        expenseForm.date.value = existingDate.toISOString().slice(0, 10);
+      } else {
+        expenseForm.date.value = now.toISOString().slice(0, 10);
+      }
+      
+      console.log('Final date input state:', {
+        min: expenseForm.date.min,
+        max: expenseForm.date.max,
+        value: expenseForm.date.value
+      });
+      
       expenseForm.title.value = cells[1].textContent;
       expenseForm.category.value = cells[2].textContent;
 
@@ -335,7 +574,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function filterExpenses(query) {
-    const rows = Array.from(expenseTableBody.querySelectorAll("tr")).slice(1);
+    const rows = Array.from(expenseTableBody.querySelectorAll("tr"));
     rows.forEach(row => {
       const categoryCell = row.querySelector("td:nth-child(3)");
       const categoryText = categoryCell?.textContent?.toLowerCase() || "";
@@ -369,7 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data.forEach(expense => {
           const row = document.createElement("tr");
           row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
-          row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, "", expense.Amount, false);
+          row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, "", expense.Amount, false);
           expenseTableBody.appendChild(row);
           
           renderDonutChart(); 
@@ -388,7 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data.forEach(expense => {
           const row = document.createElement("tr");
           row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
-          row.innerHTML = getRowHTML(expense.Date, expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
+          row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
           upcomingTableBody.appendChild(row);
           
           renderDonutChart();
@@ -412,10 +651,34 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   confirmLogout.addEventListener("click", () => {
-    window.location.href = "landingPage.html";
+    // Call logout endpoint to clear session
+    fetch("http://localhost:5000/api/user/logout", {
+      method: "GET",
+      credentials: 'include'
+    })
+      .then(() => {
+        // Clear any local storage
+        localStorage.clear();
+        // Redirect to landing page
+        window.location.href = "landingPage.html";
+      })
+      .catch((err) => {
+        console.error("Error during logout:", err);
+        // Still redirect even if logout fails
+        localStorage.clear();
+        window.location.href = "landingPage.html";
+      });
   });
 
   cancelLogout.addEventListener("click", () => {
     logoutModal.classList.add("hidden");
   });
+
+  // Footer logout button
+  const footerLogoutBtn = document.querySelector(".footer-btn");
+  if (footerLogoutBtn) {
+    footerLogoutBtn.addEventListener("click", () => {
+      logoutModal.classList.remove("hidden");
+    });
+  }
 });

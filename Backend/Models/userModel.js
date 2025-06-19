@@ -30,6 +30,22 @@ const getUserById = async (id) => {
   return result.recordset[0];
 };
 
+const updateProfilePicture = async (userId, profilePictureData) => {
+  const pool = await poolPromise;
+  return pool.request()
+    .input('userId', Int, userId)
+    .input('profilePicture', NVarChar, profilePictureData)
+    .query('UPDATE Users SET ProfilePicture = @profilePicture WHERE UserID = @userId');
+};
+
+const getProfilePicture = async (userId) => {
+  const pool = await poolPromise;
+  const result = await pool.request()
+    .input('userId', Int, userId)
+    .query('SELECT ProfilePicture FROM Users WHERE UserID = @userId');
+  return result.recordset[0]?.ProfilePicture || null;
+};
+
 const saveIncomeAndGoal = async (userId, incomeAmount, goalAmount) => {
   const pool = await poolPromise;
   const month = new Date().toISOString().slice(0, 7) + "-01";
@@ -43,8 +59,13 @@ const saveIncomeAndGoal = async (userId, incomeAmount, goalAmount) => {
       .input('amount', sql.Decimal(10, 2), incomeAmount)
       .input('month', sql.Date, month)
       .query(`
-        INSERT INTO Income (UserID, Amount, MonthI)
-        VALUES (@userId, @amount, @month)
+        MERGE Income AS target
+        USING (SELECT @userId AS UserID, @month AS MonthI) AS source
+        ON target.UserID = source.UserID AND target.MonthI = source.MonthI
+        WHEN MATCHED THEN
+          UPDATE SET Amount = @amount
+        WHEN NOT MATCHED THEN
+          INSERT (UserID, Amount, MonthI) VALUES (@userId, @amount, @month);
       `);
 
     await transaction.request()
@@ -73,5 +94,7 @@ module.exports = {
   createUser,
   getUserByUsername,
   getUserById,
+  updateProfilePicture,
+  getProfilePicture,
   saveIncomeAndGoal
 };

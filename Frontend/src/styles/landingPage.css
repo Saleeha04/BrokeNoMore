@@ -389,75 +389,96 @@ section h2:after {
   flex-wrap: wrap;
 }
 
-/* Footer  */
+/* Footer */
 
 .footer {
   margin-top: 6%;
-  padding: 30px 60px;
+  padding: 20px 40px;
   background-color: #730027;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
-  color: white;
-  align-items: flex-start;
+  color: #d6d4d4;
+  gap: 40px; 
+  flex-wrap: wrap;
 }
 
-
-.footer-left {
-  flex: 0 0 25%; 
-  padding-right: 40px; 
+/* Left column for branding - made larger */
+ /* .left-col {
+  flex: 0 0 10%;
+  align-self: flex-end;
+} */
+.left-col {
+  flex: 0 0 10%;
+  padding-top: 10px; /* Moves "BrokeNoMore" up slightly */
+  align-self: flex-start; /* Aligns to the top */
 }
+
 
 .footer-name {
-  font-family: "Baloo Tamma 2", system-ui;
-  font-size: 1.8rem;
-  color: white;
+  text-decoration: none !important;
+  color: white !important;
+  font-size: 1.6rem !important;
+  font-weight: 400 !important;
+  font-family: "Baloo Tamma 2", system-ui !important;
+  padding: 10px 10px;
+}
+
+.footer-name:hover {
+  font-weight: 600; /* Slightly more bold on hover */
   text-decoration: none;
-  display: block;
 }
 
 
-.footer-right {
+/* Right side columns - adjusted spacing */
+
+.footer-main {
   flex: 1;
   display: flex;
-  justify-content: flex-end; 
-  gap: 60px;
-  padding-left: 40px;
+  justify-content: space-between;
+  gap: 10%; 
+  flex-wrap: wrap;
 }
 
-.footer-column {
+/* Each content column */
+ .footer-col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  flex: 0.5;
   min-width: 120px;
 }
 
-
-.footer-column.credits {
-  gap: 5px;
-}
-
-.footer-column.credits p {
+/* Credits label styling */
+.footer-col p {
   margin: 0 0 5px 0;
-  color: #ffb3c6;
+  color: white;
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
+/* Links & buttons */
 
-.footer-column a,
-.footer-column button {
-  color: white;
-  text-decoration: none;
-  font-size: 0.95rem;
+.footer a,
+.footer button {
   background: none;
   border: none;
-  padding: 0;
-  cursor: pointer;
+  color: white;
+  font-size: 0.95rem;
   text-align: left;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 0;
+  transition: font-weight 0.2s ease;
+  text-decoration: none;
 }
 
-.footer-column a:hover,
-.footer-column button:hover {
-  color: #ffb3c6;
+.footer a:hover,
+.footer button:hover {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.footer button:focus {
+  outline: none;
 }
 
 /* Responsive adjustments */
@@ -467,84 +488,20 @@ section h2:after {
     padding: 30px;
   }
   
-  .footer-left {
-    margin-bottom: 30px;
-    padding-right: 0;
-    text-align: center;
-  }
-  
-  .footer-right {
-    flex-direction: column;
-    gap: 30px;
-    padding-left: 0;
-    align-items: center;
-  }
-  
-  .footer-column {
-    align-items: center;
-    text-align: center;
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column;
-    padding: 30px 20px;
-    gap: 30px;
-  }
-  
   .left-col {
-    align-self: center;
-    text-align: center;
-    padding-top: 0;
+    align-self: flex-start;
+    flex: 1;
+    padding-bottom: 30px;
   }
   
   .footer-main {
     padding-left: 0;
-    flex-direction: column;
+    justify-content: flex-start;
     gap: 30px;
   }
   
-  .footer-col {
-    align-items: center;
-    text-align: center;
-  }
-  
-  .footer a, 
-  .footer button {
-    text-align: center;
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .footer {
-    flex-direction: column;
-    padding: 30px 20px;
-    gap: 30px;
-  }
-  
-  .left-col {
-    align-self: center;
-    text-align: center;
-    padding-top: 0;
-  }
-  
-  .footer-main {
-    padding-left: 0;
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .footer-col {
-    align-items: center;
-    text-align: center;
-  }
-  
-  .footer a, 
-  .footer button {
-    text-align: center;
+  .footer-name {
+    font-size: 1.8rem;
   }
 }
 
@@ -568,6 +525,27 @@ section h2:after {
     transform: translateY(-10px);
   }
 }
+
+/* responsive footer */
+/* @media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  .footer-column {
+    margin-bottom: 20px;
+  }
+} */
 
 /* Responsive adjustments */
 @media (max-width: 992px) {

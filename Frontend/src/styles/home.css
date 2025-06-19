@@ -215,8 +215,8 @@ body {
 }
 
 .character-picture {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   overflow: hidden;
   /* border: 3px solid #ffb3c6; */
@@ -224,6 +224,7 @@ body {
   flex-shrink: 0;
   position: absolute;
   right: 20px;
+  padding-top: 10px;
 }
 
 .character-picture img {
@@ -299,6 +300,28 @@ body {
   gap: 10px;
   position: relative;
   font-size: 20px;
+}
+
+/* Income and Goal display within profile section */
+.income-display,
+.goal-display {
+  font-size: 16px;
+  color: white;
+  opacity: 0.9;
+}
+
+.income-display span,
+.goal-display span {
+  display: inline-block;
+  padding: 2px 0;
+}
+
+.income-display {
+  color: #90EE90; /* Light green for income */
+}
+
+.goal-display {
+  color: #87CEEB; /* Light blue for goal */
 }
 
 /* Make the pen initially invisible */
@@ -504,8 +527,8 @@ th {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   color: #d6d4d4;
-  /* gap: 40px; */
-  /* flex-wrap: wrap; */
+  gap: 40px; 
+  flex-wrap: wrap;
 }
 
 /* Left column for branding */
@@ -571,9 +594,6 @@ th {
   outline: none;
 }
 
-
-
-
 /* footer end */
 
 
@@ -614,6 +634,9 @@ th {
   background-color: #d1688b;
 }
 
+.thought-bubble::after {
+  content: none;
+}
 
 /* Responsive Layout */
 @media (max-width: 992px) {
@@ -678,130 +701,4 @@ td button {
 
 td button i {
   pointer-events: none; 
-}
-
-/* Extra small devices (phones, less than 576px) */
-@media (max-width: 575.98px) {
-  .navbar {
-    flex-direction: column;
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .profile-section {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 15px;
-  }
-
-  .user-info {
-    align-items: flex-start;
-  }
-
-  .username {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .table-box,
-  .chart-area {
-    padding: 15px;
-  }
-
-  .tables table,
-  .tables th,
-  .tables td {
-    font-size: 0.75rem;
-    padding: 8px;
-  }
-
-  .modal-content {
-    width: 90%;
-    padding: 16px;
-  }
-
-  .footer-main {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-  }
-
-  .footer-col {
-    width: 100%;
-    align-items: center;
-  }
-}
-
-/* Small tablets (landscape phones and tablets less than 768px) */
-@media (max-width: 767.98px) {
-  .container {
-    padding: 15px;
-    gap: 15px;
-  }
-
-  .profile-pic {
-    width: 80px;
-    height: 80px;
-  }
-
-  .plus-btn {
-    width: 25px;
-    height: 25px;
-    font-size: 1rem;
-    line-height: 25px;
-  }
-
-  .logout-image {
-    width: 150px;
-    height: 150px;
-  }
-
-  .modal-actions button {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-  }
-
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .footer-main {
-    justify-content: center;
-  }
-
-  .left-col {
-    align-self: center;
-  }
-}
-
-/* Medium devices (tablets) */
-@media (max-width: 991.98px) {
-  .main-content {
-    flex-direction: column;
-  }
-
-  .tables,
-  .chart-area {
-    width: 100%;
-  }
-
-  .thought-bubble {
-    margin-right: 0;
-  }
-
-  .profile-section {
-    flex-wrap: wrap;
-  }
-
-  .footer-main {
-    gap: 5%;
-  }
 }

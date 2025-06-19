@@ -7,7 +7,9 @@ const app = require('./app');
 
 // // ✅ CORS Middleware — Must come before routes
 app.use(cors({
-  origin: 'http://127.0.0.1:5500', // Allow Live Server
+  origin: ['http://127.0.0.1:5500',
+        'http://127.0.0.1:5501',
+        'http://127.0.0.1:5502'], // Allow Live Server
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));

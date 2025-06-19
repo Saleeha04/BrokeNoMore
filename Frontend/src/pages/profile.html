@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,13 +15,14 @@
   
 
   <div class="profile-container">
-    <div class="profile-pic">
-      <div class="circle">
-        <img src="profile.jpg" />
-      </div>
-      <button class="edit-pic-btn">✎</button>
+  <div class="profile-pic">
+    <div class="circle">
+      <img src="profile.jpg" id="profileImage" />
+      <button class="edit-pic-btn" type="button">✎</button>
+      <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;" />
     </div>
   </div>
+</div>
 
   <div class="username-section">
     <p class="security-question-text">Edit Security</p>
@@ -38,7 +38,7 @@
           <input type="number" id="income" required />
           <span class="tooltip-trigger" onclick="toggleTooltip('income-tooltip')">?</span>
           <span class="tooltip-text" id="income-tooltip">
-            Enter the amount you typically earn in a month. This amount will be added as your default monthly income. You can update it at any time.
+            Enter the amount you typically earn in a month. This amount will be added as your default monthly income. You can update your income unlimited times.
           </span>
         </div>
       </div>
@@ -49,7 +49,8 @@
           <input type="number" id="goal" required />
           <span class="tooltip-trigger" onclick="toggleTooltip('goal-tooltip')">?</span>
           <span class="tooltip-text" id="goal-tooltip">
-            This is your financial target. Please note that you can only update this goal up to 3 times per month.
+            This is your financial target. You can update this goal up to 3 times per month (income can be updated unlimited times).<br><br>
+            <strong>Important:</strong> Your savings goal cannot exceed your income amount.
           </span>
         </div>
       </div>
@@ -63,6 +64,9 @@
 
 <canvas id="bubble-canvas"></canvas>
 <div class="bubble-background">
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
   <div class="bubble"></div>
   <div class="bubble"></div>
   <div class="bubble"></div>

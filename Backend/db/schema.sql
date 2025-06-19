@@ -12,6 +12,7 @@ CREATE TABLE Users(
     Username VARCHAR(50) NOT NULL UNIQUE,
     Email VARCHAR(100) NOT NULL UNIQUE,
     PasswordHash VARCHAR(255) NOT NULL,
+    ProfilePicture NVARCHAR(MAX),
     CreatedAt DATETIME DEFAULT GETDATE()
 );
 
@@ -19,7 +20,8 @@ CREATE TABLE Income (
     IncomeID INT PRIMARY KEY IDENTITY(1,1),
     UserID INT FOREIGN KEY REFERENCES Users(UserID),
     Amount DECIMAL(10,2) NOT NULL,
-    MonthI DATE NOT NULL
+    MonthI DATE NOT NULL,
+    CONSTRAINT UC_IncomeUserMonth UNIQUE(UserID, MonthI)
 );
 
 CREATE TABLE Expenses (
@@ -105,6 +107,15 @@ ADD SecurityQuestion NVARCHAR(255),
 ALTER TABLE Users
 DROP CONSTRAINT UQ__Users__A9D10534EA3C593D; -- the constraint may change depending on your database entries, so edit krlena
 ALTER TABLE Users DROP COLUMN Email;
+
+-- Add ProfilePicture column if it doesn't exist
+IF NOT EXISTS (
+    SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_NAME = 'Users' AND COLUMN_NAME = 'ProfilePicture'
+)
+BEGIN
+    ALTER TABLE Users ADD ProfilePicture NVARCHAR(MAX);
+END
 
 -- DISPLAY:
 SELECT * FROM Users;
