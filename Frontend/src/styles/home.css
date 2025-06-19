@@ -333,8 +333,6 @@ body {
 }
 
 
-
-
 .expense-header {
   display: flex;
   justify-content: space-between;
@@ -493,7 +491,6 @@ th {
   box-shadow: 0 0 15px rgba(115, 0, 39, 0.1);
   min-width: 280px;
 }
-
 
 
 /* Footer */
