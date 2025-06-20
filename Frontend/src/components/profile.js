@@ -176,12 +176,46 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // ✅ USERNAME DISPLAY (if usernameDisplay exists)
-  const username = localStorage.getItem('username');
-  const usernameDisplay = document.getElementById('usernameDisplay');
-  if (username && usernameDisplay) {
-    usernameDisplay.innerText = username;
+  // ✅ USERNAME DISPLAY
+  function loadUsername() {
+    const username = localStorage.getItem('username');
+    const usernameElement = document.querySelector('.username');
+    if (username && usernameElement) {
+      usernameElement.textContent = username;
+    } else if (!username) {
+      // If no username in localStorage, try to fetch it from the server
+      fetch("http://localhost:5000/api/user/me", {
+        method: "GET",
+        credentials: 'include'
+      })
+        .then((res) => {
+          if (!res.ok) {
+            if (res.status === 401) {
+              showWarning('Session Expired', 'Please log in again to continue.');
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 3000);
+              return;
+            }
+            throw new Error('Failed to fetch user data');
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data.username && usernameElement) {
+            usernameElement.textContent = data.username;
+            // Also store in localStorage for future use
+            localStorage.setItem('username', data.username);
+          }
+        })
+        .catch((err) => {
+          console.error("Error loading user data:", err);
+        });
+    }
   }
+
+  // Load username when page loads
+  loadUsername();
 
   // ✅ FORM SUBMISSION
   const profileForm = document.getElementById("profileForm");

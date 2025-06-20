@@ -123,7 +123,7 @@ SELECT * FROM Income;
 SELECT * FROM Expenses;
 SELECT * FROM RecurringExpenses;
 SELECT * FROM BudgetGoals;
-SELECT * FROM Alerts;
+-- SELECT * FROM Alerts;
 
 -- Kaori04 = saleeha04 = Mao
 
