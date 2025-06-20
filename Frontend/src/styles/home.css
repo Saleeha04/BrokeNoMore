@@ -675,6 +675,111 @@ th {
   border: 1px solid #ccc;
 }
 
+/* Burgundy styling for main recurring checkbox when checked */
+.modal-form input[type="checkbox"]:checked {
+  accent-color: #700124;
+}
+
+/* Custom styling only for recurring expenses section */
+#recurring-details .checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+#recurring-details .checkbox-container input[type="checkbox"] {
+  display: none;
+}
+
+#recurring-details .checkbox-container .custom-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #700124;
+  border-radius: 3px;
+  position: relative;
+  background: white;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+#recurring-details .checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+  background: #700124;
+}
+
+#recurring-details .checkbox-container .custom-checkbox::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#recurring-details .checkbox-container input[type="checkbox"]:checked + .custom-checkbox::after {
+  opacity: 1;
+}
+
+#recurring-details .checkbox-container:hover .custom-checkbox {
+  box-shadow: 0 0 0 2px rgba(112, 1, 36, 0.1);
+}
+
+#recurring-details .checkbox-container span {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Custom Select/Dropdown Styling for recurring section */
+#recurring-details .select-container {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+#recurring-details .select-container select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s ease;
+}
+
+#recurring-details .select-container::after {
+  content: '▼';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #700124;
+  font-size: 8px;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+#recurring-details .select-container:hover::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+#recurring-details .select-container select:focus {
+  outline: none;
+  border-color: #700124;
+  box-shadow: 0 0 0 2px rgba(112, 1, 36, 0.1);
+}
+
+#recurring-details .select-container select option {
+  background: white;
+  color: #333;
+  padding: 8px;
+}
+
 .save-btn {
   background-color: #730027;
   color: white;

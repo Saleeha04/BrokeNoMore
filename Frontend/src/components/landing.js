@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Landing page loaded successfully');
+    
+    // Image carousel functionality
     const img = document.querySelector('.main-image');
     const imagePaths = [
         '../assets/image.png',
@@ -10,11 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const displayDuration = 3000; 
 
     if (img) {
-   
+        console.log('Setting up image carousel');
         img.style.transition = `opacity ${transitionDuration/1000}s ease-in-out`;
 
         function transitionToNextImage() {
-          
             img.style.opacity = '0';
             
             setTimeout(function() {
@@ -52,6 +54,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.remove('clicked');
             }, 300);
         });
+    }
+    
+    // Ensure no profile-related errors occur on landing page
+    // Clear any potential session data that might cause issues
+    if (typeof localStorage !== 'undefined') {
+        // Don't clear everything, just ensure we're not in a logged-in state
+        if (localStorage.getItem('userId')) {
+            console.log('Clearing user session data from landing page');
+            localStorage.removeItem('userId');
+        }
+    }
+    
+    console.log('Landing page initialization complete');
+});
+
+// Prevent any profile-related errors
+window.addEventListener('error', function(e) {
+    if (e.message && e.message.includes('profile')) {
+        console.log('Prevented profile-related error on landing page');
+        e.preventDefault();
+        return false;
     }
 });
 

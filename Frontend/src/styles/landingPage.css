@@ -45,7 +45,7 @@ body {
   gap: 1.5rem;
 }
 
-.logout-btn {
+.logout-btn, .login-btn {
   background: rgba(255, 255, 255, 0.1);
   border: none;
   padding: 0.6rem 1.2rem;
@@ -55,13 +55,16 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
+  text-decoration: none;
+  display: inline-block;
 }
 
-.logout-btn:hover {
+.logout-btn:hover, .login-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
+  text-decoration: none;
+  color: white;
 }
-
 
 .step:hover,
 .feature-card:hover,

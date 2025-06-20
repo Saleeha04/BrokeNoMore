@@ -14,6 +14,7 @@ label {
   color: #800020;
 }
 
+#username,
 #security-question,
 #security-answer {
   width: 100%;

@@ -342,8 +342,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => {
         if (!res.ok) {
           if (res.status === 401) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "login.html";
+            showWarning('Session Expired', 'Please log in again to continue.');
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 3000);
             return;
           }
           throw new Error('Failed to fetch user data');
@@ -365,6 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((err) => {
         console.error("Error loading user data:", err);
+        showError('Connection Error', 'Unable to load user data. Please refresh the page.');
       });
   }
 
@@ -377,8 +380,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => {
         if (!res.ok) {
           if (res.status === 401) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "login.html";
+            showWarning('Session Expired', 'Please log in again to continue.');
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 3000);
             return;
           }
           if (res.status === 404) {
@@ -415,6 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((err) => {
         console.error("Error loading profile picture:", err);
+        showError('Profile Error', 'Unable to load profile picture.');
       });
   }
 
@@ -429,8 +435,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => {
         if (!res.ok) {
           if (res.status === 401) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "login.html";
+            showWarning('Session Expired', 'Please log in again to continue.');
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 3000);
             return;
           }
           throw new Error('Failed to fetch income/goal data');
@@ -460,6 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((err) => {
         console.error("Error loading income/goal data:", err);
+        showError('Data Error', 'Unable to load financial data.');
       });
   }
 
@@ -698,12 +707,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(data => {
         console.log("✅ Expense saved:", data);
+        showSuccess('Expense Saved', editingExpenseId ? 'Expense updated successfully!' : 'Expense added successfully!');
         getExpenses(); // ✅ re-render tables
         renderDonutChart(); // ✅ keep chart fresh
       })
       
       .catch(err => {
         console.error("Error sending expense data:", err);
+        showError('Save Failed', 'Error saving expense. Please try again.');
       });
 
     // BACKEND SHENINAGINS
@@ -763,6 +774,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
           console.log('Delete response:', data);
+          showSuccess('Expense Deleted', 'Expense has been removed successfully.');
           // Remove the row from the DOM immediately for smoother UX
           row.remove();
           // Then reload expenses to ensure consistency
@@ -772,7 +784,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(err => {
           console.error('Error deleting expense:', err);
-          alert('Error deleting expense. Please try again.');
+          showError('Delete Failed', 'Error deleting expense. Please try again.');
         });
     });
 
@@ -858,6 +870,7 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(data => {
             console.log('Mark paid response:', data);
+            showSuccess('Expense Paid', 'Expense has been marked as paid.');
             // Remove the row from the DOM immediately for smoother UX
             row.remove();
             // Then reload expenses to ensure consistency
@@ -867,7 +880,7 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .catch(err => {
             console.error('Error marking as paid:', err);
-            alert('Error marking expense as paid. Please try again.');
+            showError('Update Failed', 'Error marking expense as paid. Please try again.');
           });
       });
     }
@@ -904,8 +917,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function getExpenses() {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert("User not logged in. Please log in again.");
-      window.location.href = "login.html";
+      showError('Authentication Error', 'User not logged in. Please log in again.');
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 3000);
       return;
     }
     
@@ -922,24 +937,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(data => {
         console.log("Fetched normal expenses:", data);
 
-        // Only clear the tbody elements, not the entire tables
-        const expenseTableBody = document.querySelector(".expense-table tbody");
-        const upcomingTableBody = document.querySelector(".upcoming-table tbody");
-        
-        if (expenseTableBody) {
-          expenseTableBody.innerHTML = "";
-        }
-        if (upcomingTableBody) {
-          upcomingTableBody.innerHTML = "";
-        }
-
-        data.forEach(expense => {
-          const row = document.createElement("tr");
-          row.dataset.id = expense.ExpenseID;
-          row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, "", expense.Amount, false);
-          expenseTableBody.appendChild(row);
-          attachRowListeners(row, false);
-        });
+        // Update normal expenses table smoothly
+        updateExpenseTable(data, false);
         
         // Render chart once after all normal expenses are added
         renderDonutChart();
@@ -952,9 +951,48 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.error("Error loading normal expenses: ", err);
+        showError('Data Error', 'Unable to load expenses. Please try again.');
         // Still try to load upcoming expenses even if normal expenses fail
         return loadUpcomingExpenses(userId);
       });
+  }
+
+  // Function to smoothly update expense table
+  function updateExpenseTable(data, isUpcoming) {
+    const tableBody = isUpcoming ? 
+      document.querySelector(".upcoming-table tbody") : 
+      document.querySelector(".expense-table tbody");
+    
+    if (!tableBody) {
+      console.error('Table body not found for:', isUpcoming ? 'upcoming' : 'normal');
+      return;
+    }
+    
+    // Create a document fragment for better performance
+    const fragment = document.createDocumentFragment();
+    
+    if (data && data.length > 0) {
+      data.forEach(expense => {
+        const row = document.createElement("tr");
+        row.dataset.id = expense.ExpenseID;
+        row.innerHTML = getRowHTML(
+          formatDate(expense.Date), 
+          expense.Title, 
+          expense.Category, 
+          isUpcoming ? expense.Frequency : "", 
+          expense.Amount, 
+          isUpcoming
+        );
+        fragment.appendChild(row);
+        attachRowListeners(row, isUpcoming);
+      });
+    }
+    
+    // Clear and update in one operation to prevent visual glitch
+    tableBody.innerHTML = "";
+    tableBody.appendChild(fragment);
+    
+    console.log(`Updated ${isUpcoming ? 'upcoming' : 'normal'} expenses table with ${data ? data.length : 0} items`);
   }
 
   // Separate function to load upcoming expenses
@@ -974,27 +1012,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(data => {
         console.log("Fetched upcoming expenses:", data);
         
-        // Only clear the tbody, not the entire table
-        const upcomingTableBody = document.querySelector(".upcoming-table tbody");
-        if (upcomingTableBody) {
-          upcomingTableBody.innerHTML = "";
-        }
+        // Update upcoming expenses table smoothly
+        updateExpenseTable(data, true);
         
-        if (!data || data.length === 0) {
-          console.log("No upcoming expenses found");
-          return;
-        }
-        
-        data.forEach(expense => {
-          console.log("Processing upcoming expense:", expense);
-          const row = document.createElement("tr");
-          row.dataset.id = expense.ExpenseID;
-          row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
-          upcomingTableBody.appendChild(row);
-          attachRowListeners(row, true);
-        });
-        
-        console.log(`Added ${data.length} upcoming expenses to table`);
+        console.log(`Added ${data ? data.length : 0} upcoming expenses to table`);
       })
       .catch(err => {
         console.error("Error loading upcoming expenses: ", err);
@@ -1013,24 +1034,47 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutModal.classList.remove("hidden");
   });
 
-  confirmLogout.addEventListener("click", () => {
-    // Call logout endpoint to clear session
-    fetch("http://localhost:5000/api/user/logout", {
-      method: "GET",
-      credentials: 'include'
-    })
-      .then(() => {
-        // Clear any local storage
-        localStorage.clear();
-        // Redirect to landing page
-        window.location.href = "landingPage.html";
-      })
-      .catch((err) => {
-        console.error("Error during logout:", err);
-        // Still redirect even if logout fails
-        localStorage.clear();
-        window.location.href = "landingPage.html";
+  confirmLogout.addEventListener("click", async () => {
+    console.log('=== LOGOUT PROCESS START ===');
+    
+    // Show loading state on the button
+    const originalText = confirmLogout.textContent;
+    confirmLogout.textContent = 'Logging out...';
+    confirmLogout.disabled = true;
+    
+    try {
+      // Call logout endpoint to clear session
+      const response = await fetch("http://localhost:5000/api/user/logout", {
+        method: "GET",
+        credentials: 'include'
       });
+      
+      if (!response.ok) {
+        throw new Error(`Logout failed with status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log('Logout response:', result);
+      
+      // Clear any local storage
+      localStorage.clear();
+      
+      // Hide the modal
+      logoutModal.classList.add("hidden");
+      
+      // Show loading page with redirect to homepage
+      window.location.href = "loading.html?to=landingPage.html";
+      
+    } catch (err) {
+      console.error("Error during logout:", err);
+      
+      // Reset button state
+      confirmLogout.textContent = originalText;
+      confirmLogout.disabled = false;
+      
+      // Show error message to user
+      showError('Logout Failed', 'Logout failed. Please try again.');
+    }
   });
 
   cancelLogout.addEventListener("click", () => {

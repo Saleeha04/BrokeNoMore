@@ -62,8 +62,10 @@ document.addEventListener('DOMContentLoaded', function () {
       .then((res) => {
         if (!res.ok) {
           if (res.status === 401) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "login.html";
+            showWarning('Session Expired', 'Please log in again to continue.');
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 3000);
             return;
           }
           if (res.status === 404) {
@@ -83,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch((err) => {
         console.error("Error loading profile picture:", err);
+        showError('Profile Error', 'Unable to load profile picture.');
         // Set default profile picture on error
         profileImage.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjREREIi8+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9IiM5OTkiLz4KPC9zdmc+";
       });
@@ -132,8 +135,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .then((res) => {
           if (!res.ok) {
             if (res.status === 401) {
-              alert("Session expired. Please log in again.");
-              window.location.href = "login.html";
+              showWarning('Session Expired', 'Please log in again to continue.');
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 3000);
               return;
             }
             throw new Error('Failed to upload profile picture');
@@ -142,10 +147,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
           console.log("Profile picture uploaded successfully:", data.message);
+          showSuccess('Profile Updated', 'Profile picture uploaded successfully!');
         })
         .catch((err) => {
           console.error("Error uploading profile picture:", err);
-          alert("Error uploading profile picture: " + err.message);
+          showError('Upload Failed', 'Error uploading profile picture. Please try again.');
         });
     };
     
@@ -278,8 +284,10 @@ document.addEventListener('DOMContentLoaded', function () {
       .then((res) => {
         if (!res.ok) {
           if (res.status === 401) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "login.html";
+            showWarning('Session Expired', 'Please log in again to continue.');
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 3000);
             return;
           }
           throw new Error('Failed to fetch data');
@@ -321,93 +329,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ✅ VALIDATION: Check for valid numeric inputs
     if (isNaN(income) || isNaN(goal)) {
-      const validationMsg = document.createElement("div");
-      validationMsg.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 20px;"></i>
-          <div>
-            <strong>Invalid Input</strong><br>
-            Please enter valid numbers for both income and goal.
-          </div>
-        </div>
-      `;
-      validationMsg.className = "success-popup";
-      validationMsg.style.backgroundColor = "#fff3cd";
-      validationMsg.style.color = "#856404";
-      validationMsg.style.borderColor = "#ffeaa7";
-      validationMsg.style.maxWidth = "400px";
-      validationMsg.style.textAlign = "left";
-      document.body.appendChild(validationMsg);
-
-      setTimeout(() => {
-        validationMsg.classList.add("fade-out");
-        setTimeout(() => {
-          validationMsg.remove();
-        }, 1000);
-      }, 3000);
-      
+      showError('Invalid Input', 'Please enter valid numbers for both income and goal.');
       return;
     }
 
     // ✅ VALIDATION: Check for negative values
     if (income < 0 || goal < 0) {
-      const validationMsg = document.createElement("div");
-      validationMsg.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 20px;"></i>
-          <div>
-            <strong>Invalid Amount</strong><br>
-            Income and goal amounts cannot be negative. Please enter positive values.
-          </div>
-        </div>
-      `;
-      validationMsg.className = "success-popup";
-      validationMsg.style.backgroundColor = "#fff3cd";
-      validationMsg.style.color = "#856404";
-      validationMsg.style.borderColor = "#ffeaa7";
-      validationMsg.style.maxWidth = "400px";
-      validationMsg.style.textAlign = "left";
-      document.body.appendChild(validationMsg);
-
-      setTimeout(() => {
-        validationMsg.classList.add("fade-out");
-        setTimeout(() => {
-          validationMsg.remove();
-        }, 1000);
-      }, 3000);
-      
+      showError('Invalid Amount', 'Income and goal amounts cannot be negative. Please enter positive values.');
       return;
     }
 
     // ✅ VALIDATION: Check if goal is greater than income
     if (goal > income) {
-      // Show styled validation error
-      const validationMsg = document.createElement("div");
-      validationMsg.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 20px;"></i>
-          <div>
-            <strong>Invalid Savings Goal</strong><br>
-            Your savings goal ($${goal.toLocaleString()}) cannot be greater than your income ($${income.toLocaleString()}).<br>
-            <em>Please adjust your goal to be less than or equal to your income.</em>
-          </div>
-        </div>
-      `;
-      validationMsg.className = "success-popup";
-      validationMsg.style.backgroundColor = "#fff3cd";
-      validationMsg.style.color = "#856404";
-      validationMsg.style.borderColor = "#ffeaa7";
-      validationMsg.style.maxWidth = "500px";
-      validationMsg.style.textAlign = "left";
-      document.body.appendChild(validationMsg);
-
-      setTimeout(() => {
-        validationMsg.classList.add("fade-out");
-        setTimeout(() => {
-          validationMsg.remove();
-        }, 1000);
-      }, 4000);
-      
+      showError('Invalid Savings Goal', `Your savings goal ($${goal.toLocaleString()}) cannot be greater than your income ($${income.toLocaleString()}). Please adjust your goal to be less than or equal to your income.`);
       return; // Stop form submission
     }
 
@@ -422,8 +356,10 @@ document.addEventListener('DOMContentLoaded', function () {
       .then((res) => {
         if (!res.ok) {
           if (res.status === 401) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "login.html";
+            showWarning('Session Expired', 'Please log in again to continue.');
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 3000);
             return;
           }
           return res.json().then(data => {
@@ -438,58 +374,41 @@ document.addEventListener('DOMContentLoaded', function () {
           updateEditCountDisplay(data.editCount, Math.max(0, 3 - data.editCount));
         }
 
-        const msg = document.createElement("div");
-        let messageText = "✓ ";
+        let messageText = '';
         
         if (data.incomeUpdated && data.goalUpdated) {
-          messageText += "Income and Goal updated! ";
+          messageText = 'Income and Goal updated! ';
         } else if (data.incomeUpdated) {
-          messageText += "Income updated! ";
+          messageText = 'Income updated! ';
         } else if (data.goalUpdated) {
-          messageText += "Goal updated! ";
+          messageText = 'Goal updated! ';
         } else {
-          messageText += "No changes made. ";
+          messageText = 'No changes made. ';
         }
         
         if (data.goalUpdated) {
           messageText += `(${data.editCount}/3 goal updates used this month) `;
         }
         
-        messageText += "Redirecting to home...";
-        msg.innerText = messageText;
-        msg.className = "success-popup";
-        document.body.appendChild(msg);
+        messageText += 'Redirecting to home...';
+        
+        showSuccess('Profile Updated', messageText, 2000);
 
         setTimeout(() => {
-          msg.classList.add("fade-out");
-          setTimeout(() => {
-            msg.remove();
-            // Set a flag in localStorage to indicate that income/goal was updated
-            localStorage.setItem('incomeGoalUpdated', 'true');
-            window.location.href = "home.html";
-          }, 1000);
+          // Set a flag in localStorage to indicate that income/goal was updated
+          localStorage.setItem('incomeGoalUpdated', 'true');
+          window.location.href = "home.html";
         }, 2000);
       })
       .catch((err) => {
-        // Show styled error notification instead of alert
-        const errorMsg = document.createElement("div");
-        errorMsg.innerText = `⚠️ ${err.message}`;
-        errorMsg.className = "success-popup";
-        errorMsg.style.backgroundColor = "#ffe6ee";
-        errorMsg.style.color = "#d63384";
-        errorMsg.style.borderColor = "#d63384";
-        document.body.appendChild(errorMsg);
-
-        setTimeout(() => {
-          errorMsg.classList.add("fade-out");
+        showError('Save Failed', err.message);
+        
+        // Auto-redirect to homepage after error (especially for edit limit errors)
+        if (err.message.includes('maximum limit of 3 goal updates')) {
           setTimeout(() => {
-            errorMsg.remove();
-            // Auto-redirect to homepage after error (especially for edit limit errors)
-            if (err.message.includes('maximum limit of 3 goal updates')) {
-              window.location.href = "home.html";
-            }
-          }, 1000);
-        }, 3000);
+            window.location.href = "home.html";
+          }, 3000);
+        }
       });
   });
 });

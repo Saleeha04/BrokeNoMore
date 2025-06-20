@@ -30,10 +30,23 @@ const login = async (req, res) => {
 
 
 const logout = async (req, res) => {
+  console.log('=== LOGOUT REQUEST START ===');
+  console.log('User session before logout:', req.session.user);
+  
   req.session.destroy(err => {
-    if (err) return res.status(500).json({ message: 'Logout failed' });
+    if (err) {
+      console.error('❌ Session destruction failed:', err);
+      return res.status(500).json({ message: 'Logout failed - session destruction error' });
+    }
+    
+    console.log('✅ Session destroyed successfully');
+    
+    // Clear the session cookie
     res.clearCookie('connect.sid');
-    res.json({ message: 'Logout successful' });
+    console.log('✅ Session cookie cleared');
+    
+    console.log('=== LOGOUT REQUEST END ===');
+    res.json({ message: 'Logout successful', timestamp: new Date().toISOString() });
   });
 };
 
@@ -45,6 +58,28 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+// Function to verify if session is active (for testing purposes)
+const verifySession = async (req, res) => {
+  console.log('=== SESSION VERIFICATION ===');
+  console.log('Session object:', req.session);
+  console.log('Session user:', req.session.user);
+  console.log('Session ID:', req.sessionID);
+  
+  if (req.session && req.session.user) {
+    res.json({ 
+      isActive: true, 
+      user: req.session.user,
+      sessionId: req.sessionID,
+      timestamp: new Date().toISOString()
+    });
+  } else {
+    res.status(401).json({ 
+      isActive: false, 
+      message: 'No active session found',
+      timestamp: new Date().toISOString()
+    });
+  }
+};
 
 // End of my shaninagins
 
@@ -271,6 +306,60 @@ const testDatabaseSchema = async (req, res) => {
   }
 };
 
+// Security question authentication for forgot password
+const authenticateWithSecurityQuestion = async (req, res) => {
+  const { username, securityQuestion, securityAnswer } = req.body;
+
+  try {
+    console.log('=== SECURITY QUESTION AUTHENTICATION START ===');
+    console.log('Received data:', { username, securityQuestion, securityAnswer });
+
+    if (!username || !securityQuestion || !securityAnswer) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    // Get user by username and check security question/answer
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('username', sql.VarChar, username)
+      .input('securityQuestion', sql.NVarChar, securityQuestion)
+      .input('securityAnswer', sql.NVarChar, securityAnswer)
+      .query(`
+        SELECT UserID as id, Username as username 
+        FROM Users 
+        WHERE Username = @username 
+        AND SecurityQuestion = @securityQuestion 
+        AND SecurityAnswer = @securityAnswer
+      `);
+
+    if (result.recordset.length === 0) {
+      console.log('❌ Security question authentication failed');
+      return res.status(401).json({ message: 'Invalid security question or answer' });
+    }
+
+    const user = result.recordset[0];
+    console.log('✅ Security question authentication successful for user:', user.username);
+
+    // Create session for the user
+    req.session.user = {
+      id: user.id,
+      username: user.username
+    };
+
+    console.log('✅ Session created for user:', req.session.user);
+    console.log('=== SECURITY QUESTION AUTHENTICATION END ===');
+
+    res.status(200).json({ 
+      message: 'Authentication successful', 
+      user: req.session.user 
+    });
+
+  } catch (err) {
+    console.error('❌ Security question authentication error:', err);
+    res.status(500).json({ message: 'Authentication error', error: err.message });
+  }
+};
+
 module.exports = {
   getCurrentUser, // NEW
   logout, // NEW
@@ -282,5 +371,7 @@ module.exports = {
   getCurrentIncomeGoal,
   uploadProfilePicture,
   getUserProfilePicture,
-  testDatabaseSchema
+  testDatabaseSchema,
+  verifySession,
+  authenticateWithSecurityQuestion
 };

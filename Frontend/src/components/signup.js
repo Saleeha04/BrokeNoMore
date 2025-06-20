@@ -11,23 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const securityAnswer = document.getElementById('security-answer').value;
 
     if (username.length < 5) {
-      alert('Username must be at least 5 characters long.');
+      showError('Username Error', 'Username must be at least 5 characters long.');
       return;
     }
 
     if (password.length < 8) {
-      alert('Password must be at least 8 characters long.');
+      showError('Password Error', 'Password must be at least 8 characters long.');
       return;
     }
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match.');
+      showError('Password Mismatch', 'Passwords do not match.');
       return;
     }
 
+    // Show loading state
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Creating Account...';
+    submitBtn.disabled = true;
+
     try {
-      const response = await fetch('http://localhost:5000/api/users/register'
-        , {
+      const response = await fetch('http://localhost:5000/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, securityQuestion, securityAnswer })
@@ -35,13 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert(data.message);
-        window.location.href = 'login.html';
+        showSuccess('Account Created!', 'Registration successful. Redirecting to login...', 3000);
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 3000);
       } else {
-        alert(data.message);
+        showError('Registration Failed', data.message || 'Failed to create account.');
       }
     } catch (err) {
-      alert('Error registering user');
+      showError('Connection Error', 'Unable to connect to server. Please try again.');
+    } finally {
+      // Reset button state
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
     }
   });
 
