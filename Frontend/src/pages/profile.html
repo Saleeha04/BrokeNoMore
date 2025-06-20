@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../styles/profile.css" />
+  <link rel="stylesheet" href="../styles/alert.css" />
+</head>
+
+<body>
+
+  
+
+  <div class="profile-container">
+  <div class="profile-pic">
+    <div class="circle">
+      <img src="profile.jpg" id="profileImage" />
+      <button class="edit-pic-btn" type="button">✎</button>
+      <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;" />
+    </div>
+  </div>
+</div>
+
+  <div class="username-section">
+    <h2 class="username">Quratulan123</h2>
+  </div>
+
+  <div class="form-container">
+    <form class="edit-form" id="profileForm">
+      
+      <div class="form-group">
+        <label for="income">Income <span style="color: red;">*</span></label>
+        <div class="input-wrapper" onmouseenter="showTrigger(this)" onmouseleave="hideTrigger(this)">
+          <input type="number" id="income" required />
+          <span class="tooltip-trigger" onclick="toggleTooltip('income-tooltip')">?</span>
+          <span class="tooltip-text" id="income-tooltip">
+            Enter the amount you typically earn in a month. This amount will be added as your default monthly income. You can update your income unlimited times.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="goal">Goal <span style="color: red;">*</span></label>
+        <div class="input-wrapper" onmouseenter="showTrigger(this)" onmouseleave="hideTrigger(this)">
+          <input type="number" id="goal" required />
+          <span class="tooltip-trigger" onclick="toggleTooltip('goal-tooltip')">?</span>
+          <span class="tooltip-text" id="goal-tooltip">
+            This is your financial target. You can update this goal up to 3 times per month (income can be updated unlimited times).<br><br>
+            <strong>Important:</strong> Your savings goal cannot exceed your income amount.
+          </span>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button type="submit" class="save-btn">Ready</button>
+      </div>
+    </form>
+  </div>
+
+
+<canvas id="bubble-canvas"></canvas>
+<div class="bubble-background">
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+</div>
+
+<script src="../components/bubble.js"></script>
+<script src="../components/alert.js"></script>
+<script src="../components/profile.js"></script>
+</body>
+

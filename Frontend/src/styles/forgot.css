@@ -1,0 +1,40 @@
+form.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 400px;
+  margin: auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #800020;
+}
+
+#username,
+#security-question,
+#security-answer {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  transition: border-color 0.3s;
+  height: 42px;
+  margin-bottom: 16px;
+}
+
+#answer-container {
+  margin-top: 4px;
+}
+
+.submit-btn {
+  margin-top: 12px;
+  width: 100%;
+}

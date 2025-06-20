@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="../styles/login.css" />
+  <link rel="stylesheet" href="../styles/alert.css" />
+</head>
+
+<body>
+
+   <canvas id="bubble-canvas"></canvas>
+    <div class="bubble-background">
+    </div>
+
+  <div class="form-container">
+    <a href="landingPage.html">
+      <img src="../assets/hiddenanya.png" alt="Logo" class="form-logo" />
+    </a>
+    <form class="signup-form" method="POST" action="/api/users/login">
+
+
+      <h1 class="login-heading">Login here!</h1>
+
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required style="width: 103%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;" />
+
+      <label for="password">Password</label>
+<input
+  type="password"
+  id="password"
+  name="password"
+  required
+  style="width: 103%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-family: 'Roboto', sans-serif;"
+/>
+
+
+      <p class="forgot-password">
+        Forgot Password? <a href="forgot-password.html">Click here</a>
+      </p>
+
+      <button type="submit" class="submit-btn">Log in<a href="forgot-password.html"> </a></button>
+
+      <p class="new-user">
+        New user? <a href="signup.html">Create an account</a>.
+      </p>
+    </form>
+  </div>
+
+  <script src="../components/bubble.js"></script>
+  <script src="../components/alert.js"></script>
+  <script src="../components/login.js"></script>
+
+</body>
+</html>

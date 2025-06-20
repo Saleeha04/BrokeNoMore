@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../styles/home.css">
+  <link rel="stylesheet" href="../styles/alert.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- baloo tamma 2 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div>
+      <a href="landingPage.html" class="name">BrokeNoMore</a>
+    </div>
+    <div class="nav-links">
+      <button class="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="top-container">
+    <div class="tip-container">
+      <div class="thought-bubble">
+        <div class="thought-text" id="tip-text">Loading tip...</div>
+      </div>
+      <div class="character-picture">
+        <img src="../assets/anya_tip.svg" alt="Tip Character">
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-pic"></div>
+      <div class="user-info">
+        <div class="username">
+          Username
+          <a href="profile.html" class="edit-profile-link" title="Edit Profile">
+            <i class="fas fa-pen edit-icon"></i>
+          </a>
+        </div>
+        <div>User ID</div>
+      </div>
+    </div>
+
+    <div class="svg-div">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path
+          d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+          class="shape-fill"></path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Current Month Section -->
+  <div class="current-month-section">
+    <div class="current-month-text" id="current-month-text">
+      Current Month: June
+    </div>
+  </div>
+
+  <!-- Savings Goal Progress Alert -->
+  <div id="savings-alert-container" class="savings-alert-container" style="display: none;">
+    <div class="savings-alert">
+      <div class="savings-alert-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="savings-alert-content">
+        <div class="savings-alert-title">Budget Warning!</div>
+        <div class="savings-alert-message" id="savings-alert-message">
+          You're approaching your spending limit.
+        </div>
+      </div>
+      <button class="savings-alert-close" onclick="closeSavingsAlert()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- tables -->
+  <div class="container">
+    <div class="main-content">
+      <div class="tables">
+        <div class="table-box">
+          <h2>Upcoming Expenses </h2>
+          <table class="upcoming-table">
+            <thead>
+              <tr>
+                <th class="expense-id-hide">ExpenseID</th>
+                <th>Due Date</th>
+                <th>Expense Title</th>
+                <th>Category</th>
+                <th>Reoccurance</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="table-box">
+          <div class="expense-header">
+            <div class="left">
+              <h2>Expenses</h2>
+              <button class="plus-btn">+</button>
+            </div>
+            <div class="right">
+              <input type="text" id="filter-input" placeholder="Search by category..." />
+              <button id="filter-btn" title="Filter"><i class="fas fa-filter"></i></button>
+            </div>
+          </div>
+
+          <table class="expense-table">
+            <thead>
+              <tr>
+                <th class="expense-id-hide">ExpenseID</th>
+                <th>Date</th>
+                <th>Expense Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="expense-table-body">
+              <!-- Expense rows will go here dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="chart-area">
+        <canvas id="donut-chart" width="300" height="300"></canvas>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Wrapper -->
+  <div id="entry-modal" class="hidden"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+    <!-- Modal Content -->
+    <div class="modal-content-a"
+      style="background: white; padding: 30px; border-radius: 12px; min-width: 400px; position: relative; font-family: 'Segoe UI', sans-serif;">
+      <span class="close-btn"
+        style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 24px;">&times;</span>
+      <h2 id="modal-title" style="margin-bottom: 20px;">Add Expense</h2>
+
+      <!-- Updated Expense Form -->
+      <form id="expense-form" class="modal-form">
+        <label for="title">Name</label>
+        <input type="text" name="title" placeholder="School fee" required /><br>
+
+        <label for="date">Date</label>
+        <input type="date" name="date" required /><br>
+
+        <label for="category">Category</label>
+        <input type="text" name="category" id="category" placeholder="Enter category" required /><br>
+
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" placeholder="Enter amount" required /><br>
+
+        <label>
+          <input type="checkbox" id="recurring-checkbox" name="recurring" />
+          Recurring Expense
+        </label>
+
+        <!-- Recurring Details -->
+        <div id="recurring-details" style="display: none; margin-top: 10px;">
+          <div class="select-container">
+            <label for="rate">Reoccurrence Rate</label>
+            <select name="reoccurrence-rate" id="rate">
+              <option value="" disabled selected>Select rate</option>
+              <option value="once">Once</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="annually">Annually</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="save-btn" style="margin-top: 20px;">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal hidden">
+    <div class="modal-content">
+      <img src="../assets/crying.png" alt="anya crying" class="logout-image" />
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirm-logout">Yes</button>
+        <button id="cancel-logout">No</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-col left-col">
+      <a href="landingPage.html" class="footer-name">BrokeNoMore</a>
+    </div>
+
+    <div class="footer-main">
+      <div class="footer-col">
+        <button class="footer-btn">Logout</button>
+        <a href="profile.html">Settings</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+
+      <div class="footer-col">
+        <p>Referenced projects:</p>
+        <a href="https://www.spendee.com/">Spendee</a>
+        <a href="https://www.nerdwallet.com/?msockid=2004016a4d7c6c71238b149d4cb96deb">NerdWallet</a>
+      </div>
+
+      <div class="footer-col">
+       <a href="https://github.com/Saleeha04/BrokeNoMore/tree/working">GitHub</a>
+        <a href="https://github.com/chartjs/Chart.js">Charts</a>
+      </div>
+    </div>
+  </footer>
+  <script src="../components/home.js"></script>
+  <script src="../components/alert.js"></script>
+</body>
+
+</html>
