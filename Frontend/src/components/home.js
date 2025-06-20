@@ -2,6 +2,163 @@
 
 let donutChart = null;
 
+// ✅ SAVINGS GOAL PROGRESS TRACKING
+let currentIncome = 0;
+let currentGoal = 0;
+let currentExpenses = 0;
+
+// Function to calculate and display savings progress
+function calculateSavingsProgress() {
+  console.log('=== SAVINGS PROGRESS CALCULATION START ===');
+  
+  // Only calculate if user has both income and goal set
+  if (currentIncome <= 0 || currentGoal <= 0) {
+    console.log('Income or goal not set:', { currentIncome, currentGoal });
+    hideSavingsAlert();
+    return;
+  }
+
+  const savingsProgress = currentIncome - currentExpenses;
+  const progressPercentage = (savingsProgress / currentGoal) * 100;
+  
+  console.log('Savings Progress Calculation:', {
+    income: currentIncome,
+    expenses: currentExpenses,
+    savings: savingsProgress,
+    goal: currentGoal,
+    percentage: progressPercentage
+  });
+
+  // Show warning alert when expenses exceed 70% of savings goal
+  const expensesToGoalRatio = (currentExpenses / currentGoal) * 100;
+  
+  console.log('Expenses to Goal Ratio:', {
+    expenses: currentExpenses,
+    goal: currentGoal,
+    ratio: expensesToGoalRatio
+  });
+  
+  if (expensesToGoalRatio >= 100 && currentExpenses > 0) {
+    // User has exceeded their savings goal - show failure alert
+    console.log('🚨 FAILURE ALERT - User exceeded savings goal');
+    showFailureAlert(savingsProgress, currentGoal, expensesToGoalRatio);
+  } else if (expensesToGoalRatio >= 70 && currentExpenses > 0) {
+    // User is approaching their savings goal - show warning alert
+    console.log('🚨 ALERT SHOULD SHOW - Calling showSavingsAlert');
+    showSavingsAlert(savingsProgress, currentGoal, expensesToGoalRatio);
+  } else {
+    console.log('✅ No alert needed - Hiding alert');
+    hideSavingsAlert();
+  }
+  
+  console.log('=== SAVINGS PROGRESS CALCULATION END ===');
+}
+
+// Function to show failure alert when user exceeds savings goal
+function showFailureAlert(savings, goal, expensesRatio) {
+  console.log('=== SHOW FAILURE ALERT START ===');
+  
+  const alertContainer = document.getElementById('savings-alert-container');
+  const alertMessage = document.getElementById('savings-alert-message');
+  const alertTitle = document.querySelector('.savings-alert-title');
+  const alertIcon = document.querySelector('.savings-alert-icon i');
+  
+  console.log('DOM Elements found:', {
+    alertContainer: !!alertContainer,
+    alertMessage: !!alertMessage,
+    alertTitle: !!alertTitle,
+    alertIcon: !!alertIcon
+  });
+  
+  if (!alertContainer) {
+    console.error('❌ Alert container not found!');
+    return;
+  }
+
+  // Set failure styling and message
+  alertContainer.classList.add('failure-alert');
+  alertTitle.textContent = "Bzzt Bzzt! 💸";
+  alertMessage.textContent = "You failed in managing your money even with my help!";
+  
+  if (alertIcon) {
+    alertIcon.className = 'fas fa-sad-tear';
+  }
+
+  console.log('Setting failure alert content');
+  alertContainer.style.display = 'block';
+  
+  console.log('=== SHOW FAILURE ALERT END ===');
+}
+
+// Function to show savings alert
+function showSavingsAlert(savings, goal, expensesRatio) {
+  console.log('=== SHOW SAVINGS ALERT START ===');
+  
+  const alertContainer = document.getElementById('savings-alert-container');
+  const alertMessage = document.getElementById('savings-alert-message');
+  const alertTitle = document.querySelector('.savings-alert-title');
+  const alertIcon = document.querySelector('.savings-alert-icon i');
+  
+  console.log('DOM Elements found:', {
+    alertContainer: !!alertContainer,
+    alertMessage: !!alertMessage,
+    alertTitle: !!alertTitle,
+    alertIcon: !!alertIcon
+  });
+  
+  if (!alertContainer) {
+    console.error('❌ Alert container not found!');
+    return;
+  }
+
+  // Remove failure styling
+  alertContainer.classList.remove('failure-alert');
+
+  // Warning message based on expenses ratio to goal
+  let message = '';
+  let title = '';
+  
+  if (expensesRatio >= 95) {
+    title = "⚠️ Critical Warning!";
+    message = "You've spent almost your entire savings goal! Cut costs immediately.";
+  } else if (expensesRatio >= 85) {
+    title = "⚠️ High Alert!";
+    message = "You've spent most of your savings goal! Your budget is at risk.";
+  } else {
+    title = "⚠️ Budget Warning!";
+    message = "You've spent over 70% of your savings goal. Time to review expenses.";
+  }
+
+  console.log('Setting alert content:', { title, message, expensesRatio });
+
+  alertTitle.textContent = title;
+  alertMessage.textContent = message;
+  
+  if (alertIcon) {
+    alertIcon.className = 'fas fa-exclamation-triangle';
+  }
+
+  console.log('Displaying alert container...');
+  alertContainer.style.display = 'block';
+  
+  console.log('=== SHOW SAVINGS ALERT END ===');
+}
+
+// Function to hide savings alert
+function hideSavingsAlert() {
+  const alertContainer = document.getElementById('savings-alert-container');
+  if (alertContainer) {
+    console.log('Hiding savings alert');
+    alertContainer.style.display = 'none';
+    alertContainer.classList.remove('failure-alert');
+  }
+}
+
+// Global function to close savings alert (called from HTML)
+window.closeSavingsAlert = function() {
+  hideSavingsAlert();
+};
+
 // Function to format date as YYYY/MM/DD
 function formatDate(dateString) {
   if (!dateString) return '';
@@ -10,6 +167,26 @@ function formatDate(dateString) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}/${month}/${day}`;
+}
+
+// Function to get current month name
+function getCurrentMonthName() {
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const currentDate = new Date();
+  return months[currentDate.getMonth()];
+}
+
+// Function to update current month display
+function updateCurrentMonthDisplay() {
+  const currentMonthElement = document.getElementById('current-month-text');
+  if (currentMonthElement) {
+    const monthName = getCurrentMonthName();
+    currentMonthElement.textContent = 'Current Month: ';
+    currentMonthElement.setAttribute('data-month', monthName);
+  }
 }
 
 function renderDonutChart() {
@@ -130,6 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadUserData();
   loadIncomeGoalData();
   loadProfilePicture();
+  updateCurrentMonthDisplay(); // Update current month display
 
   // Check if we're returning from profile page with updated income/goal
   if (localStorage.getItem('incomeGoalUpdated') === 'true') {
@@ -242,6 +420,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to load income and goal data
   function loadIncomeGoalData() {
+    console.log('=== LOAD INCOME GOAL DATA START ===');
+    
     fetch("http://localhost:5000/api/user/income-goal", {
       method: "GET",
       credentials: 'include'
@@ -258,8 +438,25 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then((data) => {
+        console.log('Income/Goal data received:', data);
+        
+        currentIncome = parseFloat(data.income) || 0;
+        currentGoal = parseFloat(data.goal) || 0;
+        
+        console.log('Parsed values:', {
+          currentIncome,
+          currentGoal,
+          incomeType: typeof currentIncome,
+          goalType: typeof currentGoal
+        });
+        
         // Update the profile section with income and goal data
         updateProfileWithIncomeGoal(data);
+        
+        // Calculate savings progress after loading income/goal
+        calculateSavingsProgress();
+        
+        console.log('=== LOAD INCOME GOAL DATA END ===');
       })
       .catch((err) => {
         console.error("Error loading income/goal data:", err);
@@ -279,18 +476,123 @@ document.addEventListener("DOMContentLoaded", () => {
         userInfoElement.appendChild(usernameElement);
       }
       
+      // Create financial info container
+      const financialContainer = document.createElement('div');
+      financialContainer.className = 'financial-info-container';
+      
       // Add income display
       const incomeElement = document.createElement('div');
       incomeElement.className = 'income-display';
       incomeElement.innerHTML = `<span>Income: $${data.income || 0}</span>`;
-      userInfoElement.appendChild(incomeElement);
+      financialContainer.appendChild(incomeElement);
       
       // Add goal display
       const goalElement = document.createElement('div');
       goalElement.className = 'goal-display';
       goalElement.innerHTML = `<span>Goal: $${data.goal || 0}</span>`;
-      userInfoElement.appendChild(goalElement);
+      financialContainer.appendChild(goalElement);
+      
+      // Add spending money display
+      const spendingMoneyElement = document.createElement('div');
+      spendingMoneyElement.className = 'spending-money-display';
+      financialContainer.appendChild(spendingMoneyElement);
+      
+      // Add the financial container to user info
+      userInfoElement.appendChild(financialContainer);
+      
+      // Update spending money display
+      updateSpendingMoneyDisplay();
     }
+  }
+
+  // Function to update spending money display
+  function updateSpendingMoneyDisplay() {
+    const financialContainer = document.querySelector(".financial-info-container");
+    if (!financialContainer) return;
+
+    // Calculate spending money: income - goal - expenses
+    const spendingMoney = currentIncome - currentGoal - currentExpenses;
+    
+    // Find existing spending money element or create new one
+    let spendingMoneyElement = financialContainer.querySelector('.spending-money-display');
+    if (!spendingMoneyElement) {
+      spendingMoneyElement = document.createElement('div');
+      spendingMoneyElement.className = 'spending-money-display';
+      financialContainer.appendChild(spendingMoneyElement);
+    }
+    
+    // Update the content
+    const spendingMoneyText = spendingMoney >= 0 ? 
+      `Spending Money: $${spendingMoney.toLocaleString()}` : 
+      `Over Budget: $${Math.abs(spendingMoney).toLocaleString()}`;
+    
+    spendingMoneyElement.innerHTML = `<span>${spendingMoneyText}</span>`;
+    
+    // Add visual indicator based on spending money status
+    if (spendingMoney < 0) {
+      spendingMoneyElement.classList.add('over-budget');
+    } else if (spendingMoney < 1000) { // Less than $1000 remaining
+      spendingMoneyElement.classList.add('low-spending');
+    } else {
+      spendingMoneyElement.classList.remove('over-budget', 'low-spending');
+    }
+    
+    console.log('Spending money updated:', {
+      income: currentIncome,
+      goal: currentGoal,
+      expenses: currentExpenses,
+      spendingMoney: spendingMoney
+    });
+  }
+
+  // Function to calculate total expenses from table
+  function calculateTotalExpenses() {
+    console.log('=== CALCULATE TOTAL EXPENSES START ===');
+    
+    const expenseTableBody = document.querySelector(".expense-table tbody");
+    console.log('Expense table body found:', !!expenseTableBody);
+    
+    if (!expenseTableBody) {
+      console.error('❌ Expense table body not found!');
+      return;
+    }
+    
+    const rows = expenseTableBody.querySelectorAll("tr");
+    console.log('Number of expense rows found:', rows.length);
+    
+    let total = 0;
+    rows.forEach((row, index) => {
+      console.log(`Row ${index + 1}:`);
+      
+      // Check all cells to find the amount
+      const cells = row.querySelectorAll("td");
+      console.log(`  Number of cells: ${cells.length}`);
+      
+      // Amount is in cell 3 (4th column)
+      if (cells.length >= 4) {
+        const amountCell = cells[3];
+        const cellText = amountCell.textContent.trim();
+        console.log(`  Amount cell (index 3): "${cellText}"`);
+        
+        // Try to parse as number - if it's a valid amount, use it
+        const amount = parseFloat(cellText.replace(/[$,]/g, ''));
+        if (!isNaN(amount) && amount > 0) {
+          console.log(`  ✅ Found amount: ${amount}`);
+          total += amount;
+        }
+      }
+    });
+    
+    currentExpenses = total;
+    console.log('Total expenses calculated:', currentExpenses);
+    
+    // Calculate savings progress after updating expenses
+    calculateSavingsProgress();
+    
+    // Update spending money display
+    updateSpendingMoneyDisplay();
+    
+    console.log('=== CALCULATE TOTAL EXPENSES END ===');
   }
 
   // Function to refresh income/goal display (can be called from other pages)
@@ -447,19 +749,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const markPaidBtn = row.querySelector(".mark-paid-btn");
 
     deleteBtn.addEventListener("click", () => {
-
       // Backend: Deleting
       const expenseId = row.dataset.id;
+      console.log('Deleting expense:', expenseId, 'isUpcoming:', isUpcoming);
+      
       fetch(`http://localhost:5000/api/expenses/${expenseId}`, {
         method: 'DELETE',
         credentials: 'include'
       })
-        .then(res => res.json)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to delete expense');
+          return res.json();
+        })
         .then(data => {
-          console.log(data.message);
-          getExpenses();
-          renderDonutChart();
-        }).catch(err => console.log('Error deleting', err));
+          console.log('Delete response:', data);
+          // Remove the row from the DOM immediately for smoother UX
+          row.remove();
+          // Then reload expenses to ensure consistency
+          setTimeout(() => {
+            getExpenses();
+          }, 100);
+        })
+        .catch(err => {
+          console.error('Error deleting expense:', err);
+          alert('Error deleting expense. Please try again.');
+        });
     });
 
     editBtn.addEventListener("click", () => {
@@ -532,6 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isUpcoming && markPaidBtn) {
       markPaidBtn.addEventListener("click", () => {
         const expenseId = row.dataset.id;
+        console.log('Marking expense as paid:', expenseId);
 
         fetch(`http://localhost:5000/api/expenses/mark-paid/${expenseId}`, {
           method: 'POST', 
@@ -542,18 +857,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return res.json();
           })
           .then(data => {
-            console.log(data.message);
-            getExpenses();
-            renderDonutChart();
+            console.log('Mark paid response:', data);
+            // Remove the row from the DOM immediately for smoother UX
+            row.remove();
+            // Then reload expenses to ensure consistency
+            setTimeout(() => {
+              getExpenses();
+            }, 100);
           })
-          .catch(err => console.error('Error marking as paid:', err));
-        
-
+          .catch(err => {
+            console.error('Error marking as paid:', err);
+            alert('Error marking expense as paid. Please try again.');
+          });
       });
     }
-
-
-
   }
 
   filterBtn.addEventListener("click", () => {
@@ -591,32 +908,11 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "login.html";
       return;
     }
+    
+    console.log('=== LOADING EXPENSES START ===');
+    
+    // Load normal expenses first
     fetch(`http://localhost:5000/api/expenses/${userId}`, {
-      credentials: 'include'
-    })
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json(); // <-- fails if no content returned
-      })
-      .then(data => {
-        console.log("Fetched normal expenses:", data);
-
-        expenseTableBody.innerHTML = ""; // Clear old rows
-        upcomingTableBody.innerHTML = "";
-
-
-        data.forEach(expense => {
-          const row = document.createElement("tr");
-          row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
-          row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, "", expense.Amount, false);
-          expenseTableBody.appendChild(row);
-          
-          renderDonutChart(); 
-          attachRowListeners(row, false);
-        });
-      }).catch(err => console.error("Error loading expenses: ", err));
-
-    fetch(`http://localhost:5000/api/expenses/upcoming/${userId}`, {
       credentials: 'include'
     })
       .then(res => {
@@ -624,18 +920,85 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then(data => {
+        console.log("Fetched normal expenses:", data);
+
+        // Only clear the tbody elements, not the entire tables
+        const expenseTableBody = document.querySelector(".expense-table tbody");
+        const upcomingTableBody = document.querySelector(".upcoming-table tbody");
+        
+        if (expenseTableBody) {
+          expenseTableBody.innerHTML = "";
+        }
+        if (upcomingTableBody) {
+          upcomingTableBody.innerHTML = "";
+        }
+
         data.forEach(expense => {
           const row = document.createElement("tr");
-          row.dataset.id = expense.ExpenseID; // ✅ Necessary for edit/delete
+          row.dataset.id = expense.ExpenseID;
+          row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, "", expense.Amount, false);
+          expenseTableBody.appendChild(row);
+          attachRowListeners(row, false);
+        });
+        
+        // Render chart once after all normal expenses are added
+        renderDonutChart();
+        
+        // Calculate savings progress after loading normal expenses
+        calculateTotalExpenses();
+        
+        // Now load upcoming expenses
+        return loadUpcomingExpenses(userId);
+      })
+      .catch(err => {
+        console.error("Error loading normal expenses: ", err);
+        // Still try to load upcoming expenses even if normal expenses fail
+        return loadUpcomingExpenses(userId);
+      });
+  }
+
+  // Separate function to load upcoming expenses
+  function loadUpcomingExpenses(userId) {
+    console.log('=== LOADING UPCOMING EXPENSES ===');
+    
+    return fetch(`http://localhost:5000/api/expenses/upcoming/${userId}`, {
+      credentials: 'include'
+    })
+      .then(res => {
+        if (!res.ok) {
+          console.error('Upcoming expenses response not ok:', res.status);
+          throw new Error(`HTTP ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Fetched upcoming expenses:", data);
+        
+        // Only clear the tbody, not the entire table
+        const upcomingTableBody = document.querySelector(".upcoming-table tbody");
+        if (upcomingTableBody) {
+          upcomingTableBody.innerHTML = "";
+        }
+        
+        if (!data || data.length === 0) {
+          console.log("No upcoming expenses found");
+          return;
+        }
+        
+        data.forEach(expense => {
+          console.log("Processing upcoming expense:", expense);
+          const row = document.createElement("tr");
+          row.dataset.id = expense.ExpenseID;
           row.innerHTML = getRowHTML(formatDate(expense.Date), expense.Title, expense.Category, expense.Frequency, expense.Amount, true);
           upcomingTableBody.appendChild(row);
-          
-          renderDonutChart();
           attachRowListeners(row, true);
         });
-      }).catch(err => console.error("Error loading upcoming expenses: ", err));
-
-    
+        
+        console.log(`Added ${data.length} upcoming expenses to table`);
+      })
+      .catch(err => {
+        console.error("Error loading upcoming expenses: ", err);
+      });
   }
 });
 

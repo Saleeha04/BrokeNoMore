@@ -7,6 +7,7 @@
   <title>Dashboard</title>
   <link rel="stylesheet" href="../styles/home.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <!-- baloo tamma 2 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,7 +61,30 @@
     </div>
   </div>
 
+  <!-- Current Month Section -->
+  <div class="current-month-section">
+    <div class="current-month-text" id="current-month-text">
+      Current Month: June
+    </div>
+  </div>
 
+  <!-- Savings Goal Progress Alert -->
+  <div id="savings-alert-container" class="savings-alert-container" style="display: none;">
+    <div class="savings-alert">
+      <div class="savings-alert-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="savings-alert-content">
+        <div class="savings-alert-title">Budget Warning!</div>
+        <div class="savings-alert-message" id="savings-alert-message">
+          You're approaching your spending limit.
+        </div>
+      </div>
+      <button class="savings-alert-close" onclick="closeSavingsAlert()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
 
   <!-- tables -->
   <div class="container">
